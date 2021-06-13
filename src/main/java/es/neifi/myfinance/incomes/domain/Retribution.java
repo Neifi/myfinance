@@ -1,17 +1,15 @@
-package es.neifi.myfinance.expenses.domain.vo;
+package es.neifi.myfinance.incomes.domain;
 
 import es.neifi.myfinance.expenses.domain.exceptions.NegativeValueException;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 
 @EqualsAndHashCode
-@Getter
-public class ExpenseCost{
+public class Retribution {
 
     private double value;
 
-    public ExpenseCost(double value) {
-        if(value < 0) throw new NegativeValueException("Value cannot be less than zero");
+    public Retribution(double value) {
+        if(value < 0) throw new NegativeValueException("Retribution value cannot be less than zero");
         this.value = value;
     }
 

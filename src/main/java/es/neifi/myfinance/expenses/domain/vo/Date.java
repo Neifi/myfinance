@@ -1,12 +1,14 @@
 package es.neifi.myfinance.expenses.domain.vo;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 @EqualsAndHashCode
+@Getter
 public class Date {
     private String value;
 

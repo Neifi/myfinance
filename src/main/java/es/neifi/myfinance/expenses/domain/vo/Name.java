@@ -4,8 +4,8 @@ import es.neifi.myfinance.shared.domain.StringValueObject;
 import lombok.EqualsAndHashCode;
 
 
-public class ExpenseName extends StringValueObject {
-    public ExpenseName(String value) {
+public class Name extends StringValueObject {
+    public Name(String value) {
         super(value);
     }
 }

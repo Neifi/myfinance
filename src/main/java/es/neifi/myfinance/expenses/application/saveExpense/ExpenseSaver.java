@@ -20,8 +20,8 @@ public class ExpenseSaver {
     public void save(SaveExpenseRequest request) throws ParseException {
         Expense expense = Expense.builder()
                 .category(new Category(request.category()))
-                .name(new ExpenseName(request.name()))
-                .cost(new ExpenseCost(request.cost()))
+                .name(new Name(request.name()))
+                .expenseCost(new ExpenseCost(request.cost()))
                 .currency(new Currency(request.currency()))
                 .date(new Date(request.date()))
                 .build();

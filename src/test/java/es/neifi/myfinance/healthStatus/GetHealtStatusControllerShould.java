@@ -16,11 +16,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = GetHealthStatusController.class)
-public class GetHealtStatisControllerShould {
+public class GetHealtStatusControllerShould {
 
     @Autowired
     private MockMvc mockMvc;
-
 
     @Test
     public void return_success_status() throws Exception {

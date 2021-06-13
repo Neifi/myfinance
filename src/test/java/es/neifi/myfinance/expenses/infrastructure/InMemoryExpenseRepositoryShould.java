@@ -24,8 +24,8 @@ class InMemoryExpenseRepositoryShould {
         Expense expense = Expense.builder()
                 .id(new ExpenseID("77335C39-B709-4176-989D-9800216DC0C7"))
                 .category(new Category("Home"))
-                .name(new ExpenseName("Desktop"))
-                .cost(new ExpenseCost(100.40))
+                .name(new Name("Desktop"))
+                .expenseCost(new ExpenseCost(100.40))
                 .currency(new Currency("EUR"))
                 .date(new Date("12/6/2021"))
                 .build();
@@ -38,8 +38,8 @@ class InMemoryExpenseRepositoryShould {
         Expense expectedExpense = Expense.builder()
                 .id(new ExpenseID("77335C39-B709-4176-989D-9800216DC0C7"))
                 .category(new Category("Home"))
-                .name(new ExpenseName("Desktop"))
-                .cost(new ExpenseCost(100.40))
+                .name(new Name("Desktop"))
+                .expenseCost(new ExpenseCost(100.40))
                 .currency(new Currency("EUR"))
                 .date(new Date("12/06/2021"))
                 .build();

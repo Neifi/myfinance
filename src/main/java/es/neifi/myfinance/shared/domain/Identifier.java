@@ -1,10 +1,12 @@
 package es.neifi.myfinance.shared.domain;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import java.util.UUID;
 
 @EqualsAndHashCode
+@Getter
 public class Identifier {
     private UUID value;
 
@@ -20,4 +22,6 @@ public class Identifier {
     public String value(){
         return this.value.toString();
     }
+
+
 }

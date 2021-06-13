@@ -2,7 +2,7 @@ package es.neifi.myfinance.expenses.infrastructure;
 
 import es.neifi.myfinance.expenses.application.saveExpense.ExpenseSaver;
 import es.neifi.myfinance.expenses.application.saveExpense.SaveExpenseRequest;
-import es.neifi.myfinance.users.application.UserService;
+import es.neifi.myfinance.shared.domain.UserService;
 import es.neifi.myfinance.users.domain.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +12,12 @@ import java.text.ParseException;
 import java.util.Optional;
 
 @RestController
-public class PostExpensesController {
+public class PostExpenseController {
 
     private ExpenseSaver expenseSaver;
     private UserService userService;
 
-    public PostExpensesController(ExpenseSaver expenseSaver, UserService userService) {
+    public PostExpenseController(ExpenseSaver expenseSaver, UserService userService) {
         this.expenseSaver = expenseSaver;
         this.userService = userService;
     }

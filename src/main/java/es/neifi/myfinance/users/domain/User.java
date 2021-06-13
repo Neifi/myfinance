@@ -1,13 +1,13 @@
 package es.neifi.myfinance.users.domain;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 @EqualsAndHashCode
-
+@Builder
 public class User {
 
     private UserID id;
@@ -19,6 +19,5 @@ public class User {
         this.username = username;
         this.email = email;
     }
-
 
 }
