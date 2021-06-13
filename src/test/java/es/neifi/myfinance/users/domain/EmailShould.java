@@ -1,6 +1,5 @@
 package es.neifi.myfinance.users.domain;
 
-import es.neifi.myfinance.expenses.domain.vo.ExpenseCost;
 import es.neifi.myfinance.users.domain.exceptions.InvalidEmailException;
 import org.junit.jupiter.api.Test;
 

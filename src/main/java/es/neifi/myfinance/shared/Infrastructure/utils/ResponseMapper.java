@@ -1,24 +1,24 @@
 package es.neifi.myfinance.shared.Infrastructure.utils;
 
-import es.neifi.myfinance.expenses.application.searchExpense.RegistryResponse;
-import es.neifi.myfinance.expenses.domain.vo.Expense;
+import es.neifi.myfinance.registry.application.searchRegistry.RegistryResponse;
+import es.neifi.myfinance.registry.domain.vo.Registry;
 
 import java.util.List;
 
 public class ResponseMapper {
 
-    public static List<Expense> mapToExpenseResponse(String initialDate, String endDate, List<RegistryResponse> registryResponse, List<Expense> expenses) {
+    public static List<Registry> mapToExpenseResponse(String initialDate, String endDate, List<RegistryResponse> registryResponse, List<Registry> expens) {
 
-        for (Expense expense : expenses) {
+        for (Registry registry : expens) {
             registryResponse.add(RegistryResponse.builder()
-                    .id(expense.getId().value())
-                    .category(expense.getCategory().value())
-                    .name(expense.getName().value())
-                    .money(expense.getExpenseCost().value())
-                    .currency(expense.getCurrency().getValue())
-                    .date(expense.getDate().getValue())
+                    .id(registry.getId().value())
+                    .category(registry.getCategory().value())
+                    .name(registry.getName().value())
+                    .cost(registry.cost())
+                    .currency(registry.getCurrency().getValue())
+                    .date(registry.getDate().getValue())
                     .build());
         }
-        return expenses;
+        return expens;
     }
 }

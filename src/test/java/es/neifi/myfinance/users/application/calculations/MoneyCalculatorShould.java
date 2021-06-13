@@ -1,6 +1,6 @@
 package es.neifi.myfinance.users.application.calculations;
 
-import es.neifi.myfinance.expenses.domain.vo.*;
+import es.neifi.myfinance.registry.domain.vo.*;
 import es.neifi.myfinance.shared.application.calculations.MoneyCalculator;
 import org.junit.jupiter.api.Test;
 
@@ -14,34 +14,34 @@ class MoneyCalculatorShould {
 
     @Test
     void calculate_total_amount() throws ParseException {
-        Expense expense = Expense.builder()
-                .id(new ExpenseID("787f28f2-003a-4445-8659-d60683107845"))
+        Registry registry = Registry.builder()
+                .id(new RegistryID("787f28f2-003a-4445-8659-d60683107845"))
                 .category(new Category("home"))
                 .name(new Name("internet"))
-                .expenseCost(new ExpenseCost(100))
+                .cost(new Cost(100))
                 .currency(new Currency("EUR"))
                 .date(new Date("08/06/2021"))
                 .build();
-        Expense expense1 = Expense.builder()
-                .id(new ExpenseID("787f28f2-003a-4445-8659-d60683107845"))
+        Registry registry1 = Registry.builder()
+                .id(new RegistryID("787f28f2-003a-4445-8659-d60683107845"))
                 .category(new Category("home"))
                 .name(new Name("internet"))
-                .expenseCost(new ExpenseCost(100))
+                .cost(new Cost(100))
                 .currency(new Currency("EUR"))
                 .date(new Date("08/06/2021"))
                 .build();
-        Expense expense2 = Expense.builder()
-                .id(new ExpenseID("787f28f2-003a-4445-8659-d60683107845"))
+        Registry registry2 = Registry.builder()
+                .id(new RegistryID("787f28f2-003a-4445-8659-d60683107845"))
                 .category(new Category("home"))
                 .name(new Name("internet"))
-                .expenseCost(new ExpenseCost(100))
+                .cost(new Cost(100))
                 .currency(new Currency("EUR"))
                 .date(new Date("08/06/2021"))
                 .build();
 
-        List<Expense> expenses = Arrays.asList(expense, expense1, expense2);
+        List<Registry> expens = Arrays.asList(registry, registry1, registry2);
 
-        double total = MoneyCalculator.calculateExpenses(expenses);
+        double total = MoneyCalculator.calculate(expens);
 
         assertEquals(300,total);
     }
