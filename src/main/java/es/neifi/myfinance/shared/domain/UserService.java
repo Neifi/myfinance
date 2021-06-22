@@ -1,9 +1,9 @@
 package es.neifi.myfinance.shared.domain;
 
-import es.neifi.myfinance.shared.domain.Service;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 

@@ -1,5 +1,7 @@
 package es.neifi.myfinance.registry.domain.vo;
 
+import es.neifi.myfinance.registry.domain.RegistryCreatedDomainEvent;
+import es.neifi.myfinance.shared.domain.AggregateRoot;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -7,7 +9,7 @@ import lombok.Getter;
 @EqualsAndHashCode
 @Getter
 @Builder
-public class Registry {
+public class Registry extends AggregateRoot {
     private RegistryID id;
     private Category category;
     private Name name;
@@ -25,6 +27,15 @@ public class Registry {
         this.currency = currency;
         this.date = date;
         this.isExpense = isExpense;
+    }
+
+    public static Registry create(RegistryID id, Category category, Name name, Cost cost, Currency currency, Date date, boolean isExpense){
+        Registry registry = new Registry(id, category, name, cost, currency, date, isExpense);
+
+        registry.record(new RegistryCreatedDomainEvent(id.value(), category.value(), name.value(), cost.value(), currency.getValue(), date.value(), isExpense));
+
+        return registry;
+
     }
 
     public double cost() {

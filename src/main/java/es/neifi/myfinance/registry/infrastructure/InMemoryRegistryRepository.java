@@ -2,7 +2,7 @@ package es.neifi.myfinance.registry.infrastructure;
 
 import es.neifi.myfinance.registry.domain.vo.Registry;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
-import es.neifi.myfinance.shared.domain.Service;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +13,10 @@ import java.util.Optional;
 public class InMemoryRegistryRepository implements RegistryRepository {
 
     private HashMap<String, Registry> expenses = new HashMap<>();
+
+    public InMemoryRegistryRepository() {
+
+    }
 
     @Override
     public void save(Registry registry) {

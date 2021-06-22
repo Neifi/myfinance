@@ -2,7 +2,7 @@ package es.neifi.myfinance.users.infrastructure;
 
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserRepository;
-import es.neifi.myfinance.shared.domain.Service;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Optional;

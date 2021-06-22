@@ -3,8 +3,8 @@ package es.neifi.myfinance.registry.application.searchRegistry;
 import es.neifi.myfinance.registry.application.utils.DateParser;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
 import es.neifi.myfinance.registry.domain.vo.Registry;
-import es.neifi.myfinance.shared.domain.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Comparator;

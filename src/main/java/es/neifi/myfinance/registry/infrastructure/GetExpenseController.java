@@ -6,7 +6,7 @@ import es.neifi.myfinance.registry.application.searchRegistry.RegistryResponse;
 import es.neifi.myfinance.registry.domain.vo.*;
 import es.neifi.myfinance.shared.domain.UserService;
 
-import es.neifi.myfinance.shared.application.calculations.MoneyCalculator;
+import es.neifi.myfinance.shared.application.calculations.ExpenseCalculator;
 import es.neifi.myfinance.shared.Infrastructure.utils.ResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -80,7 +80,7 @@ public class GetExpenseController {
     private RegistryListResponse mapToExpenseListResponse(String initialDate, String endDate, List<RegistryResponse> registryResponse, List<Registry> expens) {
         return RegistryListResponse.builder()
                 .expenses(registryResponse)
-                .totalExpended(MoneyCalculator.calculate(expens))
+                .totalExpended(ExpenseCalculator.calculate(expens))
                 .timePeriod(new String[]{initialDate, endDate})
                 .build();
     }
