@@ -29,10 +29,18 @@ public class Registry extends AggregateRoot {
         this.isExpense = isExpense;
     }
 
-    public static Registry create(RegistryID id, Category category, Name name, Cost cost, Currency currency, Date date, boolean isExpense){
-        Registry registry = new Registry(id, category, name, cost, currency, date, isExpense);
+    public static Registry createExpense(RegistryID id, Category category, Name name, Cost cost, Currency currency, Date date){
+        Registry registry = new Registry(id, category, name, cost, currency, date, true);
 
-        registry.record(new RegistryCreatedDomainEvent(id.value(), category.value(), name.value(), cost.value(), currency.getValue(), date.value(), isExpense));
+        registry.record(new RegistryCreatedDomainEvent(id.value(), category.value(), name.value(), cost.value(), currency.getValue(), date.value(), true));
+
+        return registry;
+
+    }
+    public static Registry createIncome(RegistryID id, Category category, Name name, Cost cost, Currency currency, Date date){
+        Registry registry = new Registry(id, category, name, cost, currency, date, false);
+
+        registry.record(new RegistryCreatedDomainEvent(id.value(), category.value(), name.value(), cost.value(), currency.getValue(), date.value(), false));
 
         return registry;
 

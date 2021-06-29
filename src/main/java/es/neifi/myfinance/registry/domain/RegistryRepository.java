@@ -10,8 +10,19 @@ import java.util.Optional;
 public interface RegistryRepository {
 
     void save(Registry registry);
-    Optional<Registry> search(String id);
 
     List<Registry> search();
+
+    List<Registry> searchIncomes();
+
+    List<Registry> searchExpenses();
+
+    List<Registry> searchExpenseInRange(String initialRange,String endRange);
+
+    List<Registry> searchIncomeInRange(String initialRange,String endRange);
+
+    Optional<Registry> searchExpenseById(String id);
+
+    Optional<Registry> searchIncomeById(String id);
 
 }

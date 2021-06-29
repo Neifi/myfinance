@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GetReportController {
 
-    @Autowired
-    private ReportFinder reportFinder;
+
 
 
     @GetMapping("/user/{userId}/report")

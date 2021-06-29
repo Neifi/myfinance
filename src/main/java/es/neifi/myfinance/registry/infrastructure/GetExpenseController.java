@@ -1,6 +1,6 @@
 package es.neifi.myfinance.registry.infrastructure;
 
-import es.neifi.myfinance.registry.application.searchRegistry.ExpenseSearcher;
+import es.neifi.myfinance.registry.application.searchRegistry.RegistrySearcher;
 import es.neifi.myfinance.registry.application.searchRegistry.RegistryListResponse;
 import es.neifi.myfinance.registry.application.searchRegistry.RegistryResponse;
 import es.neifi.myfinance.registry.domain.vo.*;
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class GetExpenseController {
 
     @Autowired
-    private ExpenseSearcher expenseSearcher;
+    private RegistrySearcher registrySearcher;
 
     @Autowired
     private UserService userService;
@@ -33,7 +33,7 @@ public class GetExpenseController {
     public ResponseEntity<RegistryResponse> getExpense(@PathVariable String userID, @PathVariable String id) {
 
         if (isUserPresent(userID)) {
-            Optional<Registry> optionalExpense = expenseSearcher.search(id);
+            Optional<Registry> optionalExpense = registrySearcher.searchIncome(id);
 
             if (optionalExpense.isPresent()) {
                 Registry registry = optionalExpense.get();
@@ -65,9 +65,9 @@ public class GetExpenseController {
             List<Registry> expens;
 
             if (initialDate == null || endDate == null) {
-                expens = ResponseMapper.mapToExpenseResponse(initialDate, endDate, registryResponse,expenseSearcher.search());
+                expens = ResponseMapper.mapToExpenseResponse(initialDate, endDate, registryResponse, registrySearcher.searchIncome());
             } else {
-                expens = ResponseMapper.mapToExpenseResponse(initialDate, endDate, registryResponse,expenseSearcher.search(initialDate, endDate));
+                expens = ResponseMapper.mapToExpenseResponse(initialDate, endDate, registryResponse, registrySearcher.searchIncome(initialDate, endDate));
             }
 
             RegistryListResponse response = mapToExpenseListResponse(initialDate, endDate, registryResponse, expens);

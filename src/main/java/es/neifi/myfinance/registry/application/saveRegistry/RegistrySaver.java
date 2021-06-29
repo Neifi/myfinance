@@ -1,11 +1,9 @@
 package es.neifi.myfinance.registry.application.saveRegistry;
 
-import es.neifi.myfinance.registry.domain.RegistryCreatedDomainEvent;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
 import es.neifi.myfinance.registry.domain.vo.*;
 import es.neifi.myfinance.shared.domain.bus.event.EventBus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -24,15 +22,28 @@ public class RegistrySaver  {
     }
 
 
-    public void save(SaveRegistryRequest request) throws ParseException {
+    public void saveIncome(SaveRegistryRequest request) throws ParseException {
 
-        Registry registry = Registry.create(new RegistryID(request.id()),
+        Registry registry = Registry.createIncome(
+                new RegistryID(request.id()),
                 new Category(request.category()),
                 new Name(request.name()),
                 new Cost(request.cost()),
                 new Currency(request.currency()),
-                new Date(request.date()),
-                request.isExpense());
+                new Date(request.date()));
+
+        registryRepository.save(registry);
+        this.eventBus.publish(registry.pullEvents());
+    }
+    public void saveExpense(SaveRegistryRequest request) throws ParseException {
+
+        Registry registry = Registry.createExpense(
+                new RegistryID(request.id()),
+                new Category(request.category()),
+                new Name(request.name()),
+                new Cost(request.cost()),
+                new Currency(request.currency()),
+                new Date(request.date()));
 
         registryRepository.save(registry);
         this.eventBus.publish(registry.pullEvents());

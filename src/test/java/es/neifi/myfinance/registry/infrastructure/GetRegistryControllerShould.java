@@ -1,6 +1,6 @@
 package es.neifi.myfinance.registry.infrastructure;
 
-import es.neifi.myfinance.registry.application.searchRegistry.ExpenseSearcher;
+import es.neifi.myfinance.registry.application.searchRegistry.RegistrySearcher;
 import es.neifi.myfinance.registry.domain.vo.*;
 import es.neifi.myfinance.shared.domain.UserService;
 import es.neifi.myfinance.users.domain.Email;
@@ -33,7 +33,7 @@ class GetRegistryControllerShould {
     private MockMvc mockMvc;
 
     @MockBean
-    private ExpenseSearcher expenseSearcher;
+    private RegistrySearcher registrySearcher;
 
     @MockBean
     private UserService userService;
@@ -55,7 +55,7 @@ class GetRegistryControllerShould {
                 .build());
 
         when(userService.search("2be27975-4d87-413b-991c-ceff0bb960db")).thenReturn(user);
-        when(expenseSearcher.search("787f28f2-003a-4445-8659-d60683107845")).thenReturn(java.util.Optional.ofNullable(registry));
+        when(registrySearcher.searchIncome("787f28f2-003a-4445-8659-d60683107845")).thenReturn(java.util.Optional.ofNullable(registry));
 
         ResultMatcher resultMatcher = content().string("{\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":\"08/06/2021\"}");
         mockMvc.perform(get("/user/2be27975-4d87-413b-991c-ceff0bb960db/expenses/787f28f2-003a-4445-8659-d60683107845"))
@@ -109,7 +109,7 @@ class GetRegistryControllerShould {
 
         ResultMatcher resultMatcher = content().string("{\"expenses\":[{\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":\"08/06/2021\"},{\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":\"08/06/2021\"}],\"totalExpended\":200.0,\"timePeriod\":[null,null]}");
         when(userService.search("2be27975-4d87-413b-991c-ceff0bb960db")).thenReturn(user);
-        when(expenseSearcher.search()).thenReturn(Arrays.asList(registry, registry1));
+        when(registrySearcher.searchIncome()).thenReturn(Arrays.asList(registry, registry1));
 
         mockMvc.perform(get("/user/2be27975-4d87-413b-991c-ceff0bb960db/expenses/"))
                 .andExpect(status().isOk())
@@ -145,7 +145,7 @@ class GetRegistryControllerShould {
 
         ResultMatcher resultMatcher = content().string("{\"expenses\":[{\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":\"08/06/2021\"},{\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":\"08/06/2021\"}],\"totalExpended\":200.0,\"timePeriod\":[\"01/06/2021\",\"31/06/2021\"]}");
         when(userService.search("2be27975-4d87-413b-991c-ceff0bb960db")).thenReturn(user);
-        when(expenseSearcher.search("01/06/2021","31/06/2021")).thenReturn(Arrays.asList(registry, registry1));
+        when(registrySearcher.searchIncome("01/06/2021","31/06/2021")).thenReturn(Arrays.asList(registry, registry1));
 
         mockMvc.perform(get("/user/2be27975-4d87-413b-991c-ceff0bb960db/expenses/")
                 .param("initialDate", "01/06/2021")

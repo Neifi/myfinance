@@ -27,7 +27,7 @@ public class PostIncomeController {
                 id, request.category, request.name,
                 request.retribution, request.currency, request.date,request.isExpense);
 
-        incomeSaver.save(saveIncomeRequest);
+        incomeSaver.saveIncome(saveIncomeRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

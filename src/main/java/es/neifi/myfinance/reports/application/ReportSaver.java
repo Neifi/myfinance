@@ -18,7 +18,6 @@ import java.util.HashMap;
 @Service
 public class ReportSaver {
 
-    @Autowired
     private ReportRepository reportRepository;
 
     public ReportSaver(ReportRepository reportRepository) {
@@ -26,17 +25,17 @@ public class ReportSaver {
     }
 
 
-    public void save(Date date, Cost cost, boolean expense, RegistryID id) {
+    public void save(Report report) {
         Report lastReport = getLastReport();
         Report newReport = Report.builder().build();
         if (lastReport != null) {
-            if (expense) {
+            if (report.isExpense()) {
                 newReport = Report.builder()
-                        .reportID(new ReportID(id.value()))
-                        .date(date)
-                        .totalExpenses(lastReport.getTotalExpenses() + cost.getValue())
-                        .totalSavings(lastReport.getTotalSavings() - cost.getValue())
-                        .totalIncomes(lastReport.getTotalIncomes())
+                        .reportID(new ReportID(report.getReportID().value()))
+                        .date(report.getDate())
+                        .totalExpenses(0)
+                        .totalSavings(0)
+                        .totalIncomes(0)
                         .build();
             }
         }
@@ -48,13 +47,9 @@ public class ReportSaver {
     }
 
     @EventListener
-    public void on(RegistryCreatedDomainEvent event) throws ParseException {
+    private void on(RegistryCreatedDomainEvent event) throws ParseException {
         HashMap<String, Serializable> primitives = event.toPrimitives();
-        save(
-                new Date((String) primitives.get("date")),
-                new Cost(((double) primitives.get("cost"))),
-                (boolean) primitives.get("isExpense"),
-                new RegistryID((String) primitives.get("registryId")));
+        save(Report.builder().build());
     }
 
 }

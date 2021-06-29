@@ -1,6 +1,6 @@
 package es.neifi.myfinance.registry.application.searchExpense;
 
-import es.neifi.myfinance.registry.application.searchRegistry.ExpenseSearcher;
+import es.neifi.myfinance.registry.application.searchRegistry.RegistrySearcher;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
 import es.neifi.myfinance.registry.domain.vo.*;
 import org.junit.jupiter.api.Test;
@@ -16,61 +16,81 @@ import static org.junit.jupiter.api.Assertions.*;
 class RegistrySearcherShould {
 
     private final RegistryRepository registryRepository = Mockito.mock(RegistryRepository.class);
-    private ExpenseSearcher expenseSearcher = new ExpenseSearcher(registryRepository);
+    private RegistrySearcher registrySearcher = new RegistrySearcher(registryRepository);
 
     @Test
     void search_one_expense() throws ParseException {
         String id = "22aa0d3b-07eb-4f19-8320-1b3c3a25b070";
-        Registry expectedRegistry = Registry.builder()
-                .id(new RegistryID(id))
-                .category(new Category("home"))
-                .name(new Name("internet"))
-                .cost(new Cost(100))
-                .currency(new Currency("EUR"))
-                .date(new Date("08/06/2021"))
-                .build();
-        Mockito.when(registryRepository.search(id)).thenReturn(Optional.ofNullable(expectedRegistry));
-        Optional<Registry> expense = expenseSearcher.search(id);
+
+        Registry expectedRegistry = Registry.createExpense(
+                new RegistryID(id),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date("08/06/2021"));
+
+
+        Mockito.when(registryRepository.searchExpenseById(id)).thenReturn(Optional.of(expectedRegistry));
+        Optional<Registry> expense = registrySearcher.searchExpense(id);
 
         assertTrue(expense.isPresent());
+        assertTrue(expense.get().isExpense());
+        assertEquals(id,expense.get().getId().value());
+    }
+    @Test
+    void search_one_income() throws ParseException {
+        String id = "22aa0d3b-07eb-4f19-8320-1b3c3a25b070";
+
+        Registry expectedRegistry = Registry.createExpense(
+                new RegistryID(id),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date("08/06/2021"));
+
+
+        Mockito.when(registryRepository.searchIncomeById(id)).thenReturn(Optional.of(expectedRegistry));
+        Optional<Registry> expense = registrySearcher.searchIncome(id);
+
+        assertTrue(expense.isPresent());
+        assertTrue(expense.get().isExpense());
         assertEquals(id,expense.get().getId().value());
     }
 
     @Test
     void search_all_expenses() throws ParseException {
-        Registry registry = Registry.builder()
-                .id(new RegistryID("787f28f2-003a-4445-8659-d60683107845"))
-                .category(new Category("home"))
-                .name(new Name("internet"))
-                .cost(new Cost(100))
-                .currency(new Currency("EUR"))
-                .date(new Date("08/06/2021"))
-                .build();
-        Registry registry2 = Registry.builder()
-                .id(new RegistryID("cb99dff2-9f0a-4bb7-88a8-4b3b5937e6c5"))
-                .category(new Category("home"))
-                .name(new Name("invoice"))
-                .cost(new Cost(110))
-                .currency(new Currency("EUR"))
-                .date(new Date("08/06/2021"))
-                .build();
-        Registry registry3 = Registry.builder()
-                .id(new RegistryID("f3b97578-4c18-4753-a4d5-364f0099423b"))
-                .category(new Category("home"))
-                .name(new Name("invoice2"))
-                .cost(new Cost(50))
-                .currency(new Currency("EUR"))
-                .date(new Date("08/06/2021"))
-                .build();
+        Registry registry = Registry.createExpense(
+                new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date("08/06/2021"));
+        Registry registry2 = Registry.createExpense(
+                new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date("08/06/2021"));
+        Registry registry3 = Registry.createExpense(
+                new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date("08/06/2021"));
 
         List<Registry> expectedExpens = new ArrayList<>();
         expectedExpens.add(registry);
         expectedExpens.add(registry2);
         expectedExpens.add(registry3);
 
-        Mockito.when(registryRepository.search()).thenReturn(expectedExpens);
+        Mockito.when(registryRepository.searchExpenses()).thenReturn(expectedExpens);
 
-        List<Registry> expens = expenseSearcher.search();
+        List<Registry> expens = registrySearcher.searchExpenses();
 
         assertEquals(3, expens.size());
         assertEquals(expectedExpens, expens);
@@ -78,46 +98,42 @@ class RegistrySearcherShould {
 
     @Test
     void search_all_expenses_between_dates_in_order() throws ParseException {
-        Registry registry = Registry.builder()
-                .id(new RegistryID("787f28f2-003a-4445-8659-d60683107845"))
-                .category(new Category("home"))
-                .name(new Name("internet"))
-                .cost(new Cost(100))
-                .currency(new Currency("EUR"))
-                .date(new Date("08/06/2021"))
-                .build();
-        Registry registry2 = Registry.builder()
-                .id(new RegistryID("cb99dff2-9f0a-4bb7-88a8-4b3b5937e6c5"))
-                .category(new Category("home"))
-                .name(new Name("invoice"))
-                .cost(new Cost(110))
-                .currency(new Currency("EUR"))
-                .date(new Date("07/06/2021"))
-                .build();
-        Registry registry3 = Registry.builder()
-                .id(new RegistryID("f3b97578-4c18-4753-a4d5-364f0099423b"))
-                .category(new Category("home"))
-                .name(new Name("invoice2"))
-                .cost(new Cost(50))
-                .currency(new Currency("EUR"))
-                .date(new Date("06/06/2021"))
-                .build();
-        Registry registry4 = Registry.builder()
-                .id(new RegistryID("80d729f2-be4a-4228-a9ef-3c140357abe1"))
-                .category(new Category("home"))
-                .name(new Name("invoice3"))
-                .cost(new Cost(50))
-                .currency(new Currency("EUR"))
-                .date(new Date("08/05/2021"))
-                .build();
-        Registry registry5 = Registry.builder()
-                .id(new RegistryID("9f0c6936-67b7-4793-ad08-c3c3197952b6"))
-                .category(new Category("home"))
-                .name(new Name("invoice4"))
-                .cost(new Cost(50))
-                .currency(new Currency("EUR"))
-                .date(new Date("08/05/2020"))
-                .build();
+        Registry registry = Registry.createExpense(
+                new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date("08/06/2021"));
+        Registry registry2 = Registry.createExpense(
+                new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date("07/06/2021"));
+        Registry registry3 = Registry.createExpense(
+                new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date("06/06/2021"));
+        Registry registry4 = Registry.createExpense(
+                new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date("06/05/2021"));
+        Registry registry5 = Registry.createExpense(
+                new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date("28/12/2021"));
+
         List<Registry> expectedExpens = new ArrayList<>();
         expectedExpens.add(registry);
         expectedExpens.add(registry2);
@@ -125,9 +141,11 @@ class RegistrySearcherShould {
         expectedExpens.add(registry4);
         expectedExpens.add(registry5);
 
-        Mockito.when(registryRepository.search()).thenReturn(expectedExpens);
+        String intialDate = "01/06/2021";
+        String endDate = "30/06/2021";
+        Mockito.when(registryRepository.searchExpenseInRange(intialDate,endDate)).thenReturn(List.of(registry,registry2,registry3));
 
-        List<Registry> expens = expenseSearcher.search("01/06/2021","30/06/2021");
+        List<Registry> expens = registrySearcher.searchExpenses(intialDate, endDate);
 
         assertEquals(3, expens.size());
         assertEquals(expectedExpens.get(0), expens.get(0));
@@ -137,7 +155,7 @@ class RegistrySearcherShould {
 
     @Test
     void return_empty_list_when_no_expenses_between_dates() {
-        List<Registry> expens = expenseSearcher.search("01/06/2021","30/06/2021");
+        List<Registry> expens = registrySearcher.searchIncome("01/06/2021","30/06/2021");
         assertTrue(expens.isEmpty());
     }
 }
