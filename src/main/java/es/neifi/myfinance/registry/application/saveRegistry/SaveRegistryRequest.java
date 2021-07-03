@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 @Builder
 @EqualsAndHashCode
 public class SaveRegistryRequest {
+    private String userId;
     private String id;
     private String category;
     private String name;
@@ -14,7 +15,8 @@ public class SaveRegistryRequest {
     private String date;
     private boolean isExpense;
 
-    public SaveRegistryRequest(String id, String category, String name, double cost, String currency, String date, boolean isExpense) {
+    public SaveRegistryRequest(String userId,String id, String category, String name, double cost, String currency, String date, boolean isExpense) {
+        this.userId = userId;
         this.id = id;
         this.category = category;
         this.name = name;
@@ -56,5 +58,9 @@ public class SaveRegistryRequest {
 
     public boolean isExpense(){
         return isExpense;
+    }
+
+    public String userId(){
+        return this.userId;
     }
 }

@@ -1,9 +1,6 @@
 package es.neifi.myfinance.reports.infrastructure;
 
 import es.neifi.myfinance.reports.application.ReportFinder;
-import es.neifi.myfinance.reports.application.ReportSaver;
-import es.neifi.myfinance.reports.domain.ReportRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,13 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GetReportController {
 
+    private ReportFinder reportFinder;
 
-
+    public GetReportController(ReportFinder reportFinder) {
+        this.reportFinder = reportFinder;
+    }
 
     @GetMapping("/user/{userId}/report")
     public ResponseEntity<?> getReport(@PathVariable("userId") String userId, @Nullable @RequestParam String initialDate, @Nullable @RequestParam String endDate){
-
-
         return ResponseEntity.ok("{\"totalExpenses\":100,\"totalIncomes\":1100,\"totalSavings\":1000,\"date\":\"22/06/2021}\"}");
     }
 }

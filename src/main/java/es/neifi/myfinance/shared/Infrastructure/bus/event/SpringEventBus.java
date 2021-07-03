@@ -24,4 +24,5 @@ public class SpringEventBus implements EventBus {
     public void publish(final DomainEvent event) {
         this.applicationEventPublisher.publishEvent(event);
     }
+
 }

@@ -1,6 +1,8 @@
 package es.neifi.myfinance.registry.infrastructure;
 
 import es.neifi.myfinance.registry.application.searchRegistry.RegistrySearcher;
+import es.neifi.myfinance.registry.domain.Registry;
+import es.neifi.myfinance.registry.domain.vo.Category;
 import es.neifi.myfinance.registry.domain.vo.*;
 import es.neifi.myfinance.shared.domain.UserService;
 import es.neifi.myfinance.users.domain.Email;

@@ -1,8 +1,11 @@
 package es.neifi.myfinance.registry.application.saveRegistry;
 
+import es.neifi.myfinance.registry.domain.Registry;
+import es.neifi.myfinance.registry.domain.vo.Category;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
 import es.neifi.myfinance.registry.domain.vo.*;
 import es.neifi.myfinance.shared.domain.bus.event.EventBus;
+import es.neifi.myfinance.users.domain.UserID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,7 @@ public class RegistrySaver  {
     public void saveIncome(SaveRegistryRequest request) throws ParseException {
 
         Registry registry = Registry.createIncome(
+                new UserID(request.userId()),
                 new RegistryID(request.id()),
                 new Category(request.category()),
                 new Name(request.name()),
@@ -38,6 +42,7 @@ public class RegistrySaver  {
     public void saveExpense(SaveRegistryRequest request) throws ParseException {
 
         Registry registry = Registry.createExpense(
+                new UserID(request.userId()),
                 new RegistryID(request.id()),
                 new Category(request.category()),
                 new Name(request.name()),
@@ -48,7 +53,6 @@ public class RegistrySaver  {
         registryRepository.save(registry);
         this.eventBus.publish(registry.pullEvents());
     }
-
 
 
 }

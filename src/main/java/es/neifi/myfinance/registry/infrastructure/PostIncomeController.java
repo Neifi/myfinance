@@ -24,7 +24,7 @@ public class PostIncomeController {
     @PostMapping("/users/{userId}/registry/incomes/{id}")
     public ResponseEntity saveIncome(@PathVariable String userId, @RequestBody Request request, @PathVariable String id) throws ParseException {
         SaveRegistryRequest saveIncomeRequest = new SaveRegistryRequest(
-                id, request.category, request.name,
+                userId,id, request.category, request.name,
                 request.retribution, request.currency, request.date,request.isExpense);
 
         incomeSaver.saveIncome(saveIncomeRequest);

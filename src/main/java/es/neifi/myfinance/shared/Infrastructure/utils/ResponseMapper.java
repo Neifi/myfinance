@@ -1,7 +1,7 @@
 package es.neifi.myfinance.shared.Infrastructure.utils;
 
 import es.neifi.myfinance.registry.application.searchRegistry.RegistryResponse;
-import es.neifi.myfinance.registry.domain.vo.Registry;
+import es.neifi.myfinance.registry.domain.Registry;
 
 import java.util.List;
 

@@ -9,9 +9,7 @@ import java.util.HashMap;
 @EqualsAndHashCode
 public class RegistryCreatedDomainEvent extends DomainEvent<RegistryCreatedDomainEvent> {
 
-    private String aggregateId;
-    private String eventId;
-    private String occuredOn;
+    private String userId;
     private String name;
     private double cost;
     private String category;
@@ -19,8 +17,9 @@ public class RegistryCreatedDomainEvent extends DomainEvent<RegistryCreatedDomai
     private String date;
     private boolean isExpense;
 
-    public RegistryCreatedDomainEvent(String id, String category, String name, double cost, String currency, String date, boolean isExpense) {
+    public RegistryCreatedDomainEvent(String userId, String id, String category, String name, double cost, String currency, String date, boolean isExpense) {
         super(id);
+        this.userId = userId;
         this.name = name;
         this.cost = cost;
         this.category = category;
@@ -29,11 +28,9 @@ public class RegistryCreatedDomainEvent extends DomainEvent<RegistryCreatedDomai
         this.isExpense = isExpense;
     }
 
-    public RegistryCreatedDomainEvent(String aggregateId, String eventId, String occurredOn, String name, double cost, String category, String currency, String date, boolean isExpense) {
+    public RegistryCreatedDomainEvent(String userId, String aggregateId, String eventId, String occurredOn, String category, String name,double cost, String currency, String date, boolean isExpense) {
         super(aggregateId, eventId, occurredOn);
-        this.aggregateId = aggregateId;
-        this.eventId = eventId;
-        this.occuredOn = occurredOn;
+        this.userId = userId;
         this.name = name;
         this.cost = cost;
         this.category = category;
@@ -50,7 +47,8 @@ public class RegistryCreatedDomainEvent extends DomainEvent<RegistryCreatedDomai
     @Override
     public HashMap<String, Serializable> toPrimitives() {
         return new HashMap<String, Serializable>() {{
-            put("registryId",aggregateId);
+            put("userId", userId);
+            put("registryId", RegistryCreatedDomainEvent.super.getAggregateId());
             put("name", name);
             put("category", category);
             put("cost", cost);
@@ -63,15 +61,16 @@ public class RegistryCreatedDomainEvent extends DomainEvent<RegistryCreatedDomai
     @Override
     protected RegistryCreatedDomainEvent fromPrimitives(String aggregateId, HashMap<String, Serializable> body, String eventId, String occurredOn) {
         return new RegistryCreatedDomainEvent(
+                (String) body.get("userId"),
                 aggregateId,
                 eventId,
                 occurredOn,
-                (String)body.get("name"),
-                (double)body.get("cost"),
-                (String)body.get("category"),
-                (String)body.get("currency"),
-                (String)body.get("date"),
-                (boolean)body.get("isExpense")
+                (String) body.get("category"),
+                (String) body.get("name"),
+                (double) body.get("cost"),
+                (String) body.get("currency"),
+                (String) body.get("date"),
+                (boolean) body.get("isExpense")
 
         );
     }

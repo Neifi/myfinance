@@ -4,15 +4,25 @@ import es.neifi.myfinance.reports.domain.Report;
 import es.neifi.myfinance.reports.domain.ReportRepository;
 import es.neifi.myfinance.shared.domain.Service;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class InMemoryReportRepository implements ReportRepository {
 
     private HashMap<String, Report> reports = new LinkedHashMap<>();
     private String lastSavedId;
+
+    @Override
+    public Optional<Report>findById(String id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Report> search() {
+        return new ArrayList<>(reports.values());
+    }
+
     @Override
     public void saveReport(Report report) {
         reports.put(report.getReportID().value(),report);

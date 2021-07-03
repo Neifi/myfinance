@@ -1,7 +1,9 @@
 package es.neifi.myfinance.users.application.calculations;
 
+import es.neifi.myfinance.registry.domain.Registry;
+import es.neifi.myfinance.registry.domain.vo.Category;
 import es.neifi.myfinance.registry.domain.vo.*;
-import es.neifi.myfinance.shared.application.calculations.ExpenseCalculator;
+import es.neifi.myfinance.registry.application.searchRegistry.RegistryCostCalculator;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
@@ -10,7 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ExpenseCalculatorShould {
+class RegistryCostCalculatorShould {
 
     @Test
     void calculate_total_amount() throws ParseException {
@@ -41,7 +43,7 @@ class ExpenseCalculatorShould {
 
         List<Registry> expens = Arrays.asList(registry, registry1, registry2);
 
-        double total = ExpenseCalculator .calculate(expens);
+        double total = RegistryCostCalculator.calculate(expens);
 
         assertEquals(300,total);
     }

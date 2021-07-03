@@ -13,9 +13,15 @@ public class Date {
     private String value;
 
     public Date(String value) throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat dateFormat;
+        if(value.split("-")[0].length() == 4){
+
+             dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        }else {
+             dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        }
         dateFormat.setLenient(false);
-            this.value = dateFormat.format(dateFormat.parse(value));
+        this.value = dateFormat.format(dateFormat.parse(value));
     }
 
     public String value() {

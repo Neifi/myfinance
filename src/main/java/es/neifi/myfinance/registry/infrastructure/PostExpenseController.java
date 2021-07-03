@@ -26,7 +26,7 @@ public class PostExpenseController {
     public ResponseEntity<Void> saveExpense(@PathVariable String userID, @RequestBody Request request, @PathVariable String id) throws ParseException {
         Optional<User> user = userService.search(id);
         if(user.isPresent()) {
-            registrySaver.saveIncome(new SaveRegistryRequest(id, request.category, request.name, request.cost, request.currency, request.date, request.isExpense));
+            registrySaver.saveIncome(new SaveRegistryRequest(userID,id, request.category, request.name, request.cost, request.currency, request.date, request.isExpense));
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }
 

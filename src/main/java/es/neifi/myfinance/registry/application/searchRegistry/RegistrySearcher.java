@@ -1,19 +1,13 @@
 package es.neifi.myfinance.registry.application.searchRegistry;
 
-import es.neifi.myfinance.registry.application.exceptions.RegistryNotFoundException;
-import es.neifi.myfinance.registry.application.utils.DateParser;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
-import es.neifi.myfinance.registry.domain.vo.Registry;
+import es.neifi.myfinance.registry.domain.Registry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class RegistrySearcher {

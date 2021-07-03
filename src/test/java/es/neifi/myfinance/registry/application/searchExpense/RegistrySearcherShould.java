@@ -1,8 +1,11 @@
 package es.neifi.myfinance.registry.application.searchExpense;
 
 import es.neifi.myfinance.registry.application.searchRegistry.RegistrySearcher;
+import es.neifi.myfinance.registry.domain.Registry;
+import es.neifi.myfinance.registry.domain.vo.Category;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
 import es.neifi.myfinance.registry.domain.vo.*;
+import es.neifi.myfinance.users.domain.UserID;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -23,6 +26,7 @@ class RegistrySearcherShould {
         String id = "22aa0d3b-07eb-4f19-8320-1b3c3a25b070";
 
         Registry expectedRegistry = Registry.createExpense(
+                new UserID("94c8208e-b116-49a8-bf6e-0560135dffb4"),
                 new RegistryID(id),
                 new Category("home"),
                 new Name("internet"),
@@ -43,6 +47,7 @@ class RegistrySearcherShould {
         String id = "22aa0d3b-07eb-4f19-8320-1b3c3a25b070";
 
         Registry expectedRegistry = Registry.createExpense(
+                new UserID("94c8208e-b116-49a8-bf6e-0560135dffb4"),
                 new RegistryID(id),
                 new Category("home"),
                 new Name("internet"),
@@ -62,6 +67,7 @@ class RegistrySearcherShould {
     @Test
     void search_all_expenses() throws ParseException {
         Registry registry = Registry.createExpense(
+                new UserID("94c8208e-b116-49a8-bf6e-0560135dffb4"),
                 new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
                 new Category("home"),
                 new Name("internet"),
@@ -69,6 +75,7 @@ class RegistrySearcherShould {
                 new Currency("EUR"),
                 new Date("08/06/2021"));
         Registry registry2 = Registry.createExpense(
+                new UserID("94c8208e-b116-49a8-bf6e-0560135dffb4"),
                 new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
                 new Category("home"),
                 new Name("internet"),
@@ -76,6 +83,7 @@ class RegistrySearcherShould {
                 new Currency("EUR"),
                 new Date("08/06/2021"));
         Registry registry3 = Registry.createExpense(
+                new UserID("94c8208e-b116-49a8-bf6e-0560135dffb4"),
                 new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
                 new Category("home"),
                 new Name("internet"),
@@ -99,6 +107,7 @@ class RegistrySearcherShould {
     @Test
     void search_all_expenses_between_dates_in_order() throws ParseException {
         Registry registry = Registry.createExpense(
+                new UserID("94c8208e-b116-49a8-bf6e-0560135dffb4"),
                 new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
                 new Category("home"),
                 new Name("internet"),
@@ -106,6 +115,7 @@ class RegistrySearcherShould {
                 new Currency("EUR"),
                 new Date("08/06/2021"));
         Registry registry2 = Registry.createExpense(
+                new UserID("94c8208e-b116-49a8-bf6e-0560135dffb4"),
                 new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
                 new Category("home"),
                 new Name("internet"),
@@ -113,6 +123,7 @@ class RegistrySearcherShould {
                 new Currency("EUR"),
                 new Date("07/06/2021"));
         Registry registry3 = Registry.createExpense(
+                new UserID("94c8208e-b116-49a8-bf6e-0560135dffb4"),
                 new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
                 new Category("home"),
                 new Name("internet"),
@@ -120,6 +131,7 @@ class RegistrySearcherShould {
                 new Currency("EUR"),
                 new Date("06/06/2021"));
         Registry registry4 = Registry.createExpense(
+                new UserID("94c8208e-b116-49a8-bf6e-0560135dffb4"),
                 new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
                 new Category("home"),
                 new Name("internet"),
@@ -127,6 +139,7 @@ class RegistrySearcherShould {
                 new Currency("EUR"),
                 new Date("06/05/2021"));
         Registry registry5 = Registry.createExpense(
+                new UserID("94c8208e-b116-49a8-bf6e-0560135dffb4"),
                 new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
                 new Category("home"),
                 new Name("internet"),

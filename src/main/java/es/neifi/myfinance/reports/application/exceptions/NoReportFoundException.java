@@ -1,4 +1,4 @@
-package es.neifi.myfinance.reports.exceptions;
+package es.neifi.myfinance.reports.application.exceptions;
 
 public class NoReportFoundException extends RuntimeException{
     public NoReportFoundException() {

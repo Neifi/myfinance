@@ -1,14 +1,19 @@
 package es.neifi.myfinance.registry.application.saveRegistry;
 
+import es.neifi.myfinance.registry.domain.Registry;
+import es.neifi.myfinance.registry.domain.vo.Category;
 import es.neifi.myfinance.registry.domain.RegistryCreatedDomainEvent;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
 import es.neifi.myfinance.registry.domain.vo.*;
 import es.neifi.myfinance.shared.domain.bus.event.DomainEvent;
 import es.neifi.myfinance.shared.domain.bus.event.EventBus;
+import es.neifi.myfinance.shared.domain.utils.Utils;
+import es.neifi.myfinance.users.domain.UserID;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +29,7 @@ class RegistrySaverShould {
     @Test
     public void save_income_successfully() throws ParseException {
         SaveRegistryRequest request = SaveRegistryRequest.builder()
+                .userId("a46ea122-f590-471e-95b8-4bc8fd46836a")
                 .id("70c0b2ff-d376-48aa-b43f-57a827f79316")
                 .category("some-category")
                 .currency("EUR")
@@ -33,6 +39,7 @@ class RegistrySaverShould {
                 .build();
 
         Registry income = Registry.createIncome(
+                new UserID(request.userId()),
                 new RegistryID(request.id()),
                 new Category(request.category()), new Name(request.name()),
                 new Cost(request.cost()),
@@ -47,6 +54,7 @@ class RegistrySaverShould {
     @Test
     public void save_expense_successfully() throws ParseException {
         SaveRegistryRequest request = SaveRegistryRequest.builder()
+                .userId("a46ea122-f590-471e-95b8-4bc8fd46836a")
                 .id("70c0b2ff-d376-48aa-b43f-57a827f79316")
                 .category("some-category")
                 .currency("EUR")
@@ -56,6 +64,7 @@ class RegistrySaverShould {
                 .build();
 
         Registry expense = Registry.createExpense(
+                new UserID(request.userId()),
                 new RegistryID(request.id()),
                 new Category(request.category()), new Name(request.name()),
                 new Cost(request.cost()),
@@ -69,6 +78,7 @@ class RegistrySaverShould {
 
     @Test
     public void publish_event_when_expense_is_saved() throws ParseException {
+        String userID = "1c9dee02-7d09-419d-ab22-70fbb8825ba2";
         String id = "70c0b2ff-d376-48aa-b43f-57a827f79316";
         String category = "some-category";
         String currency = "EUR";
@@ -77,6 +87,7 @@ class RegistrySaverShould {
         double cost = 1304.54;
         boolean isExpense = true;
         SaveRegistryRequest request = SaveRegistryRequest.builder()
+                .userId(userID)
                 .id(id)
                 .category(category)
                 .currency(currency)
@@ -85,18 +96,9 @@ class RegistrySaverShould {
                 .cost(cost)
                 .build();
 
-        Registry expense = Registry
-                .createExpense(new RegistryID(id),
-                        new Category(category),
-                        new Name(name),
-                        new Cost(cost),
-                        new Currency(currency),
-                        new Date(date));
-
-
-
         List<DomainEvent<?>> events = new ArrayList<>();
         events.add(new RegistryCreatedDomainEvent(
+                userID,
                 id,
                 category,
                 name,
@@ -115,7 +117,8 @@ class RegistrySaverShould {
 
     @Test
     public void publish_event_when_income_is_saved() throws ParseException {
-        String id = "70c0b2ff-d376-48aa-b43f-57a827f79316";
+        String userID = "1c9dee02-7d09-419d-ab22-70fbb8825ba2";
+        String agregateId = "70c0b2ff-d376-48aa-b43f-57a827f79316";
         String category = "some-category";
         String currency = "EUR";
         String date = "27/11/2021";
@@ -124,7 +127,8 @@ class RegistrySaverShould {
         boolean isExpense = false;
 
         SaveRegistryRequest request = SaveRegistryRequest.builder()
-                .id(id)
+                .userId(userID)
+                .id(agregateId)
                 .category(category)
                 .currency(currency)
                 .date(date)
@@ -132,19 +136,15 @@ class RegistrySaverShould {
                 .cost(cost)
                 .build();
 
-        Registry expense = Registry
-                .createExpense(new RegistryID(id),
-                        new Category(category),
-                        new Name(name),
-                        new Cost(cost),
-                        new Currency(currency),
-                        new Date(date));
-
-
-
         List<DomainEvent<?>> events = new ArrayList<>();
+        String eventId = "8df3b9bf-a6e7-4f05-b8aa-64e59dd93f19";
+        String occurredOn = Utils.dateToString(LocalDateTime.now());
         events.add(new RegistryCreatedDomainEvent(
-                id,
+
+                userID,
+                agregateId,
+                eventId,
+                occurredOn,
                 category,
                 name,
                 cost,

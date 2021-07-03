@@ -1,7 +1,7 @@
 package es.neifi.myfinance.registry.infrastructure;
 
 import es.neifi.myfinance.registry.application.utils.DateParser;
-import es.neifi.myfinance.registry.domain.vo.Registry;
+import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +42,8 @@ public class InMemoryRegistryRepository implements RegistryRepository {
 
     @Override
     public List<Registry> search() {
-        return new ArrayList<>(registries.values());
+
+        return sortByDate(dateParser,new ArrayList<>(this.registries.values()));
     }
 
     @Override
@@ -60,9 +61,10 @@ public class InMemoryRegistryRepository implements RegistryRepository {
 
     @Override
     public List<Registry> searchExpenses() {
-        return registries.values().stream()
+        List<Registry> registries = this.registries.values().stream()
                 .filter(Registry::isExpense)
                 .collect(Collectors.toList());
+        return sortByDate(dateParser,registries);
     }
 
     @Override
@@ -82,8 +84,8 @@ public class InMemoryRegistryRepository implements RegistryRepository {
                 .collect(Collectors.toList());
     }
 
-    private List<Registry> sortByDate(DateParser dateParser, Stream<Registry> registryStream) {
-        return registryStream
+    private List<Registry> sortByDate(DateParser dateParser, List<Registry> registryStream) {
+        return registryStream.stream()
                 .sorted(Comparator.comparing(expense -> dateParser.parse(expense.getDate().getValue())))
                 .collect(Collectors.collectingAndThen(Collectors.toList(),
                         ee -> {

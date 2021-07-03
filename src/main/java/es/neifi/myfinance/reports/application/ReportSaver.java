@@ -1,14 +1,17 @@
 package es.neifi.myfinance.reports.application;
 
 import es.neifi.myfinance.registry.domain.RegistryCreatedDomainEvent;
+import es.neifi.myfinance.registry.domain.vo.Category;
 import es.neifi.myfinance.registry.domain.vo.Cost;
+import es.neifi.myfinance.registry.domain.vo.Currency;
 import es.neifi.myfinance.registry.domain.vo.Date;
+import es.neifi.myfinance.registry.domain.vo.Name;
+import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.registry.domain.vo.RegistryID;
 import es.neifi.myfinance.reports.domain.Report;
-import es.neifi.myfinance.reports.domain.ReportID;
 import es.neifi.myfinance.reports.domain.ReportRepository;
 import es.neifi.myfinance.shared.domain.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+import es.neifi.myfinance.users.domain.UserID;
 import org.springframework.context.event.EventListener;
 
 import java.io.Serializable;
@@ -18,38 +21,41 @@ import java.util.HashMap;
 @Service
 public class ReportSaver {
 
-    private ReportRepository reportRepository;
+    private final ReportRepository reportRepository;
+    private final ReportCalculator reportCalculator;
+    private final ReportFinder reportFinder;
 
     public ReportSaver(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;
+        this.reportFinder = new ReportFinder(reportRepository);
+        this.reportCalculator = new ReportCalculator(reportRepository);
     }
 
-
-    public void save(Report report) {
-        Report lastReport = getLastReport();
-        Report newReport = Report.builder().build();
-        if (lastReport != null) {
-            if (report.isExpense()) {
-                newReport = Report.builder()
-                        .reportID(new ReportID(report.getReportID().value()))
-                        .date(report.getDate())
-                        .totalExpenses(0)
-                        .totalSavings(0)
-                        .totalIncomes(0)
-                        .build();
-            }
-        }
-        reportRepository.saveReport(newReport);
-    }
-
-    private Report getLastReport() {
-        return reportRepository.findLast().orElse(null);
-    }
 
     @EventListener
-    private void on(RegistryCreatedDomainEvent event) throws ParseException {
+    public void on(RegistryCreatedDomainEvent event) throws ParseException {
         HashMap<String, Serializable> primitives = event.toPrimitives();
-        save(Report.builder().build());
+        Report report = reportCalculator.calculate(deserializeRegistry(primitives));
+        saveReport(report);
+
     }
 
+    private Registry deserializeRegistry(HashMap<String, Serializable> primitives) throws ParseException {
+        return Registry.createExpense(
+                new UserID((String) primitives.get("userId")),
+                new RegistryID((String) primitives.get("registryId")),
+                new Category((String) primitives.get("category")),
+                new Name((String) primitives.get("name")),
+                new Cost((double) primitives.get("cost")),
+                new Currency((String) primitives.get("currency")),
+                new Date((String) primitives.get("date"))
+        );
+    }
+
+
+    public void saveReport(Report report) {
+        if (reportFinder.findById(report.getReportID().value()).isEmpty()) {
+            reportRepository.saveReport(report);
+        }
+    }
 }

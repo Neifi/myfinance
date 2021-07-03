@@ -1,6 +1,5 @@
 package es.neifi.myfinance.registry.domain;
 
-import es.neifi.myfinance.registry.domain.vo.Registry;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
