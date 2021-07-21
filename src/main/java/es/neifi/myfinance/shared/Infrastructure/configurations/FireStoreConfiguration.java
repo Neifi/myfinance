@@ -13,7 +13,6 @@ public class FireStoreConfiguration {
     public FireStoreConfiguration() throws IOException {
 
         // Use the application default credentials
-
         InputStream serviceAccount = new FileInputStream("src/main/resources/fire-admin-sdk.json");
         GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
         FirebaseOptions options = FirebaseOptions.builder()
@@ -21,8 +20,6 @@ public class FireStoreConfiguration {
                 .build();
         FirebaseApp.initializeApp(options);
 
-
     }
-
 
 }

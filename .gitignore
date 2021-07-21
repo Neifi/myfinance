@@ -36,4 +36,4 @@ out/
 ### VS Code ###
 .vscode/
 
-!**/src/main/resources/fire-admin-sdk.json
+src/main/resources/fire-admin-sdk.json
