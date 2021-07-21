@@ -10,7 +10,7 @@ import java.util.Optional;
 @Service
 public class ReportFinder {
 
-    private final ReportRepository reportRepository;
+    private ReportRepository reportRepository;
 
     public ReportFinder(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;

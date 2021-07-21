@@ -3,7 +3,7 @@ package es.neifi.myfinance;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = {"es.neifi.myfinance","es.neifi.myfinance.registry.application","es.neifi.myfinance.users.domain"})
+@SpringBootApplication(scanBasePackages = {"es.neifi.myfinance","es.neifi.myfinance.registry.application","es.neifi.myfinance.users.domain","es.neifi.myfinance.shared.Infrastructure.configurations"})
 public class MyfinanceApplication {
 
 	public static void main(String[] args) {
