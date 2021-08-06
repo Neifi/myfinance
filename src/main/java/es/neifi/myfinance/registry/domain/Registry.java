@@ -8,13 +8,12 @@ import es.neifi.myfinance.registry.domain.vo.Name;
 import es.neifi.myfinance.registry.domain.vo.RegistryID;
 import es.neifi.myfinance.shared.domain.AggregateRoot;
 import es.neifi.myfinance.users.domain.UserID;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @EqualsAndHashCode
 @Getter
-@Builder
+
 public class Registry extends AggregateRoot {
     private UserID userID;
     private RegistryID id;
@@ -25,7 +24,7 @@ public class Registry extends AggregateRoot {
     private Date date;
     private boolean isExpense;
 
-    public Registry(UserID userID, RegistryID id, Category category, Name name, Cost cost, Currency currency, Date date, boolean isExpense) {
+    private Registry(UserID userID, RegistryID id, Category category, Name name, Cost cost, Currency currency, Date date, boolean isExpense) {
         this.userID = userID;
         this.id = id;
         this.category = category;
@@ -45,7 +44,13 @@ public class Registry extends AggregateRoot {
 
     }
 
-    public static Registry createIncome(UserID userID, RegistryID id, Category category, Name name, Cost cost, Currency currency, Date date) {
+    public static Registry createIncome(UserID userID,
+                                        RegistryID id,
+                                        Category category,
+                                        Name name,
+                                        Cost cost,
+                                        Currency currency,
+                                        Date date) {
         Registry registry = new Registry(userID, id, category, name, cost, currency, date, false);
 
         RegistryCreatedDomainEvent event = new RegistryCreatedDomainEvent(

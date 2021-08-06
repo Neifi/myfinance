@@ -24,7 +24,6 @@ public class RegistrySaver  {
 
     }
 
-
     public void saveIncome(SaveRegistryRequest request) throws ParseException {
 
         Registry registry = Registry.createIncome(

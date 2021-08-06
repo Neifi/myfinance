@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 public class Date {
     private String value;
 
-    public Date(String value) throws ParseException {
+    public Date(String value){
         DateFormat dateFormat;
         if(value.split("-")[0].length() == 4){
 
@@ -21,7 +21,11 @@ public class Date {
              dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         }
         dateFormat.setLenient(false);
-        this.value = dateFormat.format(dateFormat.parse(value));
+        try {
+            this.value = dateFormat.format(dateFormat.parse(value));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public String value() {

@@ -11,6 +11,7 @@ public class ResponseMapper {
 
         for (Registry registry : expens) {
             registryResponse.add(RegistryResponse.builder()
+                    .userId(registry.getUserID().value())
                     .id(registry.getId().value())
                     .category(registry.getCategory().value())
                     .name(registry.getName().value())
