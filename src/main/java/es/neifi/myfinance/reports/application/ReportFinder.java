@@ -7,7 +7,6 @@ import es.neifi.myfinance.shared.domain.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 public class ReportFinder {
 
     private final ReportRepository reportRepository;

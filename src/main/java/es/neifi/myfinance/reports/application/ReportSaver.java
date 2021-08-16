@@ -1,16 +1,15 @@
 package es.neifi.myfinance.reports.application;
 
+import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.registry.domain.RegistryCreatedDomainEvent;
 import es.neifi.myfinance.registry.domain.vo.Category;
 import es.neifi.myfinance.registry.domain.vo.Cost;
 import es.neifi.myfinance.registry.domain.vo.Currency;
 import es.neifi.myfinance.registry.domain.vo.Date;
 import es.neifi.myfinance.registry.domain.vo.Name;
-import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.registry.domain.vo.RegistryID;
 import es.neifi.myfinance.reports.domain.Report;
 import es.neifi.myfinance.reports.domain.ReportRepository;
-import es.neifi.myfinance.shared.domain.Service;
 import es.neifi.myfinance.users.domain.UserID;
 import org.springframework.context.event.EventListener;
 
@@ -18,7 +17,6 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.HashMap;
 
-@Service
 public class ReportSaver {
 
     private final ReportRepository reportRepository;
@@ -31,7 +29,6 @@ public class ReportSaver {
         this.reportCalculator = new ReportCalculator(reportRepository);
     }
 
-
     @EventListener
     public void on(RegistryCreatedDomainEvent event) throws ParseException {
         HashMap<String, Serializable> primitives = event.toPrimitives();
@@ -40,7 +37,7 @@ public class ReportSaver {
 
     }
 
-    private Registry deserializeRegistry(HashMap<String, Serializable> primitives) throws ParseException {
+    private Registry deserializeRegistry(HashMap<String, Serializable> primitives) {
         return Registry.createExpense(
                 new UserID((String) primitives.get("userId")),
                 new RegistryID((String) primitives.get("registryId")),
@@ -48,11 +45,10 @@ public class ReportSaver {
                 new Name((String) primitives.get("name")),
                 new Cost((double) primitives.get("cost")),
                 new Currency((String) primitives.get("currency")),
-                new Date((String) primitives.get("date"))
+                new Date((Long) primitives.get("date"))
         );
     }
-
-
+    
     public void saveReport(Report report) {
         if (reportFinder.findById(report.getReportID().value()).isEmpty()) {
             reportRepository.saveReport(report);

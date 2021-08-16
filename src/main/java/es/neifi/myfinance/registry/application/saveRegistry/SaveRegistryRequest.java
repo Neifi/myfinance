@@ -12,10 +12,10 @@ public class SaveRegistryRequest {
     private String name;
     private double cost;
     private String currency;
-    private String date;
+    private Long date;
     private boolean isExpense;
 
-    public SaveRegistryRequest(String userId,String id, String category, String name, double cost, String currency, String date, boolean isExpense) {
+    public SaveRegistryRequest(String userId, String id, String category, String name, Double cost, String currency, Long date, boolean isExpense) {
         this.userId = userId;
         this.id = id;
         this.category = category;
@@ -51,7 +51,7 @@ public class SaveRegistryRequest {
         return currency;
     }
 
-    public String
+    public Long
     date() {
         return date;
     }

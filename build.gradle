@@ -19,15 +19,26 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'junit:junit:4.13.1'
-    compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.h2database:h2'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc:2.5.3'
+	implementation('org.postgresql:postgresql:42.2.23.jre7')
+	implementation("org.flywaydb:flyway-core:6.5.7")
+	implementation 'junit:junit:4.13.2'
+
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools:2.5.3'
+
+	annotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.3'
 	testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+	testImplementation("com.github.tomakehurst:wiremock:2.18.0")
+	testImplementation "org.testcontainers:postgresql:1.15.3"
+	testImplementation "org.testcontainers:junit-jupiter:1.15.3"
+
+
 
 }
 

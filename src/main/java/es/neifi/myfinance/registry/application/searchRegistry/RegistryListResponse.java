@@ -10,5 +10,5 @@ import java.util.List;
 public class RegistryListResponse {
     private List<RegistryResponse> expenses;
     private double totalExpended;
-    private String[] timePeriod;
+    private Long[] timePeriod;
 }

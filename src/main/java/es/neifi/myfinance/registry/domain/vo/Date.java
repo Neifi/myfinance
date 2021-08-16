@@ -1,30 +1,22 @@
 package es.neifi.myfinance.registry.domain.vo;
 
+import es.neifi.myfinance.shared.domain.exception.EmptyValueException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 @EqualsAndHashCode
 @Getter
 public class Date {
-    private String value;
+    private final Long value;
 
-    public Date(String value) throws ParseException {
-        DateFormat dateFormat;
-        if(value.split("-")[0].length() == 4){
-
-             dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        }else {
-             dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    public Date(Long value){
+        if (value == null){
+            throw new EmptyValueException("Date cannot be empty");
         }
-        dateFormat.setLenient(false);
-        this.value = dateFormat.format(dateFormat.parse(value));
+        this.value = value;
     }
 
-    public String value() {
+    public Long value() {
         return this.value;
     }
 }

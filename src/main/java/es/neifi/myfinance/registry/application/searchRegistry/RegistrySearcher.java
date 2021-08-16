@@ -1,52 +1,41 @@
 package es.neifi.myfinance.registry.application.searchRegistry;
 
-import es.neifi.myfinance.registry.domain.RegistryRepository;
 import es.neifi.myfinance.registry.domain.Registry;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import es.neifi.myfinance.registry.domain.RegistryRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
-@Service
 public class RegistrySearcher {
 
-    @Autowired
-    RegistryRepository registryRepository;
+    private final RegistryRepository registryRepository;
 
     public RegistrySearcher(RegistryRepository registryRepository) {
         this.registryRepository = registryRepository;
     }
 
-    public Optional<Registry> searchIncome(String id) {
-        return registryRepository.searchIncomeById(id);
-    }
-
-    public Optional<Registry> searchExpense(String id) {
-        return registryRepository.searchExpenseById(id);
+    public Optional<Registry> searchRegistry(String id) {
+        return registryRepository.searchRegistryById(id);
     }
 
 
-    public List<Registry> searchIncome() {
+    public List<Registry> searchIncomes(String userId) {
 
-        Predicate<Registry> isExpense = Registry::isExpense;
-        return registryRepository.searchIncomes();
+        return registryRepository.searchIncomes(userId);
     }
 
-    public List<Registry> searchExpenses() {
-        return registryRepository.searchExpenses();
+    public List<Registry> searchExpenses(String userId, Long initialDate, Long endDate) {
+        return registryRepository.searchExpenses(userId, initialDate, endDate);
     }
 
-    public List<Registry> searchIncome(String intialDate, String endDate) {
-        return registryRepository.searchIncomeInRange(intialDate, endDate);
-
-    }
-
-    public List<Registry> searchExpenses(String initialDate, String endDate) {
-        return registryRepository.searchExpenseInRange(initialDate, endDate);
+    public List<Registry> searchExpenses(String userId) {
+        return registryRepository.searchExpenses(userId);
 
     }
 
 
+    public List<Registry> searchRegistry(String userId, Long intialDate, Long endDate) {
+        return registryRepository.searchIncomes(userId, intialDate, endDate);
+
+    }
 }

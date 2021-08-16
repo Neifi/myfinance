@@ -12,7 +12,9 @@ import es.neifi.myfinance.users.domain.UserID;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +35,7 @@ class RegistrySaverShould {
                 .id("70c0b2ff-d376-48aa-b43f-57a827f79316")
                 .category("some-category")
                 .currency("EUR")
-                .date("27/11/2021")
+                .date(Timestamp.from(Instant.now()).getTime())
                 .name("some-name")
                 .cost(1304.54)
                 .build();
@@ -58,7 +60,7 @@ class RegistrySaverShould {
                 .id("70c0b2ff-d376-48aa-b43f-57a827f79316")
                 .category("some-category")
                 .currency("EUR")
-                .date("27/11/2021")
+                .date(Timestamp.from(Instant.now()).getTime())
                 .name("some-name")
                 .cost(1304.54)
                 .build();
@@ -82,7 +84,7 @@ class RegistrySaverShould {
         String id = "70c0b2ff-d376-48aa-b43f-57a827f79316";
         String category = "some-category";
         String currency = "EUR";
-        String date = "27/11/2021";
+        Long date = Timestamp.from(Instant.now()).getTime();
         String name = "some-name";
         double cost = 1304.54;
         boolean isExpense = true;
@@ -121,7 +123,7 @@ class RegistrySaverShould {
         String agregateId = "70c0b2ff-d376-48aa-b43f-57a827f79316";
         String category = "some-category";
         String currency = "EUR";
-        String date = "27/11/2021";
+        long date = Timestamp.from(Instant.now()).getTime();
         String name = "some-name";
         double cost = 1304.54;
         boolean isExpense = false;

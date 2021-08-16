@@ -14,8 +14,8 @@ import java.util.Optional;
 @RestController
 public class PostExpenseController {
 
-    private RegistrySaver registrySaver;
-    private UserService userService;
+    private final RegistrySaver registrySaver;
+    private final UserService userService;
 
     public PostExpenseController(RegistrySaver registrySaver, UserService userService) {
         this.registrySaver = registrySaver;
@@ -25,21 +25,31 @@ public class PostExpenseController {
     @PostMapping("/users/{userID}/registry/expenses/{id}")
     public ResponseEntity<Void> saveExpense(@PathVariable String userID, @RequestBody Request request, @PathVariable String id) throws ParseException {
         Optional<User> user = userService.search(id);
-        if(user.isPresent()) {
-            registrySaver.saveIncome(new SaveRegistryRequest(userID,id, request.category, request.name, request.cost, request.currency, request.date, request.isExpense));
+        if (user.isPresent()) {
+            registrySaver.saveIncome(
+                    new SaveRegistryRequest(
+                            userID,
+                            id,
+                            request.category,
+                            request.name,
+                            request.cost,
+                            request.currency,
+                            request.date,
+                            request.isExpense));
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    private static final class Request{
+    private static final class Request {
         private String category;
         private String name;
         private double cost;
         private String currency;
-        private String date;
+        private Long date;
         private final boolean isExpense = true;
+
         public String
         Category() {
             return category;
@@ -60,7 +70,7 @@ public class PostExpenseController {
             return currency;
         }
 
-        public String
+        public Long
         Date() {
             return date;
         }

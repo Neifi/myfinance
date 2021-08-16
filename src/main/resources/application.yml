@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: "jdbc:postgresql://${spring.database.host}:${spring.database.port}/${spring.database.name}"
+    username: "${spring.database.username}"
+    password: "${spring.database.password}"
+    driver-class-name: "org.postgresql.Driver"
+    flyway:
+      enabled: true
+
+  database:
+    host: "localhost"
+    port: 5432
+    name: "bigbang"
+    username: "root"
+    password: "secret"
