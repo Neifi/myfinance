@@ -1,8 +1,8 @@
 package es.neifi.myfinance.reports.application;
 
+import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.registry.domain.vo.Cost;
 import es.neifi.myfinance.registry.domain.vo.Date;
-import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.reports.domain.IsExpense;
 import es.neifi.myfinance.reports.domain.Report;
 import es.neifi.myfinance.reports.domain.ReportID;
@@ -11,8 +11,9 @@ import es.neifi.myfinance.reports.domain.TotalExpenses;
 import es.neifi.myfinance.reports.domain.TotalIncomes;
 import es.neifi.myfinance.reports.domain.TotalSavings;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.Optional;
 
 public class ReportCalculator {
@@ -49,8 +50,7 @@ public class ReportCalculator {
 
     }
 
-
-    private Report calculateIncome(Registry registry) throws ParseException {
+    private Report calculateIncome(Registry registry) {
 
 
         TotalIncomes newTotalIncomes = new TotalIncomes(totalIncomes.value() + registry.getCost().value());
@@ -62,7 +62,7 @@ public class ReportCalculator {
                 newTotalIncomes,
                 newTotalSavings,
                 new IsExpense(false),
-                new Date(LocalDate.now().toString())
+                new Date(Timestamp.from(Instant.now()).getTime())
         );
     }
 
@@ -77,7 +77,7 @@ public class ReportCalculator {
                 totalIncomes,
                 newTotalSavings,
                 new IsExpense(true),
-                new Date(LocalDate.now().toString())
+                new Date(Timestamp.from(Instant.now()).getTime())
         );
 
 

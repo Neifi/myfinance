@@ -36,7 +36,7 @@ public class PostIncomeController {
         private String name;
         private double retribution;
         private String currency;
-        private String date;
+        private Long date;
         private final boolean isExpense = false;
 
         public String
@@ -59,7 +59,7 @@ public class PostIncomeController {
             return currency;
         }
 
-        public String
+        public Long
         Date() {
             return date;
         }

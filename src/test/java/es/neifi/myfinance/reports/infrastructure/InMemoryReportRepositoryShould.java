@@ -4,14 +4,16 @@ import es.neifi.myfinance.registry.domain.vo.Date;
 import es.neifi.myfinance.reports.domain.*;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
+import java.time.Instant;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryReportRepositoryShould {
 
-    private ReportRepository inMemoryReportRepository = new InMemoryReportRepository();
+    private final ReportRepository inMemoryReportRepository = new InMemoryReportRepository();
 
     @Test
     void saveReport() throws ParseException {
@@ -21,7 +23,7 @@ class InMemoryReportRepositoryShould {
                 new TotalIncomes(1000),
                 new TotalSavings(900),
                 new IsExpense(true),
-                new Date("27/11/2021"));
+                new Date(Timestamp.from(Instant.now()).getTime()));
 
         inMemoryReportRepository.saveReport(report);
 
@@ -35,7 +37,7 @@ class InMemoryReportRepositoryShould {
                 new TotalIncomes(1000),
                 new TotalSavings(900),
                 new IsExpense(true),
-                new Date("27/11/2021"));
+                new Date(Timestamp.from(Instant.now()).getTime()));
 
         Report report2 = Report.create(
                 new ReportID("a12578f5-fdca-4733-9973-9eaa6c9f3ce8"),
@@ -43,7 +45,7 @@ class InMemoryReportRepositoryShould {
                 new TotalIncomes(1000),
                 new TotalSavings(900),
                 new IsExpense(true),
-                new Date("27/11/2021"));
+                new Date(Timestamp.from(Instant.now()).getTime()));
 
         inMemoryReportRepository.saveReport(report);
         inMemoryReportRepository.saveReport(report2);
@@ -54,8 +56,5 @@ class InMemoryReportRepositoryShould {
         assertTrue(reports.contains(report));
         assertTrue(reports.contains(report2));
 
-
     }
-
-
 }

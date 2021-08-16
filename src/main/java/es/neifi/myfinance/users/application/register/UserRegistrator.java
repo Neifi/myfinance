@@ -1,14 +1,14 @@
 package es.neifi.myfinance.users.application.register;
 
-import es.neifi.myfinance.users.domain.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import es.neifi.myfinance.users.domain.Email;
+import es.neifi.myfinance.users.domain.User;
+import es.neifi.myfinance.users.domain.UserID;
+import es.neifi.myfinance.users.domain.UserName;
+import es.neifi.myfinance.users.domain.UserRepository;
 
-@Service
 public class UserRegistrator{
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserRegistrator(UserRepository userRepository) {
         this.userRepository = userRepository;

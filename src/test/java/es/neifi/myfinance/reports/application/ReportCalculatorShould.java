@@ -1,11 +1,11 @@
 package es.neifi.myfinance.reports.application;
 
+import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.registry.domain.vo.Category;
 import es.neifi.myfinance.registry.domain.vo.Cost;
 import es.neifi.myfinance.registry.domain.vo.Currency;
 import es.neifi.myfinance.registry.domain.vo.Date;
 import es.neifi.myfinance.registry.domain.vo.Name;
-import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.registry.domain.vo.RegistryID;
 import es.neifi.myfinance.reports.domain.IsExpense;
 import es.neifi.myfinance.reports.domain.Report;
@@ -18,12 +18,12 @@ import es.neifi.myfinance.users.domain.UserID;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 
 class ReportCalculatorShould {
@@ -41,7 +41,12 @@ class ReportCalculatorShould {
                 new TotalIncomes(1000),
                 new TotalSavings(900),
                 new IsExpense(true),
-                new Date("27/11/2021"));
+                new Date(Timestamp.valueOf(LocalDateTime.of(
+                        2021,
+                        6,
+                        14,
+                        15,
+                        1)).getTime()));
 
         Report expectedExpenseReport = Report.create(
                 new ReportID(id),
@@ -49,7 +54,12 @@ class ReportCalculatorShould {
                 new TotalIncomes(1000.0),
                 new TotalSavings(800.0),
                 new IsExpense(true),
-                new Date(LocalDate.now().toString()));
+                new Date(Timestamp.valueOf(LocalDateTime.of(
+                        2021,
+                        6,
+                        14,
+                        15,
+                        1)).getTime()));
 
         Registry expenseRegistry = Registry.createExpense(
                 new UserID("94c8208e-b116-49a8-bf6e-0560135dffb4"),
@@ -58,7 +68,12 @@ class ReportCalculatorShould {
                 new Name("some-name"),
                 new Cost(100),
                 new Currency("EUR"),
-                new Date("30/06/2021")
+                new Date(Timestamp.valueOf(LocalDateTime.of(
+                        2021,
+                        6,
+                        14,
+                        15,
+                        1)).getTime())
         );
 
         Mockito.when(reportRepository.findLast()).thenReturn(Optional.of(lastReport));
@@ -80,7 +95,12 @@ class ReportCalculatorShould {
                 new TotalIncomes(1000),
                 new TotalSavings(900),
                 new IsExpense(true),
-                new Date("27/11/2021"));
+                new Date(Timestamp.valueOf(LocalDateTime.of(
+                        2021,
+                        6,
+                        14,
+                        15,
+                        1)).getTime()));
 
         Report expectedExpenseReport = Report.create(
                 new ReportID(id),
@@ -88,7 +108,12 @@ class ReportCalculatorShould {
                 new TotalIncomes(1100.0),
                 new TotalSavings(1000.0),
                 new IsExpense(false),
-                new Date(LocalDate.now().toString()));
+                new Date(Timestamp.valueOf(LocalDateTime.of(
+                        2021,
+                        6,
+                        14,
+                        15,
+                        1)).getTime()));
 
         Registry expenseRegistry = Registry.createIncome(
                 new UserID("94c8208e-b116-49a8-bf6e-0560135dffb4"),
@@ -97,7 +122,12 @@ class ReportCalculatorShould {
                 new Name("some-name"),
                 new Cost(100),
                 new Currency("EUR"),
-                new Date("30/06/2021")
+                new Date(Timestamp.valueOf(LocalDateTime.of(
+                        2021,
+                        6,
+                        14,
+                        15,
+                        1)).getTime())
         );
 
         Mockito.when(reportRepository.findLast()).thenReturn(Optional.of(lastReport));
@@ -118,7 +148,12 @@ class ReportCalculatorShould {
                 new TotalIncomes(100.0),
                 new TotalSavings(100.0),
                 new IsExpense(false),
-                new Date(LocalDate.now().toString()));
+                new Date(Timestamp.valueOf(LocalDateTime.of(
+                        2021,
+                        6,
+                        14,
+                        15,
+                        1)).getTime()));
 
         Registry incomeRegistry = Registry.createIncome(
                 new UserID("94c8208e-b116-49a8-bf6e-0560135dffb4"),
@@ -127,7 +162,12 @@ class ReportCalculatorShould {
                 new Name("some-name"),
                 new Cost(100),
                 new Currency("EUR"),
-                new Date("30/06/2021")
+                new Date(Timestamp.valueOf(LocalDateTime.of(
+                        2021,
+                        6,
+                        14,
+                        15,
+                        1)).getTime())
         );
 
         Mockito.when(reportRepository.findLast()).thenReturn(Optional.empty());
@@ -148,7 +188,12 @@ class ReportCalculatorShould {
                 new TotalIncomes(0.0),
                 new TotalSavings(0.0),
                 new IsExpense(true),
-                new Date(LocalDate.now().toString()));
+                new Date(Timestamp.valueOf(LocalDateTime.of(
+                        2021,
+                        6,
+                        14,
+                        15,
+                        1)).getTime()));
 
         Registry expenseRegistry = Registry.createExpense(
                 new UserID("94c8208e-b116-49a8-bf6e-0560135dffb4"),
@@ -157,7 +202,12 @@ class ReportCalculatorShould {
                 new Name("some-name"),
                 new Cost(100),
                 new Currency("EUR"),
-                new Date("30/06/2021")
+                new Date(Timestamp.valueOf(LocalDateTime.of(
+                        2021,
+                        6,
+                        14,
+                        15,
+                        1)).getTime())
         );
 
         Mockito.when(reportRepository.findLast()).thenReturn(Optional.empty());

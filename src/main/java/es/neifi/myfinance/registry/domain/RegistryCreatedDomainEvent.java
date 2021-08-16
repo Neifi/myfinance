@@ -14,10 +14,10 @@ public class RegistryCreatedDomainEvent extends DomainEvent<RegistryCreatedDomai
     private double cost;
     private String category;
     private String currency;
-    private String date;
+    private Long date;
     private boolean isExpense;
 
-    public RegistryCreatedDomainEvent(String userId, String id, String category, String name, double cost, String currency, String date, boolean isExpense) {
+    public RegistryCreatedDomainEvent(String userId, String id, String category, String name, double cost, String currency, Long date, boolean isExpense) {
         super(id);
         this.userId = userId;
         this.name = name;
@@ -28,7 +28,7 @@ public class RegistryCreatedDomainEvent extends DomainEvent<RegistryCreatedDomai
         this.isExpense = isExpense;
     }
 
-    public RegistryCreatedDomainEvent(String userId, String aggregateId, String eventId, String occurredOn, String category, String name,double cost, String currency, String date, boolean isExpense) {
+    public RegistryCreatedDomainEvent(String userId, String aggregateId, String eventId, String occurredOn, String category, String name,double cost, String currency, Long date, boolean isExpense) {
         super(aggregateId, eventId, occurredOn);
         this.userId = userId;
         this.name = name;
@@ -69,7 +69,7 @@ public class RegistryCreatedDomainEvent extends DomainEvent<RegistryCreatedDomai
                 (String) body.get("name"),
                 (double) body.get("cost"),
                 (String) body.get("currency"),
-                (String) body.get("date"),
+                (Long) body.get("date"),
                 (boolean) body.get("isExpense")
 
         );

@@ -7,7 +7,9 @@ import es.neifi.myfinance.registry.application.searchRegistry.RegistryCostCalcul
 import es.neifi.myfinance.users.domain.UserID;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,7 +27,7 @@ class RegistryCostCalculatorShould {
                 new Name("internet"),
                 new Cost(100),
                 new Currency("EUR"),
-                new Date("08/06/2021")
+                new Date(Timestamp.from(Instant.now()).getTime())
         );
         Registry registry1 = Registry.createIncome(
                 new UserID("5b614fe4-1de1-4d28-807f-ee9309767d53"),
@@ -34,7 +36,7 @@ class RegistryCostCalculatorShould {
                 new Name("internet"),
                 new Cost(100),
                 new Currency("EUR"),
-                new Date("08/06/2021")
+                new Date(Timestamp.from(Instant.now()).getTime())
         );
         Registry registry2 = Registry.createIncome(
                 new UserID("fdc9a3fa-eda2-463a-9648-b3950adf06df"),
@@ -43,15 +45,13 @@ class RegistryCostCalculatorShould {
                 new Name("internet"),
                 new Cost(100),
                 new Currency("EUR"),
-                new Date("08/06/2021")
+                new Date(Timestamp.from(Instant.now()).getTime())
         );
 
+        List<Registry> expense = Arrays.asList(registry, registry1, registry2);
 
-        List<Registry> expens = Arrays.asList(registry, registry1, registry2);
-
-        double total = RegistryCostCalculator.calculate(expens);
+        double total = RegistryCostCalculator.calculate(expense);
 
         assertEquals(300, total);
     }
-
 }

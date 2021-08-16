@@ -1,27 +1,23 @@
 package es.neifi.myfinance.registry.domain;
 
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
-@Service
 public interface RegistryRepository {
 
     void save(Registry registry);
 
-    List<Registry> search();
+    List<Registry> search(String userId);
 
-    List<Registry> searchIncomes();
+    Optional<Registry> searchRegistryById(String id);
 
-    List<Registry> searchExpenses();
+    List<Registry> searchIncomes(String userId);
 
-    List<Registry> searchExpenseInRange(String initialRange,String endRange);
+    List<Registry> searchExpenses(String userId);
 
-    List<Registry> searchIncomeInRange(String initialRange,String endRange);
+    List<Registry> searchExpenses(String userId, Long initialRange, Long endRange);
 
-    Optional<Registry> searchExpenseById(String id);
+    List<Registry> searchIncomes(String id, Long initialRange, Long endRange);
 
-    Optional<Registry> searchIncomeById(String id);
 
 }

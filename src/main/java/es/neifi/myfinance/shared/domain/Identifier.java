@@ -10,6 +10,10 @@ import java.util.UUID;
 public class Identifier {
     private UUID value;
 
+    public void Identifier(){
+        this.value = UUID.randomUUID();
+    }
+
     public Identifier(String value) {
         isValidUUIDOrThrow(value);
         this.value = UUID.fromString(value);

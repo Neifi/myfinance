@@ -13,19 +13,19 @@ import lombok.Getter;
 
 @EqualsAndHashCode
 @Getter
-
 public class Registry extends AggregateRoot {
-    private UserID userID;
-    private RegistryID id;
-    private Category category;
-    private Name name;
-    private Cost cost;
-    private Currency currency;
-    private Date date;
-    private boolean isExpense;
 
-    private Registry(UserID userID, RegistryID id, Category category, Name name, Cost cost, Currency currency, Date date, boolean isExpense) {
-        this.userID = userID;
+    private final UserID userId;
+    private final RegistryID id;
+    private final Category category;
+    private final Name name;
+    private final Cost cost;
+    private final Currency currency;
+    private final Date date;
+    private final boolean isExpense;
+
+    public Registry(UserID userId, RegistryID id, Category category, Name name, Cost cost, Currency currency, Date date, boolean isExpense) {
+        this.userId = userId;
         this.id = id;
         this.category = category;
         this.name = name;
@@ -35,7 +35,14 @@ public class Registry extends AggregateRoot {
         this.isExpense = isExpense;
     }
 
-    public static Registry createExpense(UserID userID, RegistryID id, Category category, Name name, Cost cost, Currency currency, Date date) {
+    public static Registry createExpense(UserID userID,
+                                         RegistryID id,
+                                         Category category,
+                                         Name name,
+                                         Cost cost,
+                                         Currency currency,
+                                         Date date) {
+
         Registry registry = new Registry(userID, id, category, name, cost, currency, date, true);
 
         registry.record(new RegistryCreatedDomainEvent(userID.value(), id.value(), category.value(), name.value(), cost.value(), currency.getValue(), date.value(), true));
@@ -66,7 +73,6 @@ public class Registry extends AggregateRoot {
         registry.record(event);
 
         return registry;
-
     }
 
     public double cost() {

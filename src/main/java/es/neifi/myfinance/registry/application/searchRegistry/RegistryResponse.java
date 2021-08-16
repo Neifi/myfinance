@@ -8,12 +8,41 @@ import lombok.NonNull;
 @Data
 public class RegistryResponse {
 
-    @NonNull private String userId;
-    @NonNull private String id;
-    private String category;
-    private String name;
-    private double cost;
-    private String currency;
-    private String date;
+    public RegistryResponse(
+            @NonNull String userId,
+            @NonNull String id,
+            @NonNull String category,
+            @NonNull String name,
+            @NonNull double cost,
+            @NonNull String currency,
+            @NonNull Long date,
+            @NonNull boolean isExpense
+    ) {
 
+        this.userId = userId;
+        this.id = id;
+        this.category = category;
+        this.name = name;
+        this.cost = cost;
+        this.currency = currency;
+        this.date = date;
+        this.isExpense = isExpense;
+    }
+
+    @NonNull
+    private String userId;
+    @NonNull
+    private String id;
+    @NonNull
+    private String category;
+    @NonNull
+    private String name;
+    @NonNull
+    private double cost;
+    @NonNull
+    private String currency;
+    @NonNull
+    private Long date;
+    @NonNull
+    private boolean isExpense;
 }
