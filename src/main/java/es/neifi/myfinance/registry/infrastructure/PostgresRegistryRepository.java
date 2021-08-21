@@ -138,7 +138,6 @@ public class PostgresRegistryRepository implements RegistryRepository {
         parameters.addValue("endDate", new Timestamp(endDate));
         parameters.addValue("isExpense", isExpense);
 
-        List<Map<String, Object>> registriesMap = jdbcTemplate.queryForList(query, parameters);
-        return registriesMap;
+        return jdbcTemplate.queryForList(query, parameters);
     }
 }

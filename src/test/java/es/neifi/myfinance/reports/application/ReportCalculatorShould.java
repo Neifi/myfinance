@@ -81,7 +81,11 @@ class ReportCalculatorShould {
         Report actual = reportCalculator.calculate(expenseRegistry);
 
         Mockito.verify(reportRepository, times(1)).findLast();
-        assertEquals(expectedExpenseReport,actual);
+        assertEquals(expectedExpenseReport.getReportID(), actual.getReportID());
+        assertEquals(expectedExpenseReport.getIsExpense(), actual.getIsExpense());
+        assertEquals(expectedExpenseReport.getTotalIncomes(), actual.getTotalIncomes());
+        assertEquals(expectedExpenseReport.getTotalExpenses(), actual.getTotalExpenses());
+        assertEquals(expectedExpenseReport.getTotalSavings(), actual.getTotalSavings());
 
     }
 
@@ -135,7 +139,13 @@ class ReportCalculatorShould {
         Report actual = reportCalculator.calculate(expenseRegistry);
 
         Mockito.verify(reportRepository, times(1)).findLast();
-        assertEquals(expectedExpenseReport,actual);
+
+        assertEquals(expectedExpenseReport.getReportID(), actual.getReportID());
+        assertEquals(expectedExpenseReport.getIsExpense(), actual.getIsExpense());
+        assertEquals(expectedExpenseReport.getTotalIncomes(), actual.getTotalIncomes());
+        assertEquals(expectedExpenseReport.getTotalExpenses(), actual.getTotalExpenses());
+        assertEquals(expectedExpenseReport.getTotalSavings(), actual.getTotalSavings());
+
     }
 
     @Test
@@ -175,7 +185,11 @@ class ReportCalculatorShould {
         Report actual = reportCalculator.calculate(incomeRegistry);
 
         Mockito.verify(reportRepository, times(1)).findLast();
-        assertEquals(expectedIncomeReport,actual);
+        assertEquals(expectedIncomeReport.getReportID(), actual.getReportID());
+        assertEquals(expectedIncomeReport.getIsExpense(), actual.getIsExpense());
+        assertEquals(expectedIncomeReport.getTotalIncomes(), actual.getTotalIncomes());
+        assertEquals(expectedIncomeReport.getTotalExpenses(), actual.getTotalExpenses());
+        assertEquals(expectedIncomeReport.getTotalSavings(), actual.getTotalSavings());
     }
 
     @Test
@@ -215,7 +229,12 @@ class ReportCalculatorShould {
         Report actual = reportCalculator.calculate(expenseRegistry);
 
         Mockito.verify(reportRepository, times(1)).findLast();
-        assertEquals(expectedExpenseReport,actual);
+        assertEquals(expectedExpenseReport.getReportID(), actual.getReportID());
+        assertEquals(expectedExpenseReport.getIsExpense(), actual.getIsExpense());
+        assertEquals(expectedExpenseReport.getTotalIncomes(), actual.getTotalIncomes());
+        assertEquals(expectedExpenseReport.getTotalExpenses(), actual.getTotalExpenses());
+        assertEquals(expectedExpenseReport.getTotalSavings(), actual.getTotalSavings());
+
     }
 
 }

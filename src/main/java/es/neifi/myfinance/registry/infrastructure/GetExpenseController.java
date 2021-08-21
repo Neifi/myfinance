@@ -44,7 +44,7 @@ public class GetExpenseController {
                         .name(registry.getName().value())
                         .cost(registry.cost())
                         .currency(registry.getCurrency().getValue())
-                        .date(registry.getDate().getValue())
+                        .date(registry.getDate().value())
                         .isExpense(registry.isExpense())
                         .build();
                 return ResponseEntity.ok(registryResponse);
@@ -70,9 +70,13 @@ public class GetExpenseController {
             List<Registry> expenses;
 
             if (initialDate == null || endDate == null) {
-                expenses = ResponseMapper.mapToExpenseResponse(registryData, registrySearcher.searchExpenses(userID));
+                expenses = ResponseMapper.mapToExpenseResponse(
+                        registryData,
+                        registrySearcher.searchExpenses(userID));
             } else {
-                expenses = ResponseMapper.mapToExpenseResponse(registryData, registrySearcher.searchExpenses(userID,initialDate,endDate));
+                expenses = ResponseMapper.mapToExpenseResponse(
+                        registryData,
+                        registrySearcher.searchExpenses(userID, initialDate, endDate));
             }
 
             RegistryListResponse response = mapToExpenseListResponse(initialDate, endDate, registryData, expenses);

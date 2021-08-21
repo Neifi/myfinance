@@ -77,7 +77,7 @@ public class ReportCalculator {
                 totalIncomes,
                 newTotalSavings,
                 new IsExpense(true),
-                new Date(Timestamp.from(Instant.now()).getTime())
+                new Date()
         );
 
 

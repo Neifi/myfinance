@@ -32,6 +32,7 @@ public class ResponseMapper {
                     .cost(registry.cost())
                     .currency(registry.getCurrency().getValue())
                     .date(registry.getDate().value())
+                    .isExpense(registry.isExpense())
                     .build());
         }
         return expens;
