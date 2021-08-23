@@ -8,7 +8,7 @@ import es.neifi.myfinance.reports.application.ReportCalculator;
 import es.neifi.myfinance.reports.application.ReportFinder;
 import es.neifi.myfinance.reports.application.ReportSaver;
 import es.neifi.myfinance.reports.domain.ReportRepository;
-import es.neifi.myfinance.reports.infrastructure.InMemoryReportRepository;
+import es.neifi.myfinance.reports.infrastructure.PostgresReportRepository;
 import es.neifi.myfinance.shared.Infrastructure.bus.event.SpringEventBus;
 import es.neifi.myfinance.shared.domain.UserService;
 import es.neifi.myfinance.shared.domain.bus.event.EventBus;
@@ -30,8 +30,13 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public ReportRepository reportRepository(){
-        return new InMemoryReportRepository();
+    NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource dataSource) {
+        return new NamedParameterJdbcTemplate(dataSource);
+    }
+
+    @Bean
+    public ReportRepository reportRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        return new PostgresReportRepository(namedParameterJdbcTemplate);
     }
 
     @Bean
@@ -40,7 +45,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public RegistrySaver registrySaver(RegistryRepository registryRepository,EventBus eventBus) {
+    public RegistrySaver registrySaver(RegistryRepository registryRepository, EventBus eventBus) {
         return new RegistrySaver(registryRepository, eventBus);
     }
 
@@ -55,25 +60,22 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public UserRegistrator userRegistrator(UserRepository userRepository){
+    public UserRegistrator userRegistrator(UserRepository userRepository) {
         return new UserRegistrator(userRepository);
-    }
-    @Bean
-    NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource dataSource){
-        return new NamedParameterJdbcTemplate(dataSource);
-    }
-    @Bean
-    public RegistryRepository RegistryRepository() {
-        return new PostgresRegistryRepository();
     }
 
     @Bean
-    public ReportCalculator reportCalculator(ReportRepository reportRepository){
+    public RegistryRepository RegistryRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        return new PostgresRegistryRepository(namedParameterJdbcTemplate);
+    }
+
+    @Bean
+    public ReportCalculator reportCalculator(ReportRepository reportRepository) {
         return new ReportCalculator(reportRepository);
     }
 
     @Bean
-    public ReportSaver reportSaver (ReportRepository reportRepository){
+    public ReportSaver reportSaver(ReportRepository reportRepository) {
         return new ReportSaver(reportRepository);
     }
 }

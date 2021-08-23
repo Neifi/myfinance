@@ -49,7 +49,7 @@ public class ReportSaver {
     }
 
     public void saveReport(Report report) {
-        String searchedReport = report.getReportID().value();
+        String searchedReport = report.getReportId().value();
         if (reportFinder.findById(searchedReport).isEmpty()) {
             reportRepository.saveReport(report);
         }

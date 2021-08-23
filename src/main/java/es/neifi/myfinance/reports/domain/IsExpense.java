@@ -6,4 +6,5 @@ public class IsExpense extends BooleanValueObject {
     public IsExpense(boolean value) {
         super(value);
     }
+
 }

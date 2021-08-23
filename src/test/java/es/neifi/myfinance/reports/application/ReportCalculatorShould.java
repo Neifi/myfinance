@@ -81,7 +81,7 @@ class ReportCalculatorShould {
         Report actual = reportCalculator.calculate(expenseRegistry);
 
         Mockito.verify(reportRepository, times(1)).findLast();
-        assertEquals(expectedExpenseReport.getReportID(), actual.getReportID());
+        assertEquals(expectedExpenseReport.getReportId(), actual.getReportId());
         assertEquals(expectedExpenseReport.getIsExpense(), actual.getIsExpense());
         assertEquals(expectedExpenseReport.getTotalIncomes(), actual.getTotalIncomes());
         assertEquals(expectedExpenseReport.getTotalExpenses(), actual.getTotalExpenses());
@@ -140,7 +140,7 @@ class ReportCalculatorShould {
 
         Mockito.verify(reportRepository, times(1)).findLast();
 
-        assertEquals(expectedExpenseReport.getReportID(), actual.getReportID());
+        assertEquals(expectedExpenseReport.getReportId(), actual.getReportId());
         assertEquals(expectedExpenseReport.getIsExpense(), actual.getIsExpense());
         assertEquals(expectedExpenseReport.getTotalIncomes(), actual.getTotalIncomes());
         assertEquals(expectedExpenseReport.getTotalExpenses(), actual.getTotalExpenses());
@@ -185,7 +185,7 @@ class ReportCalculatorShould {
         Report actual = reportCalculator.calculate(incomeRegistry);
 
         Mockito.verify(reportRepository, times(1)).findLast();
-        assertEquals(expectedIncomeReport.getReportID(), actual.getReportID());
+        assertEquals(expectedIncomeReport.getReportId(), actual.getReportId());
         assertEquals(expectedIncomeReport.getIsExpense(), actual.getIsExpense());
         assertEquals(expectedIncomeReport.getTotalIncomes(), actual.getTotalIncomes());
         assertEquals(expectedIncomeReport.getTotalExpenses(), actual.getTotalExpenses());
@@ -229,7 +229,7 @@ class ReportCalculatorShould {
         Report actual = reportCalculator.calculate(expenseRegistry);
 
         Mockito.verify(reportRepository, times(1)).findLast();
-        assertEquals(expectedExpenseReport.getReportID(), actual.getReportID());
+        assertEquals(expectedExpenseReport.getReportId(), actual.getReportId());
         assertEquals(expectedExpenseReport.getIsExpense(), actual.getIsExpense());
         assertEquals(expectedExpenseReport.getTotalIncomes(), actual.getTotalIncomes());
         assertEquals(expectedExpenseReport.getTotalExpenses(), actual.getTotalExpenses());

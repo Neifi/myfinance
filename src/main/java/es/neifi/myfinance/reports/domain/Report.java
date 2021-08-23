@@ -10,15 +10,15 @@ import lombok.Getter;
 @Getter
 @EqualsAndHashCode
 public class Report {
-    private ReportID reportID;
+    private ReportID reportId;
     private TotalExpenses totalExpenses;
     private TotalIncomes totalIncomes;
     private TotalSavings totalSavings;
     private IsExpense isExpense;
     private Date date;
 
-    public Report(ReportID reportID, TotalExpenses totalExpenses, TotalIncomes totalIncomes, TotalSavings totalSavings, IsExpense isExpense, Date date) {
-        this.reportID = reportID;
+    public Report(ReportID reportId, TotalExpenses totalExpenses, TotalIncomes totalIncomes, TotalSavings totalSavings, IsExpense isExpense, Date date) {
+        this.reportId = reportId;
         this.totalExpenses = totalExpenses;
         this.totalIncomes = totalIncomes;
         this.totalSavings = totalSavings;

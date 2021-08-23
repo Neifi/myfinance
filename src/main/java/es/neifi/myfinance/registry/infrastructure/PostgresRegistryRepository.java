@@ -3,7 +3,6 @@ package es.neifi.myfinance.registry.infrastructure;
 import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
 import es.neifi.myfinance.shared.Infrastructure.utils.ResponseMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -17,8 +16,13 @@ import static es.neifi.myfinance.shared.Infrastructure.utils.ResponseMapper.Regi
 
 public class PostgresRegistryRepository implements RegistryRepository {
 
-    @Autowired
+
     private NamedParameterJdbcTemplate jdbcTemplate;
+
+    public PostgresRegistryRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     private String registryFields = "userId,registryId,category,name,cost,currency,date,isExpense ";
 
     @Override

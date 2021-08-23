@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class RegistrySearcher {
 
-    private final RegistryRepository registryRepository;
+    private RegistryRepository registryRepository;
 
     public RegistrySearcher(RegistryRepository registryRepository) {
         this.registryRepository = registryRepository;
@@ -32,7 +32,6 @@ public class RegistrySearcher {
         return registryRepository.searchExpenses(userId);
 
     }
-
 
     public List<Registry> searchRegistry(String userId, Long intialDate, Long endDate) {
         return registryRepository.searchIncomes(userId, intialDate, endDate);
