@@ -19,6 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,5 +52,77 @@ public class PostgresReportRepositoryShould extends ContainersEnvironment {
 
         assertThat(expected).isEqualTo(report);
 
+    }
+
+    @Test
+    void search_existent_report() {
+        String reportId = UUID.randomUUID().toString();
+        Report report = Report.create(
+                new ReportID(reportId),
+                new TotalExpenses(100),
+                new TotalIncomes(1000),
+                new TotalSavings(900),
+                new IsExpense(true),
+                new Date(Timestamp.from(Instant.now()).getTime()));
+
+        postgresReportRepository.saveReport(report);
+
+        Optional<Report> expected = postgresReportRepository.findById(reportId);
+
+        assertThat(expected).isNotEmpty();
+        assertThat(expected).isEqualTo(Optional.of(report));
+
+    }
+
+    @Test
+    void dont_return_nonexistent_report() {
+        String reportId = UUID.randomUUID().toString();
+
+        Optional<Report> expected = postgresReportRepository.findById(reportId);
+
+        assertThat(expected).isEmpty();
+    }
+
+    @Test
+    void return_last_report_saved() {
+        String lastReportId = UUID.randomUUID().toString();
+        Report firstReport = Report.create(
+                new ReportID(UUID.randomUUID().toString()),
+                new TotalExpenses(100),
+                new TotalIncomes(1000),
+                new TotalSavings(900),
+                new IsExpense(true),
+                new Date(Timestamp.from(Instant.now()).getTime()));
+        Report secondReport = Report.create(
+                new ReportID(UUID.randomUUID().toString()),
+                new TotalExpenses(100),
+                new TotalIncomes(1000),
+                new TotalSavings(900),
+                new IsExpense(true),
+                new Date(Timestamp.from(Instant.now()).getTime()));
+
+        Report lastReport = Report.create(
+                new ReportID(lastReportId),
+                new TotalExpenses(100),
+                new TotalIncomes(1000),
+                new TotalSavings(900),
+                new IsExpense(true),
+                new Date(Timestamp.from(Instant.now()).getTime()));
+
+        postgresReportRepository.saveReport(firstReport);
+        postgresReportRepository.saveReport(secondReport);
+        postgresReportRepository.saveReport(lastReport);
+
+        Optional<Report> expected = postgresReportRepository.findLast();
+
+        assertThat(expected).isNotEmpty();
+        assertThat(expected).isEqualTo(Optional.of(lastReport));
+
+    }
+
+    @Test
+    void do_not_return_last_id_if_no_reports_are_saved_before() {
+        Optional<Report> expected = postgresReportRepository.findLast();
+        assertThat(expected).isEmpty();
     }
 }
