@@ -3,6 +3,20 @@ spring:
     url: "jdbc:postgresql://${db_host}:${db_port}/${db_name}"
     username: ${db_username}
     password: ${db_password}
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 100
+      max-lifetime: 60000
+      minimum-idle: 5
+      idle-timeout: 3000
+      leak-detection-threshold: 240000
 
     flyway:
       enabled: true
+
+logging:
+  level:
+    com:
+      zaxxer:
+        hikari:
+

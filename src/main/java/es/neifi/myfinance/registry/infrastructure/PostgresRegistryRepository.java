@@ -3,7 +3,6 @@ package es.neifi.myfinance.registry.infrastructure;
 import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
 import es.neifi.myfinance.shared.Infrastructure.utils.ResponseMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -17,8 +16,13 @@ import static es.neifi.myfinance.shared.Infrastructure.utils.ResponseMapper.Regi
 
 public class PostgresRegistryRepository implements RegistryRepository {
 
-    @Autowired
+
     private NamedParameterJdbcTemplate jdbcTemplate;
+
+    public PostgresRegistryRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     private String registryFields = "userId,registryId,category,name,cost,currency,date,isExpense ";
 
     @Override
@@ -72,12 +76,12 @@ public class PostgresRegistryRepository implements RegistryRepository {
 
     @Override
     public List<Registry> search(String userId) {
-        return ResponseMapper.mapToRegistriesList(searchSpecificRegistry(userId, true));
+        return ResponseMapper.registryListRowMapper(searchSpecificRegistry(userId, true));
     }
 
     @Override
     public List<Registry> searchIncomes(String userId) {
-        return ResponseMapper.mapToRegistriesList(searchSpecificRegistry(userId, false));
+        return ResponseMapper.registryListRowMapper(searchSpecificRegistry(userId, false));
     }
 
     private List<Map<String, Object>> searchSpecificRegistry(String userId, boolean isExpense) {
@@ -109,18 +113,18 @@ public class PostgresRegistryRepository implements RegistryRepository {
         parameters.addValue("userId", userId);
 
         List<Map<String, Object>> registriesMap = jdbcTemplate.queryForList(query, parameters);
-        return ResponseMapper.mapToRegistriesList(registriesMap);
+        return ResponseMapper.registryListRowMapper(registriesMap);
     }
 
     @Override
     public List<Registry> searchExpenses(String userId, Long initialDate, Long endDate) {
-        return ResponseMapper.mapToRegistriesList(searchRegistryInDates(userId, initialDate, endDate, true));
+        return ResponseMapper.registryListRowMapper(searchRegistryInDates(userId, initialDate, endDate, true));
     }
 
     @Override
     public List<Registry> searchIncomes(String userId, Long initialDate, Long endDate) {
 
-        return ResponseMapper.mapToRegistriesList(searchRegistryInDates(userId, initialDate, endDate, false));
+        return ResponseMapper.registryListRowMapper(searchRegistryInDates(userId, initialDate, endDate, false));
     }
 
     private List<Map<String, Object>> searchRegistryInDates(String userId, Long initialDate, Long endDate, boolean isExpense) {
@@ -138,7 +142,6 @@ public class PostgresRegistryRepository implements RegistryRepository {
         parameters.addValue("endDate", new Timestamp(endDate));
         parameters.addValue("isExpense", isExpense);
 
-        List<Map<String, Object>> registriesMap = jdbcTemplate.queryForList(query, parameters);
-        return registriesMap;
+        return jdbcTemplate.queryForList(query, parameters);
     }
 }

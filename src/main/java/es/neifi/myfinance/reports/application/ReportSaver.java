@@ -34,7 +34,6 @@ public class ReportSaver {
         HashMap<String, Serializable> primitives = event.toPrimitives();
         Report report = reportCalculator.calculate(deserializeRegistry(primitives));
         saveReport(report);
-
     }
 
     private Registry deserializeRegistry(HashMap<String, Serializable> primitives) {
@@ -48,9 +47,10 @@ public class ReportSaver {
                 new Date((Long) primitives.get("date"))
         );
     }
-    
+
     public void saveReport(Report report) {
-        if (reportFinder.findById(report.getReportID().value()).isEmpty()) {
+        String searchedReport = report.getReportId().value();
+        if (reportFinder.findById(searchedReport).isEmpty()) {
             reportRepository.saveReport(report);
         }
     }

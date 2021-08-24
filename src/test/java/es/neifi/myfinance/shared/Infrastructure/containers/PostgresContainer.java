@@ -16,7 +16,7 @@ public class PostgresContainer extends PostgreSQLContainer<PostgresContainer> {
     public static PostgreSQLContainer getInstance() {
         if (container == null) {
             container = new PostgresContainer()
-                    .withDatabaseName(DATABASE_NAME);
+                    .withDatabaseName(DATABASE_NAME).withConnectTimeoutSeconds(100000);
         }
 
         return container;

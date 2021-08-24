@@ -45,4 +45,5 @@ public class RegistryResponse {
     private Long date;
     @NonNull
     private boolean isExpense;
+
 }

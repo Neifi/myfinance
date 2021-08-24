@@ -7,6 +7,7 @@ import es.neifi.myfinance.registry.application.searchRegistry.RegistrySearcher;
 import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.shared.Infrastructure.utils.ResponseMapper;
 import es.neifi.myfinance.shared.domain.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +22,10 @@ import java.util.Optional;
 @RestController
 public class GetExpenseController {
 
-    private final RegistrySearcher registrySearcher;
-    private final UserService userService;
+    private RegistrySearcher registrySearcher;
+    private UserService userService;
 
+    @Autowired
     public GetExpenseController(RegistrySearcher registrySearcher, UserService userService) {
         this.registrySearcher = registrySearcher;
         this.userService = userService;
@@ -44,7 +46,7 @@ public class GetExpenseController {
                         .name(registry.getName().value())
                         .cost(registry.cost())
                         .currency(registry.getCurrency().getValue())
-                        .date(registry.getDate().getValue())
+                        .date(registry.getDate().value())
                         .isExpense(registry.isExpense())
                         .build();
                 return ResponseEntity.ok(registryResponse);
@@ -70,9 +72,13 @@ public class GetExpenseController {
             List<Registry> expenses;
 
             if (initialDate == null || endDate == null) {
-                expenses = ResponseMapper.mapToExpenseResponse(registryData, registrySearcher.searchExpenses(userID));
+                expenses = ResponseMapper.mapToExpenseResponse(
+                        registryData,
+                        registrySearcher.searchExpenses(userID));
             } else {
-                expenses = ResponseMapper.mapToExpenseResponse(registryData, registrySearcher.searchExpenses(userID,initialDate,endDate));
+                expenses = ResponseMapper.mapToExpenseResponse(
+                        registryData,
+                        registrySearcher.searchExpenses(userID, initialDate, endDate));
             }
 
             RegistryListResponse response = mapToExpenseListResponse(initialDate, endDate, registryData, expenses);

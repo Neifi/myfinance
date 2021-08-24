@@ -8,6 +8,12 @@ import es.neifi.myfinance.registry.domain.vo.Currency;
 import es.neifi.myfinance.registry.domain.vo.Date;
 import es.neifi.myfinance.registry.domain.vo.Name;
 import es.neifi.myfinance.registry.domain.vo.RegistryID;
+import es.neifi.myfinance.reports.domain.IsExpense;
+import es.neifi.myfinance.reports.domain.Report;
+import es.neifi.myfinance.reports.domain.ReportID;
+import es.neifi.myfinance.reports.domain.TotalExpenses;
+import es.neifi.myfinance.reports.domain.TotalIncomes;
+import es.neifi.myfinance.reports.domain.TotalSavings;
 import es.neifi.myfinance.users.domain.UserID;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -32,12 +38,13 @@ public class ResponseMapper {
                     .cost(registry.cost())
                     .currency(registry.getCurrency().getValue())
                     .date(registry.getDate().value())
+                    .isExpense(registry.isExpense())
                     .build());
         }
         return expens;
     }
 
-    public static List<Registry> mapToRegistriesList(List<Map<String, Object>> registryList) {
+    public static List<Registry> registryListRowMapper(List<Map<String, Object>> registryList) {
 
         ArrayList<Registry> registries = new ArrayList<>();
 
@@ -75,5 +82,45 @@ public class ResponseMapper {
                     rs.getBoolean("isExpense")
             );
         }
+    }
+
+    public static class ReportRowMapper implements RowMapper<Report> {
+        @Override
+        public Report mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new Report(
+                    new ReportID(rs.getString("reportId")),
+                    new UserID(rs.getString("userId")),
+                    new TotalExpenses(rs.getDouble("totalExpenses")),
+                    new TotalIncomes(rs.getDouble("totalIncomes")),
+                    new TotalSavings(rs.getDouble("totalSavings")),
+                    new IsExpense(rs.getBoolean("isExpense")),
+                    new Date(rs.getTimestamp("date").getTime())
+                    );
+        }
+    }
+
+    public static List<Report> reportListRowMapper(List<Map<String, Object>> reportList) {
+
+        ArrayList<Report> reports = new ArrayList<>();
+
+        for (Map<String, Object> stringObjectMap : reportList) {
+            Timestamp date = (Timestamp) stringObjectMap.get("date");
+            BigDecimal totalExpenses = (BigDecimal) stringObjectMap.get("totalExpenses");
+            BigDecimal totalIncomes = (BigDecimal) stringObjectMap.get("totalIncomes");
+            BigDecimal totalSavings = (BigDecimal) stringObjectMap.get("totalSavings");
+
+            Report report = new Report(
+                    new ReportID((String) stringObjectMap.get("reportId")),
+                    new UserID((String) stringObjectMap.get("userId")),
+                    new TotalExpenses(totalExpenses.doubleValue()),
+                    new TotalIncomes(totalIncomes.doubleValue()),
+                    new TotalSavings(totalSavings.doubleValue()),
+                    new IsExpense((Boolean) stringObjectMap.get("isExpense")),
+                    new Date(date.getTime())
+            );
+            reports.add(report);
+        }
+
+        return reports;
     }
 }
