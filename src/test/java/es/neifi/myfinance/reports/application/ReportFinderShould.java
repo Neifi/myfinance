@@ -8,6 +8,7 @@ import es.neifi.myfinance.reports.domain.ReportRepository;
 import es.neifi.myfinance.reports.domain.TotalExpenses;
 import es.neifi.myfinance.reports.domain.TotalIncomes;
 import es.neifi.myfinance.reports.domain.TotalSavings;
+import es.neifi.myfinance.users.domain.UserID;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -29,10 +31,12 @@ class ReportFinderShould {
     private final ReportFinder reportFinder = new ReportFinder(reportRepository);
 
     @Test
-    void find_all_reports() {
+    void find_all_reports_for_given_user_id() {
 
+        String userId = UUID.randomUUID().toString();
         Report report = Report.create(
                 new ReportID("d26b3d48-beeb-46ca-82cc-5d5b23285447"),
+                new UserID(userId),
                 new TotalExpenses(100),
                 new TotalIncomes(1000),
                 new TotalSavings(900),
@@ -46,6 +50,7 @@ class ReportFinderShould {
 
         Report report2 = Report.create(
                 new ReportID("a12578f5-fdca-4733-9973-9eaa6c9f3ce8"),
+                new UserID(userId),
                 new TotalExpenses(150),
                 new TotalIncomes(1000),
                 new TotalSavings(900),
@@ -58,10 +63,10 @@ class ReportFinderShould {
                         1)).getTime()));
 
         List<Report> expectedReports = List.of(report, report2);
-        when(reportRepository.search()).thenReturn(expectedReports);
-        List<Report> reportList = reportFinder.findAll();
+        when(reportRepository.search(userId)).thenReturn(expectedReports);
+        List<Report> reportList = reportFinder.findAll(userId);
 
-        verify(reportRepository, times(1)).search();
+        verify(reportRepository, times(1)).search(userId);
         assertFalse(reportList.isEmpty());
         assertTrue(reportList.contains(report));
         assertTrue(reportList.contains(report2));
@@ -72,6 +77,7 @@ class ReportFinderShould {
         String id = "d26b3d48-beeb-46ca-82cc-5d5b23285447";
         Report report = Report.create(
                 new ReportID(id),
+                new UserID(UUID.randomUUID().toString()),
                 new TotalExpenses(100),
                 new TotalIncomes(1000),
                 new TotalSavings(900),

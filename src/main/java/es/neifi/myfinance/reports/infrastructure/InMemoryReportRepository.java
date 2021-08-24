@@ -21,7 +21,7 @@ public class InMemoryReportRepository implements ReportRepository {
     }
 
     @Override
-    public List<Report> search() {
+    public List<Report> search(String userId) {
         return new ArrayList<>(reports.values());
     }
 
@@ -32,7 +32,7 @@ public class InMemoryReportRepository implements ReportRepository {
     }
 
     @Override
-    public Optional<Report> findLast() {
+    public Optional<Report> findLast(String userId) {
         return Optional.ofNullable(reports.get(lastSavedId));
     }
 }

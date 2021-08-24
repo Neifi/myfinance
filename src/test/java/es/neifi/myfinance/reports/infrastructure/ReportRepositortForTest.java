@@ -12,7 +12,7 @@ public class ReportRepositortForTest {
     private NamedParameterJdbcTemplate jdbcTemplate;
 
     public Report select(String reportId) {
-        String query = "SELECT reportId,totalExpenses,totalIncomes,totalSavings,isExpense,date " +
+        String query = "SELECT reportId,userId,totalExpenses,totalIncomes,totalSavings,isExpense,date " +
                 "FROM report " +
                 "WHERE reportId = :reportId";
 

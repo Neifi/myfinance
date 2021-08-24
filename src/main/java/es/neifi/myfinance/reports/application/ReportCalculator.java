@@ -10,6 +10,7 @@ import es.neifi.myfinance.reports.domain.ReportRepository;
 import es.neifi.myfinance.reports.domain.TotalExpenses;
 import es.neifi.myfinance.reports.domain.TotalIncomes;
 import es.neifi.myfinance.reports.domain.TotalSavings;
+import es.neifi.myfinance.users.domain.UserID;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -33,7 +34,7 @@ public class ReportCalculator {
 
         Report report;
 
-        last = reportRepository.findLast();
+        last = reportRepository.findLast(registry.getUserId().value());
         last.ifPresent(value -> {
             totalIncomes = value.getTotalIncomes();
             totalSavings = value.getTotalSavings();
@@ -58,6 +59,7 @@ public class ReportCalculator {
 
         return Report.create(
                 new ReportID(registry.getId().value()),
+                new UserID(registry.getUserId().value()),
                 totalExpenses,
                 newTotalIncomes,
                 newTotalSavings,
@@ -73,6 +75,7 @@ public class ReportCalculator {
 
         return Report.create(
                 new ReportID(registry.getId().value()),
+                new UserID(registry.getUserId().value()),
                 newTotalExpenses,
                 totalIncomes,
                 newTotalSavings,

@@ -2,9 +2,11 @@ package es.neifi.myfinance.reports.infrastructure;
 
 import es.neifi.myfinance.reports.domain.Report;
 import es.neifi.myfinance.reports.domain.ReportRepository;
+import es.neifi.myfinance.shared.Infrastructure.utils.ResponseMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -12,22 +14,23 @@ import java.util.Optional;
 
 import static es.neifi.myfinance.shared.Infrastructure.utils.ResponseMapper.ReportRowMapper;
 
+@Transactional
 public class PostgresReportRepository implements ReportRepository {
 
     private NamedParameterJdbcTemplate jdbcTemplate;
-    private String columns = "reportId,totalExpenses,totalIncomes,totalSavings,isExpense,date";
+    private String columns = "reportId,userId,totalExpenses,totalIncomes,totalSavings,isExpense,date";
 
     public PostgresReportRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private String lastSavedId = "";
 
     @Override
     public void saveReport(Report report) {
 
         String query = "INSERT INTO report (" + columns + ") VALUES (" +
                 ":reportId," +
+                ":userId," +
                 ":totalExpenses," +
                 ":totalIncomes," +
                 ":totalSavings," +
@@ -37,6 +40,7 @@ public class PostgresReportRepository implements ReportRepository {
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("reportId", report.getReportId().value());
+        parameters.addValue("userId", report.getUserId().value());
         parameters.addValue("totalExpenses", report.getTotalExpenses().value());
         parameters.addValue("totalIncomes", report.getTotalIncomes().value());
         parameters.addValue("totalSavings", report.getTotalSavings().value());
@@ -44,8 +48,6 @@ public class PostgresReportRepository implements ReportRepository {
         parameters.addValue("date", new Timestamp(report.getDate().value()));
 
         jdbcTemplate.update(query, parameters);
-        this.lastSavedId = report.getReportId().value();
-
     }
 
     @Override
@@ -56,20 +58,34 @@ public class PostgresReportRepository implements ReportRepository {
         parameters.addValue("reportId", reporId);
 
         try {
-           return Optional.of(jdbcTemplate.queryForObject(query, parameters, new ReportRowMapper()));
-        }catch (EmptyResultDataAccessException e){
+            return Optional.of(jdbcTemplate.queryForObject(query, parameters, new ReportRowMapper()));
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
 
     }
 
     @Override
-    public Optional<Report> findLast() {
-        return findById(lastSavedId);
+    public Optional<Report> findLast(String userId) {
+        String query = "SELECT reportId FROM report WHERE userId = :userId ORDER BY date DESC LIMIT 1";
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("userId", userId);
+
+        try {
+            String lastReportId = jdbcTemplate.queryForObject(query, parameters, String.class);
+            return findById(lastReportId);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
-    public List<Report> search() {
-        return null;
+    public List<Report> search(String userId) {
+        String query = "SELECT " + columns + " FROM report WHERE userId = :userId";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("userId", userId);
+
+        return ResponseMapper.reportListRowMapper(jdbcTemplate.queryForList(query, parameters));
     }
 }

@@ -13,4 +13,13 @@ public class DateUtils {
                 hour,
                 minute)).getTime();
     }
+    public static Long timestampOf(int year, int month, int dayOfMonth, int hour, int minute,int seconds) {
+        return Timestamp.valueOf(LocalDateTime.of(
+                year,
+                month,
+                dayOfMonth,
+                hour,
+                minute,
+                seconds)).getTime();
+    }
 }

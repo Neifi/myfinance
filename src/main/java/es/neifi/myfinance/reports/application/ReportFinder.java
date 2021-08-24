@@ -2,7 +2,6 @@ package es.neifi.myfinance.reports.application;
 
 import es.neifi.myfinance.reports.domain.Report;
 import es.neifi.myfinance.reports.domain.ReportRepository;
-import es.neifi.myfinance.shared.domain.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,8 +14,8 @@ public class ReportFinder {
         this.reportRepository = reportRepository;
     }
 
-    public List<Report> findAll() {
-        return reportRepository.search();
+    public List<Report> findAll(String userId) {
+        return reportRepository.search(userId);
     }
 
     public Optional<Report> findById(String id) {

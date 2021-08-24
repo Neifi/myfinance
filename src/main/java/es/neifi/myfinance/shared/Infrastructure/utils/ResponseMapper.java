@@ -44,7 +44,7 @@ public class ResponseMapper {
         return expens;
     }
 
-    public static List<Registry> mapToRegistriesList(List<Map<String, Object>> registryList) {
+    public static List<Registry> registryListRowMapper(List<Map<String, Object>> registryList) {
 
         ArrayList<Registry> registries = new ArrayList<>();
 
@@ -89,6 +89,7 @@ public class ResponseMapper {
         public Report mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Report(
                     new ReportID(rs.getString("reportId")),
+                    new UserID(rs.getString("userId")),
                     new TotalExpenses(rs.getDouble("totalExpenses")),
                     new TotalIncomes(rs.getDouble("totalIncomes")),
                     new TotalSavings(rs.getDouble("totalSavings")),
@@ -96,5 +97,30 @@ public class ResponseMapper {
                     new Date(rs.getTimestamp("date").getTime())
                     );
         }
+    }
+
+    public static List<Report> reportListRowMapper(List<Map<String, Object>> reportList) {
+
+        ArrayList<Report> reports = new ArrayList<>();
+
+        for (Map<String, Object> stringObjectMap : reportList) {
+            Timestamp date = (Timestamp) stringObjectMap.get("date");
+            BigDecimal totalExpenses = (BigDecimal) stringObjectMap.get("totalExpenses");
+            BigDecimal totalIncomes = (BigDecimal) stringObjectMap.get("totalIncomes");
+            BigDecimal totalSavings = (BigDecimal) stringObjectMap.get("totalSavings");
+
+            Report report = new Report(
+                    new ReportID((String) stringObjectMap.get("reportId")),
+                    new UserID((String) stringObjectMap.get("userId")),
+                    new TotalExpenses(totalExpenses.doubleValue()),
+                    new TotalIncomes(totalIncomes.doubleValue()),
+                    new TotalSavings(totalSavings.doubleValue()),
+                    new IsExpense((Boolean) stringObjectMap.get("isExpense")),
+                    new Date(date.getTime())
+            );
+            reports.add(report);
+        }
+
+        return reports;
     }
 }

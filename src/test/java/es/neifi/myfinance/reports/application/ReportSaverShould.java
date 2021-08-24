@@ -9,6 +9,7 @@ import es.neifi.myfinance.reports.domain.ReportRepository;
 import es.neifi.myfinance.reports.domain.TotalExpenses;
 import es.neifi.myfinance.reports.domain.TotalIncomes;
 import es.neifi.myfinance.reports.domain.TotalSavings;
+import es.neifi.myfinance.users.domain.UserID;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -17,6 +18,7 @@ import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -42,6 +44,7 @@ class ReportSaverShould {
 
         Report report = Report.create(
                 new ReportID(id),
+                new UserID(UUID.randomUUID().toString()),
                 new TotalExpenses(100.0),
                 new TotalIncomes(0.0),
                 new TotalSavings(0.0),
@@ -70,6 +73,7 @@ class ReportSaverShould {
 
         Report report = Report.create(
                 new ReportID(id),
+                new UserID(UUID.randomUUID().toString()),
                 new TotalExpenses(100),
                 new TotalIncomes(1000),
                 new TotalSavings(900),
@@ -78,6 +82,7 @@ class ReportSaverShould {
 
         Report report2 = Report.create(
                 new ReportID(id),
+                new UserID(UUID.randomUUID().toString()),
                 new TotalExpenses(150),
                 new TotalIncomes(1000),
                 new TotalSavings(900),

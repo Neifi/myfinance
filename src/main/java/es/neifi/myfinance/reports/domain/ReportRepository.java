@@ -5,9 +5,11 @@ import java.util.Optional;
 
 public interface ReportRepository {
 
-    List<Report> search();
+    List<Report> search(String userId);
+
     void saveReport(Report report);
-    Optional<Report> findLast();
+
+    Optional<Report> findLast(String userId);
 
     Optional<Report> findById(String id);
 }
