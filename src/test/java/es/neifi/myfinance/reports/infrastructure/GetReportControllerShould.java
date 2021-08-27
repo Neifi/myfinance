@@ -55,7 +55,5 @@ class GetReportControllerShould {
         mockMvc.perform(get("/user/report/" + reportId))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"totalExpenses\":100,\"totalExpenses\":100,\"totalIncomes\":1100,\"totalSavings\":1000,\"expense\":true,\"date\":" + date + "}"));
-
-
     }
 }

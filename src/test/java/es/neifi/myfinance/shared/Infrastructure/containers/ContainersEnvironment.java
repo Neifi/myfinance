@@ -8,6 +8,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class ContainersEnvironment {
 
     @Container
-    public static PostgreSQLContainer postgreSQLContainer = PostgresContainer.getInstance();
+    public static PostgreSQLContainer postgreSQLContainer = MyPostgresContainer.getInstance();
 
 }

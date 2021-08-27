@@ -6,5 +6,4 @@ CREATE TABLE report(
     totalSavings numeric(10,2) NOT NULL,
     isExpense boolean NOT NULL,
     date timestamp NOT NULL
-
 );
