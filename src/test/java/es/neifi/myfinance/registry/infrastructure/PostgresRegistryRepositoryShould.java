@@ -9,12 +9,11 @@ import es.neifi.myfinance.registry.domain.vo.Currency;
 import es.neifi.myfinance.registry.domain.vo.Date;
 import es.neifi.myfinance.registry.domain.vo.Name;
 import es.neifi.myfinance.registry.domain.vo.RegistryID;
-import es.neifi.myfinance.shared.Infrastructure.containers.ContainersEnvironment;
+import es.neifi.myfinance.shared.Infrastructure.IntegrationTestBase;
 import es.neifi.myfinance.users.domain.UserID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -29,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = MyfinanceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PostgresRegistryRepositoryShould extends ContainersEnvironment {
+public class PostgresRegistryRepositoryShould extends IntegrationTestBase {
 
     @Autowired
     private RegistryRepository registryRepository;
@@ -37,8 +36,6 @@ public class PostgresRegistryRepositoryShould extends ContainersEnvironment {
     @Autowired
     private RegistryRepositoryForTest registryRepositoryForTest;
 
-    @Autowired
-    FlywayMigrationStrategy flywayMigrationStrategy;
 
     @Test
     public void save_registry_in_db() {

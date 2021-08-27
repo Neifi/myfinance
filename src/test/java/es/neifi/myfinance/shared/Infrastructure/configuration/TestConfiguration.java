@@ -19,11 +19,4 @@ public class TestConfiguration {
         return new ReportRepositortForTest();
     }
 
-    @Bean
-    public FlywayMigrationStrategy clean() {
-        return flyway -> {
-            flyway.clean();
-            flyway.migrate();
-        };
-    }
 }

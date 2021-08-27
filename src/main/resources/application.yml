@@ -4,8 +4,6 @@ spring:
     username: "${spring.database.username}"
     password: "${spring.database.password}"
     driver-class-name: "org.postgresql.Driver"
-    flyway:
-      enabled: true
 
   database:
     host: "localhost"
@@ -13,3 +11,6 @@ spring:
     name: "bigbang"
     username: "root"
     password: "secret"
+
+  flyway:
+    enabled: false

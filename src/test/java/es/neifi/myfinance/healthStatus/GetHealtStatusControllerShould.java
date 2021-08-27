@@ -4,11 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -23,7 +20,7 @@ public class GetHealtStatusControllerShould {
 
     @Test
     public void return_success_status() throws Exception {
-        mockMvc.perform(get("/health-status")
+        mockMvc.perform(get("/health")
                 .contentType("application/json"))
                 .andExpect(content().string("{\"status\":\"ok\"}"))
                 .andExpect(status().isOk());

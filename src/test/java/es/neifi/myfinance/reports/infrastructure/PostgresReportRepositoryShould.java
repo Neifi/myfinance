@@ -9,13 +9,12 @@ import es.neifi.myfinance.reports.domain.ReportRepository;
 import es.neifi.myfinance.reports.domain.TotalExpenses;
 import es.neifi.myfinance.reports.domain.TotalIncomes;
 import es.neifi.myfinance.reports.domain.TotalSavings;
-import es.neifi.myfinance.shared.Infrastructure.containers.ContainersEnvironment;
+import es.neifi.myfinance.shared.Infrastructure.IntegrationTestBase;
 import es.neifi.myfinance.shared.utils.DateUtils;
 import es.neifi.myfinance.users.domain.UserID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -33,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = MyfinanceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PostgresReportRepositoryShould extends ContainersEnvironment {
+public class PostgresReportRepositoryShould extends IntegrationTestBase {
 
     @Autowired
     private ReportRepository postgresReportRepository;
@@ -41,8 +40,6 @@ public class PostgresReportRepositoryShould extends ContainersEnvironment {
     @Autowired
     private ReportRepositortForTest reportRepositortForTest;
 
-    @Autowired
-    private FlywayMigrationStrategy flywayMigrationStrategy;
 
     @Test
     void save_new_report_correctly() {

@@ -23,7 +23,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc:2.5.3'
 	implementation('org.postgresql:postgresql:42.2.23.jre7')
-	implementation("org.flywaydb:flyway-core:6.5.7")
+	implementation("org.flywaydb:flyway-core:5.2.4")
+
 	implementation 'junit:junit:4.13.2'
 
     compileOnly 'org.projectlombok:lombok:1.18.20'
@@ -37,6 +38,7 @@ dependencies {
 	testImplementation("com.github.tomakehurst:wiremock:2.18.0")
 	testImplementation "org.testcontainers:postgresql:1.15.3"
 	testImplementation "org.testcontainers:junit-jupiter:1.15.3"
+	testImplementation('org.flywaydb.flyway-test-extensions:flyway-spring-test:7.0.0')
 
 
 
