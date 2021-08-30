@@ -69,7 +69,7 @@ class GetRegistryControllerShould {
         when(registrySearcher.searchRegistry("787f28f2-003a-4445-8659-d60683107845")).thenReturn(java.util.Optional.of(registry));
 
         ResultMatcher resultMatcher = content().string("{\"userId\":\"053e7ba6-b1d6-4dcb-8047-bbb0cf7a0b99\",\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date + ",\"expense\":true}");
-        mockMvc.perform(get("/user/2be27975-4d87-413b-991c-ceff0bb960db/expenses/787f28f2-003a-4445-8659-d60683107845"))
+        mockMvc.perform(get("/user/2be27975-4d87-413b-991c-ceff0bb960db/expense/787f28f2-003a-4445-8659-d60683107845"))
                 .andExpect(status().isOk())
                 .andExpect(resultMatcher);
     }
@@ -126,7 +126,7 @@ class GetRegistryControllerShould {
         when(userService.search(userId)).thenReturn(user);
         when(registrySearcher.searchExpenses(userId)).thenReturn(Arrays.asList(registry, registry1));
 
-        mockMvc.perform(get("/user/" + userId + "/expenses/"))
+        mockMvc.perform(get("/user/" + userId + "/expense/"))
                 .andExpect(status().isOk())
                 .andExpect(resultMatcher);
 
@@ -192,7 +192,7 @@ class GetRegistryControllerShould {
         when(userService.search(userId)).thenReturn(user);
         when(registrySearcher.searchExpenses(userId, initialDate, endDate)).thenReturn(Arrays.asList(registry, registry1));
 
-        mockMvc.perform(get("/user/" + userId + "/expenses/")
+        mockMvc.perform(get("/user/" + userId + "/expense/")
                         .param("initialDate", valueOf(initialDate))
                         .param("endDate", valueOf(endDate)))
                 .andExpect(status().isOk())

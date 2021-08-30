@@ -31,7 +31,7 @@ public class GetExpenseController {
         this.userService = userService;
     }
 
-    @GetMapping("user/{userID}/expenses/{id}")
+    @GetMapping("user/{userID}/expense/{id}")
     public ResponseEntity<RegistryResponse> getExpense(@PathVariable String userID, @PathVariable String id) {
 
         if (isUserPresent(userID)) {
@@ -57,11 +57,7 @@ public class GetExpenseController {
         return ResponseEntity.notFound().build();
     }
 
-    private boolean isUserPresent(String userID) {
-        return userService.search(userID).isPresent();
-    }
-
-    @GetMapping("user/{userID}/expenses/")
+    @GetMapping("user/{userID}/expense/")
     public ResponseEntity<RegistryListResponse> getExpenses(
             @PathVariable String userID,
             @Nullable @RequestParam Long initialDate,
@@ -96,4 +92,7 @@ public class GetExpenseController {
                 .build();
     }
 
+    private boolean isUserPresent(String userID) {
+        return userService.search(userID).isPresent();
+    }
 }

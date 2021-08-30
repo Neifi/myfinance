@@ -8,9 +8,9 @@ spring:
   database:
     host: "localhost"
     port: 5432
-    name: "bigbang"
+    name: "myfinancedb"
     username: "root"
-    password: "secret"
+    password: "admin"
 
   flyway:
-    enabled: false
+    enabled: true

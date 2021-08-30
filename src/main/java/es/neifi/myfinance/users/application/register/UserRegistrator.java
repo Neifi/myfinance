@@ -15,7 +15,7 @@ public class UserRegistrator{
     }
 
 
-    public void register(RegisterUserRequest request) {
+    public void register(RegisterUserCommand request) {
         User toRegister = new User(new UserID(request.id()),new UserName(request.name()),new Email(request.email()));
         this.userRepository.save(toRegister);
     }

@@ -1,6 +1,6 @@
 package es.neifi.myfinance.users.infrastructure;
 
-import es.neifi.myfinance.users.application.register.RegisterUserRequest;
+import es.neifi.myfinance.users.application.register.RegisterUserCommand;
 import es.neifi.myfinance.users.application.register.UserRegistrator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostRegisterUserController  {
 
 
-    private UserRegistrator userRegistrator;
+    private final UserRegistrator userRegistrator;
 
     public PostRegisterUserController(UserRegistrator userRegistrator) {
         this.userRegistrator = userRegistrator;
     }
 
-    @PostMapping("/users/{id}")
-    public ResponseEntity registerUser(@PathVariable String id, @RequestBody Request request){
-        userRegistrator.register(new RegisterUserRequest(id,request.name(),request.email()));
+    @PostMapping("/user/{id}")
+    public ResponseEntity<HttpStatus> registerUser(@PathVariable String id, @RequestBody RegisterUserCommand request){
+        userRegistrator.register(new RegisterUserCommand(id,request.name(),request.email()));
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -30,11 +30,11 @@ public class PostRegisterUserController  {
         private String name;
         private String email;
 
-        public String name() {
+        public String getName() {
             return name;
         }
 
-        public String email() {
+        public String getEmail() {
             return email;
         }
     }

@@ -3,7 +3,7 @@ package es.neifi.myfinance.shared.Infrastructure;
 import es.neifi.myfinance.registry.application.saveRegistry.RegistrySaver;
 import es.neifi.myfinance.registry.application.searchRegistry.RegistrySearcher;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
-import es.neifi.myfinance.registry.infrastructure.PostgresRegistryRepository;
+import es.neifi.myfinance.registry.infrastructure.repository.PostgresRegistryRepository;
 import es.neifi.myfinance.reports.application.ReportCalculator;
 import es.neifi.myfinance.reports.application.ReportFinder;
 import es.neifi.myfinance.reports.application.ReportSaver;
@@ -38,8 +38,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public RegistrySaver registrySaver(RegistryRepository registryRepository, EventBus eventBus) {
-        return new RegistrySaver(registryRepository, eventBus);
+    public RegistrySaver registrySaver(RegistryRepository registryRepository, EventBus eventBus, UserService userService) {
+        return new RegistrySaver(registryRepository, eventBus, userService);
     }
 
     @Bean
