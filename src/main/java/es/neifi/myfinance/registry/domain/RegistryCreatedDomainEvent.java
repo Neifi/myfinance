@@ -74,4 +74,32 @@ public class RegistryCreatedDomainEvent extends DomainEvent<RegistryCreatedDomai
 
         );
     }
+
+    public String userId() {
+        return userId;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public double cost() {
+        return cost;
+    }
+
+    public String category() {
+        return category;
+    }
+
+    public String currency() {
+        return currency;
+    }
+
+    public Long date() {
+        return date;
+    }
+
+    public boolean isExpense() {
+        return isExpense;
+    }
 }

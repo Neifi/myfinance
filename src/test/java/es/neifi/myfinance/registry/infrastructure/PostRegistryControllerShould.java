@@ -57,13 +57,14 @@ class PostRegistryControllerShould {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request.toString()))
                 .andExpect(status().isNotFound());
-
     }
 
-
+    @Test
     void save_income_and_return_http_201_status() throws Exception {
-        Request request = new Request("home","some-name",100.00,"EUR",Timestamp.from(Instant.now()).getTime());
-        mockMvc.perform(post("/users/36cd48f6-5abc-43f2-9c76-a8c49979b55e/registry/income/b1841d22-9376-48b0-a524-c4901ddc4268")
+        Request request = new Request("home", "some-name", 100.00, "EUR", Timestamp.from(Instant.now()).getTime());
+        Mockito.when(userService.search(any())).thenReturn(Optional.of(User.builder().build()));
+
+        mockMvc.perform(post("/user/36cd48f6-5abc-43f2-9c76-a8c49979b55e/income/b1841d22-9376-48b0-a524-c4901ddc4268")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request.toString()))
                 .andExpect(status().isCreated());
