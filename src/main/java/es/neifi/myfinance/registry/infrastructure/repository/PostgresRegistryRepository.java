@@ -1,4 +1,4 @@
-package es.neifi.myfinance.registry.infrastructure;
+package es.neifi.myfinance.registry.infrastructure.repository;
 
 import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
@@ -17,13 +17,13 @@ import static es.neifi.myfinance.shared.Infrastructure.utils.ResponseMapper.Regi
 public class PostgresRegistryRepository implements RegistryRepository {
 
 
-    private NamedParameterJdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public PostgresRegistryRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private String registryFields = "userId,registryId,category,name,cost,currency,date,isExpense ";
+    private final String registryFields = "userId,registryId,category,name,cost,currency,date,isExpense ";
 
     @Override
     public void save(Registry registry) {

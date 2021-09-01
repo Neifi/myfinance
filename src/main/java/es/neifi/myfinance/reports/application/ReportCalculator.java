@@ -13,7 +13,6 @@ import es.neifi.myfinance.reports.domain.TotalSavings;
 import es.neifi.myfinance.users.domain.UserID;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.time.Instant;
 import java.util.Optional;
 
@@ -30,7 +29,7 @@ public class ReportCalculator {
         this.reportRepository = reportRepository;
     }
 
-    public Report calculate(Registry registry) throws ParseException {
+    public Report calculate(Registry registry){
 
         Report report;
 
@@ -64,11 +63,11 @@ public class ReportCalculator {
                 newTotalIncomes,
                 newTotalSavings,
                 new IsExpense(false),
-                new Date(Timestamp.from(Instant.now()).getTime())
+                new Date(registry.getDate().value())
         );
     }
 
-    private Report calculateExpense(Registry registry) throws ParseException {
+    private Report calculateExpense(Registry registry){
 
         TotalExpenses newTotalExpenses = new TotalExpenses(totalExpenses.value() + registry.getCost().value());
         TotalSavings newTotalSavings = new TotalSavings(totalSavings.value() - registry.getCost().value());
@@ -80,7 +79,7 @@ public class ReportCalculator {
                 totalIncomes,
                 newTotalSavings,
                 new IsExpense(true),
-                new Date()
+                new Date(registry.getDate().value())
         );
 
 

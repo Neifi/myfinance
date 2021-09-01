@@ -2,7 +2,9 @@ package es.neifi.myfinance.registry.infrastructure;
 
 
 import es.neifi.myfinance.registry.application.saveRegistry.RegistrySaver;
-import es.neifi.myfinance.registry.application.saveRegistry.SaveRegistryRequest;
+import es.neifi.myfinance.registry.application.saveRegistry.SaveRegistryCommand;
+import es.neifi.myfinance.shared.Infrastructure.apiException.ApiUserNotFoundException;
+import es.neifi.myfinance.users.application.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,62 +12,33 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
-
 @RestController
 public class PostIncomeController {
 
-    private RegistrySaver incomeSaver;
+    private final RegistrySaver incomeSaver;
 
     public PostIncomeController(RegistrySaver incomeSaver) {
         this.incomeSaver = incomeSaver;
     }
 
-    @PostMapping("/users/{userId}/registry/incomes/{id}")
-    public ResponseEntity saveIncome(@PathVariable String userId, @RequestBody Request request, @PathVariable String id) throws ParseException {
-        SaveRegistryRequest saveIncomeRequest = new SaveRegistryRequest(
-                userId,id, request.category, request.name,
-                request.retribution, request.currency, request.date,request.isExpense);
+    @PostMapping("/user/{userId}/income/{id}")
+    public ResponseEntity<HttpStatus> saveIncome(@PathVariable String userId, @RequestBody Request registryRequest, @PathVariable String id) {
+        SaveRegistryCommand saveIncomeRequest = new SaveRegistryCommand(
+                userId,
+                id,
+                registryRequest.getCategory(),
+                registryRequest.getName(),
+                registryRequest.getCost(),
+                registryRequest.getCurrency(),
+                registryRequest.getDate());
 
-        incomeSaver.saveIncome(saveIncomeRequest);
+        try {
+            incomeSaver.saveIncome(saveIncomeRequest);
+        } catch (UserNotFoundException e) {
+            throw new ApiUserNotFoundException(
+                    HttpStatus.NOT_FOUND, e.getMessage(),e);
+        }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    private static final class Request {
-        private String category;
-        private String name;
-        private double retribution;
-        private String currency;
-        private Long date;
-        private final boolean isExpense = false;
-
-        public String
-        Category() {
-            return category;
-        }
-
-        public String
-        Name() {
-            return name;
-        }
-
-        public double
-        Cost() {
-            return retribution;
-        }
-
-        public String
-        Currency() {
-            return currency;
-        }
-
-        public Long
-        Date() {
-            return date;
-        }
-
-        public boolean isExpense(){
-            return isExpense;
-        }
-    }
 }

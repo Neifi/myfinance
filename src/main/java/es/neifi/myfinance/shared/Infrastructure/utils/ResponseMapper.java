@@ -87,7 +87,7 @@ public class ResponseMapper {
     public static class ReportRowMapper implements RowMapper<Report> {
         @Override
         public Report mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Report(
+            return  Report.create(
                     new ReportID(rs.getString("reportId")),
                     new UserID(rs.getString("userId")),
                     new TotalExpenses(rs.getDouble("totalExpenses")),
@@ -109,7 +109,7 @@ public class ResponseMapper {
             BigDecimal totalIncomes = (BigDecimal) stringObjectMap.get("totalIncomes");
             BigDecimal totalSavings = (BigDecimal) stringObjectMap.get("totalSavings");
 
-            Report report = new Report(
+            Report report = Report.create(
                     new ReportID((String) stringObjectMap.get("reportId")),
                     new UserID((String) stringObjectMap.get("userId")),
                     new TotalExpenses(totalExpenses.doubleValue()),

@@ -19,7 +19,7 @@ public class Report {
     private IsExpense isExpense;
     private Date date;
 
-    public Report(ReportID reportId,UserID userId, TotalExpenses totalExpenses, TotalIncomes totalIncomes, TotalSavings totalSavings, IsExpense isExpense, Date date) {
+    private Report(ReportID reportId,UserID userId, TotalExpenses totalExpenses, TotalIncomes totalIncomes, TotalSavings totalSavings, IsExpense isExpense, Date date) {
         this.reportId = reportId;
         this.userId = userId;
         this.totalExpenses = totalExpenses;

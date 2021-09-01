@@ -6,12 +6,10 @@ import java.util.List;
 
 public class RegistryCostCalculator {
 
-    public static double calculate(List<Registry> expens){
+    public static double calculate(List<Registry> expens) {
         return expens.stream().map(Registry::cost)
                 .reduce(0D, Double::sum);
-
     }
-
 
 
 }

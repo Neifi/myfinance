@@ -1,14 +1,16 @@
 package es.neifi.myfinance.registry.infrastructure;
 
 import es.neifi.myfinance.registry.application.saveRegistry.RegistrySaver;
-import es.neifi.myfinance.registry.application.saveRegistry.SaveRegistryRequest;
+import es.neifi.myfinance.registry.application.saveRegistry.SaveRegistryCommand;
 import es.neifi.myfinance.shared.domain.UserService;
 import es.neifi.myfinance.users.domain.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
 import java.util.Optional;
 
 @RestController
@@ -22,61 +24,23 @@ public class PostExpenseController {
         this.userService = userService;
     }
 
-    @PostMapping("/users/{userID}/registry/expenses/{id}")
-    public ResponseEntity<Void> saveExpense(@PathVariable String userID, @RequestBody Request request, @PathVariable String id) throws ParseException {
-        Optional<User> user = userService.search(id);
+    @PostMapping("/user/{userID}/expense/{registryId}")
+    public ResponseEntity<Void> saveExpense(@PathVariable String userID, @RequestBody Request request, @PathVariable String registryId){
+        Optional<User> user = userService.search(userID);
         if (user.isPresent()) {
-            registrySaver.saveIncome(
-                    new SaveRegistryRequest(
+            registrySaver.saveExpense(
+                    new SaveRegistryCommand(
                             userID,
-                            id,
-                            request.category,
-                            request.name,
-                            request.cost,
-                            request.currency,
-                            request.date,
-                            request.isExpense));
+                            registryId,
+                            request.getCategory(),
+                            request.getName(),
+                            request.getCost(),
+                            request.getCurrency(),
+                            request.getDate()));
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    private static final class Request {
-        private String category;
-        private String name;
-        private double cost;
-        private String currency;
-        private Long date;
-        private final boolean isExpense = true;
-
-        public String
-        Category() {
-            return category;
-        }
-
-        public String
-        Name() {
-            return name;
-        }
-
-        public double
-        Cost() {
-            return cost;
-        }
-
-        public String
-        Currency() {
-            return currency;
-        }
-
-        public Long
-        Date() {
-            return date;
-        }
-
-        public boolean isExpense() {
-            return isExpense;
-        }
-    }
 }

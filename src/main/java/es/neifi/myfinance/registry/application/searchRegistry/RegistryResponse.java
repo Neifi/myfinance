@@ -13,7 +13,7 @@ public class RegistryResponse {
             @NonNull String id,
             @NonNull String category,
             @NonNull String name,
-            @NonNull double cost,
+            @NonNull Double cost,
             @NonNull String currency,
             @NonNull Long date,
             @NonNull boolean isExpense
@@ -38,7 +38,7 @@ public class RegistryResponse {
     @NonNull
     private String name;
     @NonNull
-    private double cost;
+    private Double cost;
     @NonNull
     private String currency;
     @NonNull
