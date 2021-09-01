@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class ResponseMapper {
 
-    public static List<Registry> mapToExpenseResponse(List<RegistryResponse> registryData, List<Registry> expens) {
+    public static List<Registry> mapToRegistryResponse(List<RegistryResponse> registryData, List<Registry> expens) {
 
         for (Registry registry : expens) {
             registryData.add(RegistryResponse.builder()

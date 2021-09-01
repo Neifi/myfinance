@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(GetExpenseController.class)
-class GetRegistryControllerShould {
+class GetExpenseControllerShould {
 
     @Autowired
     private MockMvc mockMvc;

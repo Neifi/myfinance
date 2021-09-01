@@ -24,6 +24,10 @@ public class RegistrySearcher {
         return registryRepository.searchIncomes(userId);
     }
 
+    public List<Registry> searchIncomes(String userId, Long initialDate, Long endDate) {
+        return registryRepository.searchIncomes(userId, initialDate, endDate);
+    }
+
     public List<Registry> searchExpenses(String userId, Long initialDate, Long endDate) {
         return registryRepository.searchExpenses(userId, initialDate, endDate);
     }
