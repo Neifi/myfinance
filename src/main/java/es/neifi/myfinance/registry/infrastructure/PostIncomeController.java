@@ -1,10 +1,10 @@
 package es.neifi.myfinance.registry.infrastructure;
 
-
 import es.neifi.myfinance.registry.application.saveRegistry.RegistrySaver;
 import es.neifi.myfinance.registry.application.saveRegistry.SaveRegistryCommand;
 import es.neifi.myfinance.shared.Infrastructure.apiException.ApiUserNotFoundException;
-import es.neifi.myfinance.users.application.UserNotFoundException;
+import es.neifi.myfinance.shared.domain.UserService;
+import es.neifi.myfinance.users.domain.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,33 +12,35 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 public class PostIncomeController {
 
-    private final RegistrySaver incomeSaver;
+    private final RegistrySaver registrySaver;
+    private final UserService userService;
 
-    public PostIncomeController(RegistrySaver incomeSaver) {
-        this.incomeSaver = incomeSaver;
+    public PostIncomeController(RegistrySaver registrySaver, UserService userService) {
+        this.registrySaver = registrySaver;
+        this.userService = userService;
     }
 
-    @PostMapping("/user/{userId}/income/{id}")
-    public ResponseEntity<HttpStatus> saveIncome(@PathVariable String userId, @RequestBody Request registryRequest, @PathVariable String id) {
-        SaveRegistryCommand saveIncomeRequest = new SaveRegistryCommand(
-                userId,
-                id,
-                registryRequest.getCategory(),
-                registryRequest.getName(),
-                registryRequest.getCost(),
-                registryRequest.getCurrency(),
-                registryRequest.getDate());
+    @PostMapping("/user/{userId}/income/{registryId}")
+    public ResponseEntity<HttpStatus> saveIncome(@PathVariable String userId, @RequestBody Request registryRequest, @PathVariable String registryId) {
+        Optional<User> user = userService.search(userId);
+        if (user.isPresent()) {
+            SaveRegistryCommand saveRegistryCommand = new SaveRegistryCommand(
+                    userId,
+                    registryId,
+                    registryRequest.getCategory(),
+                    registryRequest.getName(),
+                    registryRequest.getCost(),
+                    registryRequest.getCurrency(),
+                    registryRequest.getDate());
 
-        try {
-            incomeSaver.saveIncome(saveIncomeRequest);
-        } catch (UserNotFoundException e) {
-            throw new ApiUserNotFoundException(
-                    HttpStatus.NOT_FOUND, e.getMessage(),e);
+            registrySaver.saveIncome(saveRegistryCommand);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         }
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        throw new ApiUserNotFoundException(userId);
     }
-
 }

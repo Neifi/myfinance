@@ -7,16 +7,16 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode
 public class SaveRegistryCommand {
     private String userId;
-    private String id;
+    private String registryId;
     private String category;
     private String name;
     private double cost;
     private String currency;
     private Long date;
 
-    public SaveRegistryCommand(String userId, String id, String category, String name, Double cost, String currency, Long date) {
+    public SaveRegistryCommand(String userId, String registryId, String category, String name, Double cost, String currency, Long date) {
         this.userId = userId;
-        this.id = id;
+        this.registryId = registryId;
         this.category = category;
         this.name = name;
         this.cost = cost;
@@ -26,7 +26,7 @@ public class SaveRegistryCommand {
 
     public String
     id() {
-        return id;
+        return registryId;
     }
 
     public String

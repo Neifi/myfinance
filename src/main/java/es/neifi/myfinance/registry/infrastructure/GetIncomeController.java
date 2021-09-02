@@ -20,25 +20,24 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class GetExpenseController {
-
+public class GetIncomeController {
     private RegistrySearcher registrySearcher;
     private UserService userService;
 
     @Autowired
-    public GetExpenseController(RegistrySearcher registrySearcher, UserService userService) {
+    public GetIncomeController(RegistrySearcher registrySearcher, UserService userService) {
         this.registrySearcher = registrySearcher;
         this.userService = userService;
     }
 
-    @GetMapping("user/{userID}/expense/{id}")
-    public ResponseEntity<RegistryResponse> getExpense(@PathVariable String userID, @PathVariable String id) {
+    @GetMapping("user/{userID}/income/{id}")
+    public ResponseEntity<RegistryResponse> getincome(@PathVariable String userID, @PathVariable String id) {
 
         if (isUserPresent(userID)) {
-            Optional<Registry> optionalExpense = registrySearcher.findRegistry(id);
+            Optional<Registry> optionalRegistry = registrySearcher.findRegistry(id);
 
-            if (optionalExpense.isPresent()) {
-                Registry registry = optionalExpense.get();
+            if (optionalRegistry.isPresent()) {
+                Registry registry = optionalRegistry.get();
                 RegistryResponse registryResponse = RegistryResponse.builder()
                         .userId(registry.getUserId().value())
                         .id(registry.getId().value())
@@ -51,43 +50,42 @@ public class GetExpenseController {
                         .build();
                 return ResponseEntity.ok(registryResponse);
             }
-
         }
 
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("user/{userID}/expense/")
-    public ResponseEntity<RegistryListResponse> getExpenses(
+    @GetMapping("user/{userID}/income/")
+    public ResponseEntity<RegistryListResponse> getIncomes(
             @PathVariable String userID,
             @Nullable @RequestParam Long initialDate,
             @Nullable @RequestParam Long endDate) {
 
         if (isUserPresent(userID)) {
             List<RegistryResponse> registryData = new ArrayList<>();
-            List<Registry> expenses;
+            List<Registry> incomes;
 
             if (initialDate == null || endDate == null) {
-                expenses = ResponseMapper.mapToRegistryResponse(
+                incomes = ResponseMapper.mapToRegistryResponse(
                         registryData,
-                        registrySearcher.findExpenses(userID));
+                        registrySearcher.findIncomes(userID));
             } else {
-                expenses = ResponseMapper.mapToRegistryResponse(
+                incomes = ResponseMapper.mapToRegistryResponse(
                         registryData,
-                        registrySearcher.findExpenses(userID, initialDate, endDate));
+                        registrySearcher.findIncomes(userID, initialDate, endDate));
             }
 
-            RegistryListResponse response = mapToExpenseListResponse(initialDate, endDate, registryData, expenses);
+            RegistryListResponse response = mapToIncomeListResponse(initialDate, endDate, registryData, incomes);
 
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.notFound().build();
     }
 
-    private RegistryListResponse mapToExpenseListResponse(Long initialDate, Long endDate, List<RegistryResponse> registryData, List<Registry> expens) {
+    private RegistryListResponse mapToIncomeListResponse(Long initialDate, Long endDate, List<RegistryResponse> registryData, List<Registry> incomes) {
         return RegistryListResponse.builder()
                 .registryResponses(registryData)
-                .totalCost(RegistryCostCalculator.calculate(expens))
+                .totalCost(RegistryCostCalculator.calculate(incomes))
                 .timePeriod(new Long[]{initialDate, endDate})
                 .build();
     }
