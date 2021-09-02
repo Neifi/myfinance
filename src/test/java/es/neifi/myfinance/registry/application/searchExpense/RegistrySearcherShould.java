@@ -1,5 +1,6 @@
 package es.neifi.myfinance.registry.application.searchExpense;
 
+import es.neifi.myfinance.registry.application.exceptions.RegistryNotFoundException;
 import es.neifi.myfinance.registry.application.searchRegistry.RegistrySearcher;
 import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
@@ -22,6 +23,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RegistrySearcherShould {
@@ -44,11 +46,33 @@ class RegistrySearcherShould {
 
 
         Mockito.when(registryRepository.searchRegistryById(id)).thenReturn(Optional.of(expectedRegistry));
-        Optional<Registry> expense = registrySearcher.searchRegistry(id);
+        Optional<Registry> expense = registrySearcher.findRegistry(id);
 
         assertTrue(expense.isPresent());
         assertTrue(expense.get().isExpense());
         assertEquals(id, expense.get().getId().value());
+    }
+
+    @Test
+    void throw_exception_when_registry_not_found() {
+        String id = "22aa0d3b-07eb-4f19-8320-1b3c3a25b070";
+
+        Registry expectedRegistry = Registry.createExpense(
+                new UserID("94c8208e-b116-49a8-bf6e-0560135dffb4"),
+                new RegistryID(id),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date(Timestamp.from(Instant.now()).getTime()));
+
+
+        Mockito.when(registryRepository.searchRegistryById(id)).thenReturn(Optional.empty());
+        Exception exception = assertThrows(RegistryNotFoundException.class, () -> {
+            Optional<Registry> expense = registrySearcher.findRegistry(id);
+        });
+
+        assertEquals(exception.getMessage(),"Registry not found with ID: "+id);
     }
 
     @Test
@@ -66,7 +90,7 @@ class RegistrySearcherShould {
 
 
         Mockito.when(registryRepository.searchRegistryById(id)).thenReturn(Optional.of(expectedRegistry));
-        Optional<Registry> expense = registrySearcher.searchRegistry(id);
+        Optional<Registry> expense = registrySearcher.findRegistry(id);
 
         assertTrue(expense.isPresent());
         assertTrue(expense.get().isExpense());
@@ -108,7 +132,7 @@ class RegistrySearcherShould {
 
         Mockito.when(registryRepository.searchExpenses(userId)).thenReturn(expectedExpens);
 
-        List<Registry> expens = registrySearcher.searchExpenses(userId);
+        List<Registry> expens = registrySearcher.findExpenses(userId);
 
         assertEquals(3, expens.size());
         assertEquals(expectedExpens, expens);
@@ -213,7 +237,7 @@ class RegistrySearcherShould {
 
         Mockito.when(registryRepository.searchExpenses(userId, intialDate, endDate)).thenReturn(List.of(registry, registry2, registry3));
 
-        List<Registry> expens = registrySearcher.searchExpenses(userId, intialDate, endDate);
+        List<Registry> expens = registrySearcher.findExpenses(userId, intialDate, endDate);
 
         assertEquals(3, expens.size());
         assertEquals(expectedExpenses.get(0), expens.get(0));
@@ -236,7 +260,7 @@ class RegistrySearcherShould {
                 30,
                 15,
                 1)).getTime();
-        List<Registry> expens = registrySearcher.searchRegistry(userId, intialDate, endDate);
+        List<Registry> expens = registrySearcher.findRegistry(userId, intialDate, endDate);
         assertTrue(expens.isEmpty());
     }
 }

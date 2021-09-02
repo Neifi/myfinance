@@ -34,7 +34,7 @@ public class GetIncomeController {
     public ResponseEntity<RegistryResponse> getincome(@PathVariable String userID, @PathVariable String id) {
 
         if (isUserPresent(userID)) {
-            Optional<Registry> optionalRegistry = registrySearcher.searchRegistry(id);
+            Optional<Registry> optionalRegistry = registrySearcher.findRegistry(id);
 
             if (optionalRegistry.isPresent()) {
                 Registry registry = optionalRegistry.get();
@@ -68,11 +68,11 @@ public class GetIncomeController {
             if (initialDate == null || endDate == null) {
                 incomes = ResponseMapper.mapToRegistryResponse(
                         registryData,
-                        registrySearcher.searchIncomes(userID));
+                        registrySearcher.findIncomes(userID));
             } else {
                 incomes = ResponseMapper.mapToRegistryResponse(
                         registryData,
-                        registrySearcher.searchIncomes(userID, initialDate, endDate));
+                        registrySearcher.findIncomes(userID, initialDate, endDate));
             }
 
             RegistryListResponse response = mapToIncomeListResponse(initialDate, endDate, registryData, incomes);

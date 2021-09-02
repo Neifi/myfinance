@@ -35,7 +35,7 @@ public class GetExpenseController {
     public ResponseEntity<RegistryResponse> getExpense(@PathVariable String userID, @PathVariable String id) {
 
         if (isUserPresent(userID)) {
-            Optional<Registry> optionalExpense = registrySearcher.searchRegistry(id);
+            Optional<Registry> optionalExpense = registrySearcher.findRegistry(id);
 
             if (optionalExpense.isPresent()) {
                 Registry registry = optionalExpense.get();
@@ -70,11 +70,11 @@ public class GetExpenseController {
             if (initialDate == null || endDate == null) {
                 expenses = ResponseMapper.mapToRegistryResponse(
                         registryData,
-                        registrySearcher.searchExpenses(userID));
+                        registrySearcher.findExpenses(userID));
             } else {
                 expenses = ResponseMapper.mapToRegistryResponse(
                         registryData,
-                        registrySearcher.searchExpenses(userID, initialDate, endDate));
+                        registrySearcher.findExpenses(userID, initialDate, endDate));
             }
 
             RegistryListResponse response = mapToExpenseListResponse(initialDate, endDate, registryData, expenses);
