@@ -28,42 +28,42 @@ public class RegistrySaver {
         this.userService = userService;
     }
 
-    public void saveIncome(SaveRegistryCommand request) {
+    public void saveIncome(SaveRegistryCommand saveRegistryCommand) {
 
-        findUser(request);
+        findUser(saveRegistryCommand);
 
         Registry registry = Registry.createIncome(
-                new UserID(request.userId()),
-                new RegistryID(request.id()),
-                new Category(request.category()),
-                new Name(request.name()),
-                new Cost(request.cost()),
-                new Currency(request.currency()),
-                new Date(request.date()));
+                new UserID(saveRegistryCommand.userId()),
+                new RegistryID(saveRegistryCommand.id()),
+                new Category(saveRegistryCommand.category()),
+                new Name(saveRegistryCommand.name()),
+                new Cost(saveRegistryCommand.cost()),
+                new Currency(saveRegistryCommand.currency()),
+                new Date(saveRegistryCommand.date()));
 
 
         registryRepository.save(registry);
         this.eventBus.publish(registry.pullEvents());
     }
 
-    public void saveExpense(SaveRegistryCommand request) {
+    public void saveExpense(SaveRegistryCommand saveRegistryCommand) throws UserNotFoundException{
 
-        findUser(request);
+        findUser(saveRegistryCommand);
 
         Registry registry = Registry.createExpense(
-                new UserID(request.userId()),
-                new RegistryID(request.id()),
-                new Category(request.category()),
-                new Name(request.name()),
-                new Cost(request.cost()),
-                new Currency(request.currency()),
-                new Date(request.date()));
+                new UserID(saveRegistryCommand.userId()),
+                new RegistryID(saveRegistryCommand.id()),
+                new Category(saveRegistryCommand.category()),
+                new Name(saveRegistryCommand.name()),
+                new Cost(saveRegistryCommand.cost()),
+                new Currency(saveRegistryCommand.currency()),
+                new Date(saveRegistryCommand.date()));
 
         registryRepository.save(registry);
         this.eventBus.publish(registry.pullEvents());
     }
 
-    private void findUser(SaveRegistryCommand request) {
+    private void findUser(SaveRegistryCommand request) throws UserNotFoundException{
         Optional<User> user = this.userService.search(request.userId());
         if (user.isEmpty()) {
             throw new UserNotFoundException("User not found with id:" + request.userId());

@@ -59,6 +59,7 @@ class GetIncomeControllerShould {
                 new Currency("EUR"),
                 new Date(date)
         );
+
         Optional<User> user = Optional.of(User.builder()
                 .id(new UserID("2be27975-4d87-413b-991c-ceff0bb960db"))
                 .username(new UserName("some-name"))
@@ -68,7 +69,7 @@ class GetIncomeControllerShould {
         when(userService.search("2be27975-4d87-413b-991c-ceff0bb960db")).thenReturn(user);
         when(registrySearcher.searchRegistry("787f28f2-003a-4445-8659-d60683107845")).thenReturn(Optional.of(registry));
 
-        ResultMatcher resultMatcher = content().string("{\"userId\":\"053e7ba6-b1d6-4dcb-8047-bbb0cf7a0b99\",\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date + ",\"income\":true}");
+        ResultMatcher resultMatcher = content().json("{\"userId\":\"053e7ba6-b1d6-4dcb-8047-bbb0cf7a0b99\",\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date + ",\"expense\":false}");
         mockMvc.perform(get("/user/2be27975-4d87-413b-991c-ceff0bb960db/income/787f28f2-003a-4445-8659-d60683107845"))
                 .andExpect(status().isOk())
                 .andExpect(resultMatcher);
@@ -122,15 +123,13 @@ class GetIncomeControllerShould {
                 new Date(date)
         );
 
-        ResultMatcher resultMatcher = content().string("{\"incomes\":[{\"userId\":\"" + userId + "\",\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date + ",\"income\":true},{\"userId\":\"2be27975-4d87-413b-991c-ceff0bb960db\",\"id\":\"13dd4c9b-908a-4712-9799-bfa8e445db0a\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date + ",\"income\":true}],\"totalExpended\":200.0,\"timePeriod\":[null,null]}");
+        ResultMatcher resultMatcher = content().json("{\"registryResponses\":[{\"userId\":\"" + userId + "\",\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date + ",\"expense\":false},{\"userId\":\"2be27975-4d87-413b-991c-ceff0bb960db\",\"id\":\"13dd4c9b-908a-4712-9799-bfa8e445db0a\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date + ",\"expense\":false}],\"totalCost\":200.0,\"timePeriod\":[null,null]}");
         when(userService.search(userId)).thenReturn(user);
         when(registrySearcher.searchIncomes(userId)).thenReturn(Arrays.asList(registry, registry1));
 
         mockMvc.perform(get("/user/" + userId + "/income/"))
                 .andExpect(status().isOk())
                 .andExpect(resultMatcher);
-
-
     }
 
     @Test
@@ -188,7 +187,7 @@ class GetIncomeControllerShould {
                 15,
                 1)).getTime();
 
-        ResultMatcher resultMatcher = content().string("{\"incomes\":[{\"userId\":\"" + userId + "\",\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date + ",\"income\":true},{\"userId\":\"787f28f2-003a-4445-8659-d60683107845\",\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date1 + ",\"income\":true}],\"totalExpended\":200.0,\"timePeriod\":[" + initialDate + "," + endDate + "]}");
+        ResultMatcher resultMatcher = content().json("{\"registryResponses\":[{\"userId\":\"" + userId + "\",\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date + ",\"expense\":false},{\"userId\":\"787f28f2-003a-4445-8659-d60683107845\",\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date1 + ",\"expense\":false}],\"totalCost\":200.0,\"timePeriod\":[" + initialDate + "," + endDate + "]}");
         when(userService.search(userId)).thenReturn(user);
         when(registrySearcher.searchIncomes(userId, initialDate, endDate)).thenReturn(Arrays.asList(registry, registry1));
 
@@ -197,7 +196,6 @@ class GetIncomeControllerShould {
                         .param("endDate", valueOf(endDate)))
                 .andExpect(status().isOk())
                 .andExpect(resultMatcher);
-
     }
 
     @Test

@@ -37,7 +37,7 @@ class RegistrySaverShould {
     public void save_income_successfully_with_existent_user() {
         SaveRegistryCommand request = SaveRegistryCommand.builder()
                 .userId("a46ea122-f590-471e-95b8-4bc8fd46836a")
-                .id("70c0b2ff-d376-48aa-b43f-57a827f79316")
+                .registryId("70c0b2ff-d376-48aa-b43f-57a827f79316")
                 .category("some-category")
                 .currency("EUR")
                 .date(Timestamp.from(Instant.now()).getTime())
@@ -64,7 +64,7 @@ class RegistrySaverShould {
     public void save_expense_successfully_with_existent_user() throws ParseException {
         SaveRegistryCommand request = SaveRegistryCommand.builder()
                 .userId("a46ea122-f590-471e-95b8-4bc8fd46836a")
-                .id("70c0b2ff-d376-48aa-b43f-57a827f79316")
+                .registryId("70c0b2ff-d376-48aa-b43f-57a827f79316")
                 .category("some-category")
                 .currency("EUR")
                 .date(Timestamp.from(Instant.now()).getTime())
@@ -99,7 +99,7 @@ class RegistrySaverShould {
         boolean isExpense = true;
         SaveRegistryCommand request = SaveRegistryCommand.builder()
                 .userId(userID)
-                .id(id)
+                .registryId(id)
                 .category(category)
                 .currency(currency)
                 .date(date)
@@ -140,7 +140,7 @@ class RegistrySaverShould {
 
         SaveRegistryCommand request = SaveRegistryCommand.builder()
                 .userId(userID)
-                .id(agregateId)
+                .registryId(agregateId)
                 .category(category)
                 .currency(currency)
                 .date(date)

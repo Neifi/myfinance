@@ -13,11 +13,13 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@RestController
 public class GetIncomeController {
     private RegistrySearcher registrySearcher;
     private UserService userService;
@@ -32,10 +34,10 @@ public class GetIncomeController {
     public ResponseEntity<RegistryResponse> getincome(@PathVariable String userID, @PathVariable String id) {
 
         if (isUserPresent(userID)) {
-            Optional<Registry> optionalincome = registrySearcher.searchRegistry(id);
+            Optional<Registry> optionalRegistry = registrySearcher.searchRegistry(id);
 
-            if (optionalincome.isPresent()) {
-                Registry registry = optionalincome.get();
+            if (optionalRegistry.isPresent()) {
+                Registry registry = optionalRegistry.get();
                 RegistryResponse registryResponse = RegistryResponse.builder()
                         .userId(registry.getUserId().value())
                         .id(registry.getId().value())
@@ -54,7 +56,7 @@ public class GetIncomeController {
     }
 
     @GetMapping("user/{userID}/income/")
-    public ResponseEntity<RegistryListResponse> getincomes(
+    public ResponseEntity<RegistryListResponse> getIncomes(
             @PathVariable String userID,
             @Nullable @RequestParam Long initialDate,
             @Nullable @RequestParam Long endDate) {

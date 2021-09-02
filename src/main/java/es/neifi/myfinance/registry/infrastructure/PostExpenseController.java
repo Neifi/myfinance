@@ -2,6 +2,7 @@ package es.neifi.myfinance.registry.infrastructure;
 
 import es.neifi.myfinance.registry.application.saveRegistry.RegistrySaver;
 import es.neifi.myfinance.registry.application.saveRegistry.SaveRegistryCommand;
+import es.neifi.myfinance.shared.Infrastructure.apiException.ApiUserNotFoundException;
 import es.neifi.myfinance.shared.domain.UserService;
 import es.neifi.myfinance.users.domain.User;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
-@RestController
+@RestController("")
 public class PostExpenseController {
 
     private final RegistrySaver registrySaver;
@@ -24,23 +25,24 @@ public class PostExpenseController {
         this.userService = userService;
     }
 
-    @PostMapping("/user/{userID}/expense/{registryId}")
-    public ResponseEntity<Void> saveExpense(@PathVariable String userID, @RequestBody Request request, @PathVariable String registryId){
-        Optional<User> user = userService.search(userID);
+    @PostMapping("/user/{userId}/expense/{registryId}")
+    public ResponseEntity<Void> saveExpense(@PathVariable String userId, @RequestBody Request request, @PathVariable String registryId) {
+        Optional<User> user = userService.search(userId);
         if (user.isPresent()) {
             registrySaver.saveExpense(
                     new SaveRegistryCommand(
-                            userID,
+                            userId,
                             registryId,
                             request.getCategory(),
                             request.getName(),
                             request.getCost(),
                             request.getCurrency(),
                             request.getDate()));
+
             return ResponseEntity.status(HttpStatus.CREATED).build();
+
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        throw new ApiUserNotFoundException(userId);
     }
-
 }
