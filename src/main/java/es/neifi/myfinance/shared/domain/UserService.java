@@ -1,5 +1,6 @@
 package es.neifi.myfinance.shared.domain;
 
+import es.neifi.myfinance.users.application.UserNotFoundException;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserRepository;
 
@@ -13,8 +14,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> search(String id){
-        return userRepository.search(id);
+    public Optional<User> find(String userId){
+        Optional<User> user = userRepository.search(userId);
+        if (user.isEmpty()){
+            throw new UserNotFoundException(userId);
+        }
+        return user;
     }
 
 }

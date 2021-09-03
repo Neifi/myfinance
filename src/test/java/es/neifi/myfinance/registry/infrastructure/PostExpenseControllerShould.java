@@ -40,7 +40,7 @@ class PostExpenseControllerShould {
 
     @Test
     void should_return_201_created_when_expense_is_created() throws Exception {
-        Mockito.when(userService.search(any())).thenReturn(Optional.of(User.builder().build()));
+        Mockito.when(userService.find(any())).thenReturn(Optional.of(User.builder().build()));
         Request request = new Request("home", "some-name", 100.00, "EUR", Timestamp.from(Instant.now()).getTime());
 
         mockMvc.perform(post("/user/980A5F79-C028-4312-B53E-6D231681E181/expense/7C122C2D-97E0-43E0-A63B-46C69E21D1D3")

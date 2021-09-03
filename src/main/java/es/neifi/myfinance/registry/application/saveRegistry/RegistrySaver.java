@@ -64,7 +64,7 @@ public class RegistrySaver {
     }
 
     private void findUser(SaveRegistryCommand request) throws UserNotFoundException{
-        Optional<User> user = this.userService.search(request.userId());
+        Optional<User> user = this.userService.find(request.userId());
         if (user.isEmpty()) {
             throw new UserNotFoundException("User not found with id:" + request.userId());
         }

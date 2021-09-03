@@ -93,6 +93,6 @@ public class GetExpenseController {
     }
 
     private boolean isUserPresent(String userID) {
-        return userService.search(userID).isPresent();
+        return userService.find(userID).isPresent();
     }
 }

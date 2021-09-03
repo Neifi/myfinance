@@ -14,6 +14,7 @@ import es.neifi.myfinance.shared.domain.UserService;
 import es.neifi.myfinance.shared.domain.bus.event.EventBus;
 import es.neifi.myfinance.users.application.register.UserRegistrator;
 import es.neifi.myfinance.users.domain.UserRepository;
+import es.neifi.myfinance.users.infrastructure.UserFinder;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 @Configuration
 public class ApplicationConfig {
+
+    @Bean
+    public UserFinder userFinder(UserRepository userRepository){
+        return new UserFinder(userRepository);
+    }
 
     @Bean
     public EventBus eventBus(ApplicationEventPublisher applicationEventPublisher) {

@@ -1,7 +1,6 @@
-package es.neifi.myfinance.users.infrastructure.postRegisterUserController;
+package es.neifi.myfinance.users.infrastructure;
 
 import es.neifi.myfinance.users.application.register.UserRegistrator;
-import es.neifi.myfinance.users.infrastructure.PostRegisterUserController;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
