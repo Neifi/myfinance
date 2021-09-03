@@ -14,7 +14,10 @@ import es.neifi.myfinance.reports.domain.ReportID;
 import es.neifi.myfinance.reports.domain.TotalExpenses;
 import es.neifi.myfinance.reports.domain.TotalIncomes;
 import es.neifi.myfinance.reports.domain.TotalSavings;
+import es.neifi.myfinance.users.domain.Email;
+import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserID;
+import es.neifi.myfinance.users.domain.UserName;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.math.BigDecimal;
@@ -123,4 +126,16 @@ public class ResponseMapper {
 
         return reports;
     }
+
+    public static class UserRowMapper implements RowMapper<User>{
+        @Override
+        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new User(
+                    new UserID(rs.getString("userId")),
+                    new UserName(rs.getString("username")),
+                    new Email(rs.getString("email"))
+            );
+        }
+    }
+
 }

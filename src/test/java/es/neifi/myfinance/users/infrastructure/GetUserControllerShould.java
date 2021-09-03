@@ -1,5 +1,7 @@
 package es.neifi.myfinance.users.infrastructure;
 
+import es.neifi.myfinance.users.application.UserNotFoundException;
+import es.neifi.myfinance.users.application.find.UserFinder;
 import es.neifi.myfinance.users.domain.Email;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserID;
@@ -41,7 +43,7 @@ final class GetUserControllerShould {
                 )
         );
 
-        when(userRegistrator.findUserById(userId)).thenReturn(user);
+        when(userRegistrator.findById(userId)).thenReturn(user);
         mockMvc.perform(get("/user/" + userId))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"userId\": \"061bddf7-dac7-4a2d-b7ab-e040bbcfd339\",\"userName\": \"username\", \"email\": \"email@mail.com\"}"));
@@ -50,10 +52,9 @@ final class GetUserControllerShould {
     @Test
     public void should_return_404_when_user_is_not_found() throws Exception {
         String userId = "061bddf7-dac7-4a2d-b7ab-e040bbcfd339";
-
+        when(userRegistrator.findById(userId)).thenThrow(new UserNotFoundException(userId));
         mockMvc.perform(get("/user/" + userId))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json("{\"localizedMessage\": \"User not found with ID: 061bddf7-dac7-4a2d-b7ab-e040bbcfd339\"}"));
     }
-
 }

@@ -52,7 +52,7 @@ class RegistrySaverShould {
                 new Cost(request.cost()),
                 new Currency(request.currency()),
                 new Date(request.date()));
-        Mockito.when(userRepository.search("a46ea122-f590-471e-95b8-4bc8fd46836a"))
+        Mockito.when(userRepository.searchById("a46ea122-f590-471e-95b8-4bc8fd46836a"))
                 .thenReturn(Optional.of(User.builder().build()));
         registrySaver.saveIncome(request);
 
@@ -80,7 +80,7 @@ class RegistrySaverShould {
                 new Currency(request.currency()),
                 new Date(request.date()));
 
-        Mockito.when(userRepository.search("a46ea122-f590-471e-95b8-4bc8fd46836a"))
+        Mockito.when(userRepository.searchById("a46ea122-f590-471e-95b8-4bc8fd46836a"))
                 .thenReturn(Optional.of(User.builder().build()));
         registrySaver.saveExpense(request);
 
@@ -118,7 +118,7 @@ class RegistrySaverShould {
                 date,
                 isExpense));
 
-        Mockito.when(userRepository.search("1c9dee02-7d09-419d-ab22-70fbb8825ba2"))
+        Mockito.when(userRepository.searchById("1c9dee02-7d09-419d-ab22-70fbb8825ba2"))
                 .thenReturn(Optional.of(User.builder().build()));
         registrySaver.saveExpense(request);
 
@@ -164,7 +164,7 @@ class RegistrySaverShould {
                 date,
                 isExpense));
 
-        Mockito.when(userRepository.search("1c9dee02-7d09-419d-ab22-70fbb8825ba2"))
+        Mockito.when(userRepository.searchById("1c9dee02-7d09-419d-ab22-70fbb8825ba2"))
                 .thenReturn(Optional.of(User.builder().build()));
         registrySaver.saveIncome(request);
 
