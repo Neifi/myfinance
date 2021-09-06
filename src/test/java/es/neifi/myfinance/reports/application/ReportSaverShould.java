@@ -9,6 +9,7 @@ import es.neifi.myfinance.reports.domain.ReportRepository;
 import es.neifi.myfinance.reports.domain.TotalExpenses;
 import es.neifi.myfinance.reports.domain.TotalIncomes;
 import es.neifi.myfinance.reports.domain.TotalSavings;
+import es.neifi.myfinance.shared.domain.UserService;
 import es.neifi.myfinance.users.domain.UserID;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -25,7 +26,8 @@ import static org.mockito.Mockito.when;
 class ReportSaverShould {
 
     private final ReportRepository reportRepository = mock(ReportRepository.class);
-    private final ReportSaver reportSaver = new ReportSaver(reportRepository);
+    private final UserService userService = mock(UserService.class);
+    private final ReportSaver reportSaver = new ReportSaver(reportRepository,userService);
 
     @Test
     void save_expense_report_on_receive_registry_created_event() {
@@ -99,5 +101,7 @@ class ReportSaverShould {
         verify(reportRepository, Mockito.times(1)).saveReport(report);
 
     }
+
+
 
 }

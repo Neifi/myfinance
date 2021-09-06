@@ -1,6 +1,5 @@
 package es.neifi.myfinance.users.infrastructure.repository;
 
-import es.neifi.myfinance.MyfinanceApplication;
 import es.neifi.myfinance.shared.Infrastructure.IntegrationTestBase;
 import es.neifi.myfinance.users.domain.Email;
 import es.neifi.myfinance.users.domain.User;
@@ -9,18 +8,11 @@ import es.neifi.myfinance.users.domain.UserName;
 import es.neifi.myfinance.users.domain.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
+import java.util.UUID;
 
-
-@ActiveProfiles("test")
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = MyfinanceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PostgresUserRepositoryShould extends IntegrationTestBase {
 
     @Autowired
@@ -32,7 +24,7 @@ class PostgresUserRepositoryShould extends IntegrationTestBase {
 
     @Test
     void save_user_in_db() {
-        String userId = "061bddf7-dac7-4a2d-b7ab-e040bbcfd339";
+        String userId = UUID.randomUUID().toString();
         User user = new User(
                 new UserID(userId),
                 new UserName("username"),
@@ -47,7 +39,7 @@ class PostgresUserRepositoryShould extends IntegrationTestBase {
 
     @Test
     void get_existent_user_from_db() {
-        String userId = "061bddf7-dac7-4a2d-b7ab-e040bbcfd339";
+        String userId = UUID.randomUUID().toString();
         Optional<User> user = Optional.of(new User(
                         new UserID(userId),
                         new UserName("username"),

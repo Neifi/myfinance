@@ -22,9 +22,9 @@ public class GetReportController {
         this.reportFinder = reportFinder;
     }
 
-    @GetMapping("/user/report/{reportId}")
-    public ResponseEntity<?> getReport(@PathVariable("reportId") String reportId, @Nullable @RequestParam String initialDate, @Nullable @RequestParam String endDate) {
-        Optional<Report> report = this.reportFinder.findById(reportId);
+    @GetMapping("/user/{userId}/report/{reportId}")
+    public ResponseEntity<?> getReport(@PathVariable("userId")String userId, @PathVariable("reportId") String reportId, @Nullable @RequestParam String initialDate, @Nullable @RequestParam String endDate) {
+        Optional<Report> report = this.reportFinder.findById(userId, reportId);
         if (report.isPresent()) {
 
             return ok(new ReportResponse(
@@ -45,7 +45,7 @@ public class GetReportController {
         private boolean isExpense;
         private Long date;
 
-        public ReportResponse( Double totalExpenses, Double totalIncomes, Double totalSavings, Boolean isExpense, Long date) {
+        public ReportResponse(Double totalExpenses, Double totalIncomes, Double totalSavings, Boolean isExpense, Long date) {
             this.totalExpenses = totalExpenses;
             this.totalIncomes = totalIncomes;
             this.totalSavings = totalSavings;

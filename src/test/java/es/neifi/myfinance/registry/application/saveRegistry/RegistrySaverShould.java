@@ -150,7 +150,7 @@ class RegistrySaverShould {
 
         List<DomainEvent<?>> events = new ArrayList<>();
         String eventId = "8df3b9bf-a6e7-4f05-b8aa-64e59dd93f19";
-        String occurredOn = Utils.dateToString(LocalDateTime.now());
+        Long occurredOn = Utils.dateToString(LocalDateTime.now());
         events.add(new RegistryCreatedDomainEvent(
 
                 userID,

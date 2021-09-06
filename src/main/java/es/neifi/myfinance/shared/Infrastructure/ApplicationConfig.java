@@ -45,8 +45,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public ReportFinder reportFinder(ReportRepository reportRepository) {
-        return new ReportFinder(reportRepository);
+    public ReportFinder reportFinder(ReportRepository reportRepository, UserService userService) {
+        return new ReportFinder(reportRepository,userService);
     }
 
     @Bean
@@ -80,7 +80,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public ReportSaver reportSaver(ReportRepository reportRepository) {
-        return new ReportSaver(reportRepository);
+    public ReportSaver reportSaver(ReportRepository reportRepository, UserService userService) {
+        return new ReportSaver(reportRepository,userService);
     }
 }

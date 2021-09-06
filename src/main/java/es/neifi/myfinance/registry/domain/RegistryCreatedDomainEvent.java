@@ -28,7 +28,7 @@ public class RegistryCreatedDomainEvent extends DomainEvent<RegistryCreatedDomai
         this.isExpense = isExpense;
     }
 
-    public RegistryCreatedDomainEvent(String userId, String aggregateId, String eventId, String occurredOn, String category, String name,double cost, String currency, Long date, boolean isExpense) {
+    public RegistryCreatedDomainEvent(String userId, String aggregateId, String eventId, Long occurredOn, String category, String name, double cost, String currency, Long date, boolean isExpense) {
         super(aggregateId, eventId, occurredOn);
         this.userId = userId;
         this.name = name;
@@ -59,7 +59,7 @@ public class RegistryCreatedDomainEvent extends DomainEvent<RegistryCreatedDomai
     }
 
     @Override
-    protected RegistryCreatedDomainEvent fromPrimitives(String aggregateId, HashMap<String, Serializable> body, String eventId, String occurredOn) {
+    protected RegistryCreatedDomainEvent fromPrimitives(String aggregateId, HashMap<String, Serializable> body, String eventId, Long occurredOn) {
         return new RegistryCreatedDomainEvent(
                 (String) body.get("userId"),
                 aggregateId,

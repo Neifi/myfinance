@@ -4,6 +4,7 @@ import es.neifi.myfinance.registry.application.saveRegistry.RegistrySaver;
 import es.neifi.myfinance.registry.application.saveRegistry.SaveRegistryCommand;
 import es.neifi.myfinance.shared.Infrastructure.apiException.ApiUserNotFoundError;
 import es.neifi.myfinance.shared.domain.UserService;
+import es.neifi.myfinance.users.application.UserNotFoundException;
 import es.neifi.myfinance.users.domain.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +27,9 @@ public class PostIncomeController {
     }
 
     @PostMapping("/user/{userId}/income/{registryId}")
-    public ResponseEntity<HttpStatus> saveIncome(@PathVariable String userId, @RequestBody Request registryRequest, @PathVariable String registryId) {
-        Optional<User> user = userService.find(userId);
-        if (user.isPresent()) {
+    public ResponseEntity<?> saveIncome(@PathVariable String userId, @RequestBody Request registryRequest, @PathVariable String registryId) {
+        try {
+            Optional<User> user = userService.find(userId);
             SaveRegistryCommand saveRegistryCommand = new SaveRegistryCommand(
                     userId,
                     registryId,
@@ -40,7 +41,9 @@ public class PostIncomeController {
 
             registrySaver.saveIncome(saveRegistryCommand);
             return ResponseEntity.status(HttpStatus.CREATED).build();
+
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiUserNotFoundError(userId));
         }
-        throw new ApiUserNotFoundError(userId);
     }
 }

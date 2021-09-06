@@ -11,5 +11,5 @@ public interface ReportRepository {
 
     Optional<Report> findLast(String userId);
 
-    Optional<Report> findById(String id);
+    Optional<Report> findById(String reportId);
 }

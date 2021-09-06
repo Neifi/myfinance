@@ -11,10 +11,7 @@ import es.neifi.myfinance.registry.domain.vo.RegistryID;
 import es.neifi.myfinance.shared.domain.UserService;
 import es.neifi.myfinance.shared.domain.bus.event.EventBus;
 import es.neifi.myfinance.users.application.UserNotFoundException;
-import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserID;
-
-import java.util.Optional;
 
 public class RegistrySaver {
 
@@ -30,7 +27,7 @@ public class RegistrySaver {
 
     public void saveIncome(SaveRegistryCommand saveRegistryCommand) {
 
-        findUser(saveRegistryCommand);
+        findUserOrThrow(saveRegistryCommand);
 
         Registry registry = Registry.createIncome(
                 new UserID(saveRegistryCommand.userId()),
@@ -46,9 +43,9 @@ public class RegistrySaver {
         this.eventBus.publish(registry.pullEvents());
     }
 
-    public void saveExpense(SaveRegistryCommand saveRegistryCommand) throws UserNotFoundException{
+    public void saveExpense(SaveRegistryCommand saveRegistryCommand) throws UserNotFoundException {
 
-        findUser(saveRegistryCommand);
+        findUserOrThrow(saveRegistryCommand);
 
         Registry registry = Registry.createExpense(
                 new UserID(saveRegistryCommand.userId()),
@@ -63,11 +60,10 @@ public class RegistrySaver {
         this.eventBus.publish(registry.pullEvents());
     }
 
-    private void findUser(SaveRegistryCommand request) throws UserNotFoundException{
-        Optional<User> user = this.userService.find(request.userId());
-        if (user.isEmpty()) {
-            throw new UserNotFoundException("User not found with id:" + request.userId());
-        }
+    private void findUserOrThrow(SaveRegistryCommand request) throws UserNotFoundException {
+        this.userService.find(request.userId())
+                .orElseThrow(() -> new UserNotFoundException("User not found with id:" + request.userId()));
+
     }
 
 
