@@ -7,6 +7,7 @@ import es.neifi.myfinance.registry.infrastructure.repository.PostgresRegistryRep
 import es.neifi.myfinance.reports.application.ReportCalculator;
 import es.neifi.myfinance.reports.application.ReportFinder;
 import es.neifi.myfinance.reports.application.ReportSaver;
+import es.neifi.myfinance.reports.application.ReportService;
 import es.neifi.myfinance.reports.domain.ReportRepository;
 import es.neifi.myfinance.reports.infrastructure.PostgresReportRepository;
 import es.neifi.myfinance.shared.Infrastructure.bus.event.SpringEventBus;
@@ -65,6 +66,11 @@ public class ApplicationConfig {
     }
 
     @Bean
+    public ReportService reportService(ReportRepository reportRepository) {
+        return new ReportService(reportRepository);
+    }
+
+    @Bean
     public UserRegistrator userRegistrator(UserRepository userRepository) {
         return new UserRegistrator(userRepository);
     }
@@ -80,7 +86,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public ReportSaver reportSaver(ReportRepository reportRepository, UserService userService) {
-        return new ReportSaver(reportRepository,userService);
+    public ReportSaver reportSaver(ReportRepository reportRepository, UserService userService, ReportService reportService) {
+        return new ReportSaver(reportRepository,userService,reportService);
     }
 }

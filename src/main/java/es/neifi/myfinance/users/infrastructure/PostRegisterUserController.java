@@ -26,16 +26,4 @@ public class PostRegisterUserController  {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    private static final class Request{
-        private String name;
-        private String email;
-
-        public String getName() {
-            return name;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-    }
 }

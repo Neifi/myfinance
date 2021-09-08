@@ -1,5 +1,6 @@
 package es.neifi.myfinance.reports.application;
 
+import es.neifi.myfinance.reports.application.exceptions.NoReportFoundException;
 import es.neifi.myfinance.reports.domain.Report;
 import es.neifi.myfinance.reports.domain.ReportRepository;
 import es.neifi.myfinance.shared.domain.UserService;
@@ -19,11 +20,16 @@ public class ReportFinder {
 
     public List<Report> findAll(String userId){
         userService.find(userId);
-        return reportRepository.search(userId);
+        List<Report> reports = reportRepository.search(userId);
+        if (reports.isEmpty()) throw new NoReportFoundException();
+        return reports;
     }
 
-    public Optional<Report> findById(String userId,String reportId) {
+    public Optional<Report> findById(String userId,String reportId)  {
         userService.find(userId);
-        return reportRepository.findById(reportId);
+        Optional<Report> report = reportRepository.findById(reportId);
+        if (report.isEmpty()) throw new NoReportFoundException(reportId);
+        return report;
     }
+
 }

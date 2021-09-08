@@ -2,13 +2,10 @@ package es.neifi.myfinance.registry.domain.vo;
 
 import es.neifi.myfinance.shared.domain.exception.EmptyValueException;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 
 @EqualsAndHashCode
-@Getter
 public class Date {
     private final Long value;
 
@@ -18,10 +15,6 @@ public class Date {
         }
         this.value = new Timestamp(value).getTime();
 
-    }
-
-    public Date() {
-        this.value = Timestamp.from(Instant.now()).getTime();
     }
 
     public Long value() {

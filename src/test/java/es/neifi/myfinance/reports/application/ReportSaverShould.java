@@ -27,7 +27,8 @@ class ReportSaverShould {
 
     private final ReportRepository reportRepository = mock(ReportRepository.class);
     private final UserService userService = mock(UserService.class);
-    private final ReportSaver reportSaver = new ReportSaver(reportRepository,userService);
+    private final ReportService reportService = mock(ReportService.class);
+    private final ReportSaver reportSaver = new ReportSaver(reportRepository,userService,reportService);
 
     @Test
     void save_expense_report_on_receive_registry_created_event() {
@@ -95,7 +96,7 @@ class ReportSaverShould {
         );
 
         reportSaver.on(registryCreatedDomainEvent);
-        when(reportRepository.findById(id)).thenReturn(Optional.of(report));
+        when(reportService.findReport(id)).thenReturn(Optional.of(report));
         reportSaver.on(registryCreatedDomainEvent);
 
         verify(reportRepository, Mockito.times(1)).saveReport(report);

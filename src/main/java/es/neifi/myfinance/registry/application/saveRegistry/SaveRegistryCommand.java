@@ -1,10 +1,8 @@
 package es.neifi.myfinance.registry.application.saveRegistry;
 
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 
 @Builder
-@EqualsAndHashCode
 public class SaveRegistryCommand {
     private String userId;
     private String registryId;

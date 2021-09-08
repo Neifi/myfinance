@@ -14,20 +14,17 @@ import es.neifi.myfinance.shared.domain.UserService;
 import es.neifi.myfinance.users.domain.UserID;
 import org.springframework.context.event.EventListener;
 
-import java.io.Serializable;
-import java.util.HashMap;
-
 public class ReportSaver {
 
     private final ReportRepository reportRepository;
     private final ReportCalculator reportCalculator;
-    private final ReportFinder reportFinder;
+    private final ReportService reportService;
     private final UserService userService;
 
-    public ReportSaver(ReportRepository reportRepository, UserService userService) {
+    public ReportSaver(ReportRepository reportRepository, UserService userService,ReportService reportService) {
         this.userService = userService;
         this.reportRepository = reportRepository;
-        this.reportFinder = new ReportFinder(reportRepository, userService);
+        this.reportService = reportService;
         this.reportCalculator = new ReportCalculator(reportRepository);
     }
 
@@ -73,7 +70,8 @@ public class ReportSaver {
         );
     }
 
-    private Registry deserializeExpenseRegistry(HashMap<String, Serializable> primitives) {
+   /* coming soon
+   private Registry deserializeExpenseRegistry(HashMap<String, Serializable> primitives) {
         return Registry.createExpense(
                 new UserID((String) primitives.get("userId")),
                 new RegistryID((String) primitives.get("registryId")),
@@ -95,13 +93,13 @@ public class ReportSaver {
                 new Currency((String) primitives.get("currency")),
                 new Date((Long) primitives.get("date"))
         );
-    }
+    }*/
 
     public void saveReport(Report report) {
         String searchedReport = report.getReportId().value();
         String userId = report.getUserId().value();
-
-        if (reportFinder.findById(userId, searchedReport).isEmpty()) {
+        userService.find(userId);
+        if (reportService.findReport(searchedReport).isEmpty()) {
             reportRepository.saveReport(report);
         }
     }

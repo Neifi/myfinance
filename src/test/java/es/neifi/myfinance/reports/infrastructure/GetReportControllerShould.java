@@ -9,6 +9,7 @@ import es.neifi.myfinance.reports.domain.TotalExpenses;
 import es.neifi.myfinance.reports.domain.TotalIncomes;
 import es.neifi.myfinance.reports.domain.TotalSavings;
 import es.neifi.myfinance.shared.domain.UserService;
+import es.neifi.myfinance.users.application.UserNotFoundException;
 import es.neifi.myfinance.users.domain.UserID;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -65,10 +66,10 @@ class GetReportControllerShould {
     @Test
     void response_with_404_not_found_when_associated_user_is_not_found() throws Exception {
         String reportId = UUID.randomUUID().toString();
-        String userId = UUID.randomUUID().toString();
-
+        String userId = "061bddf7-dac7-4a2d-b7ab-e040bbcfd339";
+        when(reportFinder.findById(userId,reportId)).thenThrow(new UserNotFoundException(userId));
         mockMvc.perform(get("/user/" + userId + "/report/" + reportId))
-                .andExpect(status().isOk())
+                .andExpect(status().isNotFound())
                 .andExpect(content().json("{\"localizedMessage\": \"User not found with ID: 061bddf7-dac7-4a2d-b7ab-e040bbcfd339\"}"));
 
     }

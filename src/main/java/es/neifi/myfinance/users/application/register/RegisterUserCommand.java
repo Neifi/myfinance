@@ -23,8 +23,4 @@ public class RegisterUserCommand {
         return this.id;
     }
 
-    public RegisterUserCommand id(String id) {
-        this.id = id;
-        return this;
-    }
 }

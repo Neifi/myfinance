@@ -1,7 +1,12 @@
 package es.neifi.myfinance.reports.application.exceptions;
 
 public class NoReportFoundException extends RuntimeException{
+
     public NoReportFoundException() {
-        throw new RuntimeException("No reports founded");
+        super("No reports found");
+    }
+
+    public NoReportFoundException(String reportId) {
+        super("No report found with ID: "+reportId);
     }
 }

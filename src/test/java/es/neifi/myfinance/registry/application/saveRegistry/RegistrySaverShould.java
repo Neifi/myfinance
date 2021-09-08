@@ -8,7 +8,6 @@ import es.neifi.myfinance.registry.domain.vo.*;
 import es.neifi.myfinance.shared.domain.UserService;
 import es.neifi.myfinance.shared.domain.bus.event.DomainEvent;
 import es.neifi.myfinance.shared.domain.bus.event.EventBus;
-import es.neifi.myfinance.shared.domain.utils.Utils;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserID;
 import es.neifi.myfinance.users.domain.UserRepository;
@@ -150,7 +149,7 @@ class RegistrySaverShould {
 
         List<DomainEvent<?>> events = new ArrayList<>();
         String eventId = "8df3b9bf-a6e7-4f05-b8aa-64e59dd93f19";
-        Long occurredOn = Utils.dateToString(LocalDateTime.now());
+        Long occurredOn = Timestamp.from(Instant.now()).getTime();
         events.add(new RegistryCreatedDomainEvent(
 
                 userID,
