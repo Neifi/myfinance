@@ -3,10 +3,11 @@ package es.neifi.myfinance.shared.domain;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
-public class DoubleValueObject {
+public class DoubleValueObject extends BaseValueObject{
     private double value = 0;
 
     public DoubleValueObject(double value) {
+        super(value);
         this.value = value;
     }
 

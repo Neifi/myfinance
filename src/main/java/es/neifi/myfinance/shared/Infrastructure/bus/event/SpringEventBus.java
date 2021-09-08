@@ -1,13 +1,11 @@
 package es.neifi.myfinance.shared.Infrastructure.bus.event;
 
-import es.neifi.myfinance.shared.domain.Service;
 import es.neifi.myfinance.shared.domain.bus.event.DomainEvent;
 import es.neifi.myfinance.shared.domain.bus.event.EventBus;
 import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.List;
 
-@Service
 public class SpringEventBus implements EventBus {
 
     private final ApplicationEventPublisher applicationEventPublisher;

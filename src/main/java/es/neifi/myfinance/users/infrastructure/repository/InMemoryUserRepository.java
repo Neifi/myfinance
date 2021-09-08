@@ -1,13 +1,12 @@
-package es.neifi.myfinance.users.infrastructure;
+package es.neifi.myfinance.users.infrastructure.repository;
 
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Optional;
 
-@Service
+
 public final class InMemoryUserRepository implements UserRepository {
 
     private HashMap<String, User> users = new HashMap<>();
@@ -18,7 +17,7 @@ public final class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> search(String id) {
+    public Optional<User> searchById(String id) {
         return Optional.ofNullable(users.get(id));
     }
 

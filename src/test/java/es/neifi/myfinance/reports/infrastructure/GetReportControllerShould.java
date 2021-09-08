@@ -8,6 +8,8 @@ import es.neifi.myfinance.reports.domain.ReportID;
 import es.neifi.myfinance.reports.domain.TotalExpenses;
 import es.neifi.myfinance.reports.domain.TotalIncomes;
 import es.neifi.myfinance.reports.domain.TotalSavings;
+import es.neifi.myfinance.shared.domain.UserService;
+import es.neifi.myfinance.users.application.UserNotFoundException;
 import es.neifi.myfinance.users.domain.UserID;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -36,11 +38,15 @@ class GetReportControllerShould {
     @MockBean
     private ReportFinder reportFinder;
 
+    @MockBean
+    private UserService userService;
+
     @Test
     void response_with_http_status_200_with_expense_report_as_body() throws Exception {
         String reportId = UUID.randomUUID().toString();
+        String userId = UUID.randomUUID().toString();
         Long date = timestampOf(2021, 6, 22, 11, 33, 18);
-        when(reportFinder.findById(reportId)).thenReturn(
+        when(reportFinder.findById(userId, reportId)).thenReturn(
                 Optional.of(
                         Report.create(
                                 new ReportID(reportId),
@@ -52,8 +58,21 @@ class GetReportControllerShould {
                                 new Date(date)
                         )
                 ));
-        mockMvc.perform(get("/user/report/" + reportId))
+        mockMvc.perform(get("/user/" + userId + "/report/" + reportId))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"totalExpenses\":100,\"totalExpenses\":100,\"totalIncomes\":1100,\"totalSavings\":1000,\"expense\":true,\"date\":" + date + "}"));
     }
+
+    @Test
+    void response_with_404_not_found_when_associated_user_is_not_found() throws Exception {
+        String reportId = UUID.randomUUID().toString();
+        String userId = "061bddf7-dac7-4a2d-b7ab-e040bbcfd339";
+        when(reportFinder.findById(userId,reportId)).thenThrow(new UserNotFoundException(userId));
+        mockMvc.perform(get("/user/" + userId + "/report/" + reportId))
+                .andExpect(status().isNotFound())
+                .andExpect(content().json("{\"localizedMessage\": \"User not found with ID: 061bddf7-dac7-4a2d-b7ab-e040bbcfd339\"}"));
+
+    }
 }
+
+

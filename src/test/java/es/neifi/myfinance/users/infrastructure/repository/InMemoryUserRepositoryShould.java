@@ -1,11 +1,9 @@
-package es.neifi.myfinance.users.infrastructure;
+package es.neifi.myfinance.users.infrastructure.repository;
 
 import es.neifi.myfinance.users.domain.*;
+import es.neifi.myfinance.users.infrastructure.repository.InMemoryUserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
@@ -28,7 +26,7 @@ class InMemoryUserRepositoryShould {
         User expectedUser = new User(new UserID("6657B41E-FBA8-486C-9F4C-474B351514D1"),new UserName("some-name"),new Email("some-email@mail.com"));
         userRepository.save(expectedUser);
 
-        Optional<User> user = userRepository.search("6657B41E-FBA8-486C-9F4C-474B351514D1".toLowerCase());
+        Optional<User> user = userRepository.searchById("6657B41E-FBA8-486C-9F4C-474B351514D1".toLowerCase());
 
         Assertions.assertTrue(user.isPresent());
         Assertions.assertEquals(expectedUser,user.get());
@@ -37,6 +35,6 @@ class InMemoryUserRepositoryShould {
     @Test
     void not_return_non_existing_course(){
         UserRepository userRepository = new InMemoryUserRepository();
-        assertFalse(userRepository.search("some_id").isPresent());
+        assertFalse(userRepository.searchById("some_id").isPresent());
     }
 }

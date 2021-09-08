@@ -1,10 +1,11 @@
 package es.neifi.myfinance.shared.domain.bus.event;
 
-import es.neifi.myfinance.shared.domain.utils.Utils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.UUID;
@@ -15,15 +16,15 @@ public abstract class DomainEvent<T extends DomainEvent<?>> {
 
     private String aggregateId;
     private String eventId;
-    private String occurredOn;
+    private Long occurredOn;
 
     public DomainEvent(String aggregateId) {
         this.aggregateId = aggregateId;
         this.eventId     = UUID.randomUUID().toString();
-        this.occurredOn  = Utils.dateToString(LocalDateTime.now());
+        this.occurredOn  = Timestamp.from(Instant.now()).getTime();
     }
 
-    public DomainEvent(String aggregateId, String eventId, String occurredOn) {
+    public DomainEvent(String aggregateId, String eventId, Long occurredOn) {
         this.aggregateId = aggregateId;
         this.eventId = eventId;
         this.occurredOn = occurredOn;
@@ -37,6 +38,6 @@ public abstract class DomainEvent<T extends DomainEvent<?>> {
             String aggregateId,
             HashMap<String, Serializable> body,
             String eventId,
-            String occurredOn
+            Long occurredOn
     );
 }

@@ -65,7 +65,7 @@ class GetExpenseControllerShould {
                 .email(new Email("some-email@mail.com"))
                 .build());
 
-        when(userService.search("2be27975-4d87-413b-991c-ceff0bb960db")).thenReturn(user);
+        when(userService.find("2be27975-4d87-413b-991c-ceff0bb960db")).thenReturn(user);
         when(registrySearcher.findRegistry("787f28f2-003a-4445-8659-d60683107845")).thenReturn(java.util.Optional.of(registry));
 
         ResultMatcher resultMatcher = content().string("{\"userId\":\"053e7ba6-b1d6-4dcb-8047-bbb0cf7a0b99\",\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date + ",\"expense\":true}");
@@ -81,7 +81,7 @@ class GetExpenseControllerShould {
                 .username(new UserName("some-name"))
                 .email(new Email("some-email@mail.com"))
                 .build());
-        when(userService.search("2be27975-4d87-413b-991c-ceff0bb960db")).thenReturn(user);
+        when(userService.find("2be27975-4d87-413b-991c-ceff0bb960db")).thenReturn(user);
 
         mockMvc.perform(get("/user/2be27975-4d87-413b-991c-ceff0bb960db/expenses/787f28f2-003a-4445-8659-d60683107845"))
                 .andExpect(status().isNotFound());
@@ -123,7 +123,7 @@ class GetExpenseControllerShould {
         );
 
         ResultMatcher resultMatcher = content().string("{\"registryResponses\":[{\"userId\":\"" + userId + "\",\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date + ",\"expense\":true},{\"userId\":\"2be27975-4d87-413b-991c-ceff0bb960db\",\"id\":\"13dd4c9b-908a-4712-9799-bfa8e445db0a\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date + ",\"expense\":true}],\"totalCost\":200.0,\"timePeriod\":[null,null]}");
-        when(userService.search(userId)).thenReturn(user);
+        when(userService.find(userId)).thenReturn(user);
         when(registrySearcher.findExpenses(userId)).thenReturn(Arrays.asList(registry, registry1));
 
         mockMvc.perform(get("/user/" + userId + "/expense/"))
@@ -188,8 +188,8 @@ class GetExpenseControllerShould {
                 15,
                 1)).getTime();
 
-        ResultMatcher resultMatcher = content().string("{\"registryResponses\":[{\"userId\":\"" + userId + "\",\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date + ",\"expense\":true},{\"userId\":\"787f28f2-003a-4445-8659-d60683107845\",\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date1 + ",\"expense\":true}],\"totalCost\":200.0,\"timePeriod\":[" + initialDate + "," + endDate + "]}");
-        when(userService.search(userId)).thenReturn(user);
+        ResultMatcher resultMatcher = content().json("{\"registryResponses\":[{\"userId\":\"" + userId + "\",\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date + ",\"expense\":true},{\"userId\":\"787f28f2-003a-4445-8659-d60683107845\",\"id\":\"787f28f2-003a-4445-8659-d60683107845\",\"category\":\"home\",\"name\":\"internet\",\"cost\":100.0,\"currency\":\"EUR\",\"date\":" + date1 + ",\"expense\":true}],\"totalCost\":200.0,\"timePeriod\":[" + initialDate + "," + endDate + "]}");
+        when(userService.find(userId)).thenReturn(user);
         when(registrySearcher.findExpenses(userId, initialDate, endDate)).thenReturn(Arrays.asList(registry, registry1));
 
         mockMvc.perform(get("/user/" + userId + "/expense/")
@@ -223,7 +223,7 @@ class GetExpenseControllerShould {
                 .username(new UserName("some-name"))
                 .email(new Email("some-email@mail.com"))
                 .build());
-        when(userService.search(userId)).thenReturn(user);
+        when(userService.find(userId)).thenReturn(user);
         String date = valueOf(Timestamp.valueOf(LocalDateTime.of(
                 2021,
                 6,

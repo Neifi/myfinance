@@ -62,7 +62,6 @@ public class PostgresReportRepository implements ReportRepository {
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
-
     }
 
     @Override

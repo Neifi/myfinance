@@ -1,6 +1,7 @@
 package es.neifi.myfinance.reports.application;
 
 import es.neifi.myfinance.registry.domain.vo.Date;
+import es.neifi.myfinance.reports.application.exceptions.NoReportFoundException;
 import es.neifi.myfinance.reports.domain.IsExpense;
 import es.neifi.myfinance.reports.domain.Report;
 import es.neifi.myfinance.reports.domain.ReportID;
@@ -8,7 +9,10 @@ import es.neifi.myfinance.reports.domain.ReportRepository;
 import es.neifi.myfinance.reports.domain.TotalExpenses;
 import es.neifi.myfinance.reports.domain.TotalIncomes;
 import es.neifi.myfinance.reports.domain.TotalSavings;
+import es.neifi.myfinance.shared.domain.UserService;
+import es.neifi.myfinance.users.application.UserNotFoundException;
 import es.neifi.myfinance.users.domain.UserID;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -19,6 +23,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -27,8 +32,8 @@ import static org.mockito.Mockito.when;
 class ReportFinderShould {
 
     private final ReportRepository reportRepository = Mockito.mock(ReportRepository.class);
-
-    private final ReportFinder reportFinder = new ReportFinder(reportRepository);
+    private final UserService userService = Mockito.mock(UserService.class);
+    private final ReportFinder reportFinder = new ReportFinder(reportRepository, userService);
 
     @Test
     void find_all_reports_for_given_user_id() {
@@ -75,9 +80,10 @@ class ReportFinderShould {
     @Test
     void find_report_by_id() {
         String id = "d26b3d48-beeb-46ca-82cc-5d5b23285447";
+        String userId = UUID.randomUUID().toString();
         Report report = Report.create(
                 new ReportID(id),
-                new UserID(UUID.randomUUID().toString()),
+                new UserID(userId),
                 new TotalExpenses(100),
                 new TotalIncomes(1000),
                 new TotalSavings(900),
@@ -91,8 +97,43 @@ class ReportFinderShould {
 
         when(reportRepository.findById(id)).thenReturn(Optional.of(report));
 
-        reportFinder.findById(id);
+        reportFinder.findById(userId, id);
 
         verify(reportRepository, times(1)).findById(id);
     }
+
+    @Test
+    void throw_user_not_found_exception_when_associated_user_is_not_found() {
+        String id = "d26b3d48-beeb-46ca-82cc-5d5b23285447";
+        String userId = "b26b3d48-beeb-46ca-82cc-5d5b23285448";
+        when(userService.find(userId)).thenThrow(new UserNotFoundException(id));
+        Exception exception = assertThrows(UserNotFoundException.class, () -> {
+            reportFinder.findById(userId, id);
+        });
+    }
+
+    @Test
+    void throw_report_not_found_exception_when_report_is_not_found() {
+        String reportId = "d26b3d48-beeb-46ca-82cc-5d5b23285447";
+        String userId = "b26b3d48-beeb-46ca-82cc-5d5b23285448";
+        when(reportRepository.findById(reportId)).thenReturn(Optional.empty());
+        Exception exception = assertThrows(NoReportFoundException.class, () -> {
+            reportFinder.findById(userId, reportId);
+        });
+
+        Assertions.assertThat(exception.getMessage()).isEqualTo("No report found with ID: "+reportId);
+
+    }
+
+    @Test
+    void throw_reports_not_found_exception_when_report_is_not_found() {
+        String id = "d26b3d48-beeb-46ca-82cc-5d5b23285447";
+        String userId = "b26b3d48-beeb-46ca-82cc-5d5b23285448";
+        when(reportRepository.findById(id)).thenReturn(Optional.empty());
+        Exception exception = assertThrows(NoReportFoundException.class, () -> {
+            reportFinder.findAll(userId);
+        });
+        Assertions.assertThat(exception.getMessage()).isEqualTo("No reports found");
+    }
+
 }

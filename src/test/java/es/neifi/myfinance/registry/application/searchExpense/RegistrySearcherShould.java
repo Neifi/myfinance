@@ -139,8 +139,49 @@ class RegistrySearcherShould {
     }
 
     @Test
-    void search_all_expenses_between_dates_in_order() {
+    void search_all_incomes() {
+        String userId = "94c8208e-b116-49a8-bf6e-0560135dffb4";
+        Registry registry = Registry.createIncome(
+                new UserID(userId),
+                new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date(Timestamp.from(Instant.now()).getTime()));
+        Registry registry2 = Registry.createIncome(
+                new UserID(userId),
+                new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date(Timestamp.from(Instant.now()).getTime()));
+        Registry registry3 = Registry.createIncome(
+                new UserID(userId),
+                new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date(Timestamp.from(Instant.now()).getTime()));
 
+        List<Registry> expectedIncomes = new ArrayList<>();
+        expectedIncomes.add(registry);
+        expectedIncomes.add(registry2);
+        expectedIncomes.add(registry3);
+
+        Mockito.when(registryRepository.searchIncomes(userId)).thenReturn(expectedIncomes);
+
+        List<Registry> incomes = registrySearcher.findIncomes(userId);
+
+        assertEquals(3, incomes.size());
+        assertEquals(expectedIncomes, incomes);
+    }
+
+
+    @Test
+    void search_all_expenses_between_dates_in_order() {
 
         String userId = "94c8208e-b116-49a8-bf6e-0560135dffb4";
         Registry registry = Registry.createExpense(
@@ -244,6 +285,113 @@ class RegistrySearcherShould {
         assertEquals(expectedExpenses.get(1), expens.get(1));
         assertEquals(expectedExpenses.get(2), expens.get(2));
     }
+
+    @Test
+    void search_all_incomes_between_dates_in_order() {
+
+        String userId = "94c8208e-b116-49a8-bf6e-0560135dffb4";
+        Registry registry = Registry.createIncome(
+                new UserID(userId),
+                new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date(Timestamp.valueOf(LocalDateTime
+                        .of(
+                                2021,
+                                6,
+                                8,
+                                15,
+                                1)).getTime()));
+        Registry registry2 = Registry.createIncome(
+                new UserID(userId),
+                new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date(Timestamp.valueOf(LocalDateTime
+                        .of(
+                                2021,
+                                6,
+                                7,
+                                15,
+                                1)).getTime()));
+        Registry registry3 = Registry.createIncome(
+                new UserID(userId),
+                new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date(Timestamp.valueOf(LocalDateTime
+                        .of(
+                                2021,
+                                6,
+                                6,
+                                15,
+                                1)).getTime()));
+        Registry registry4 = Registry.createIncome(
+                new UserID(userId),
+                new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date(Timestamp.valueOf(LocalDateTime
+                        .of(
+                                2021,
+                                6,
+                                5,
+                                15,
+                                1)).getTime()));
+        Registry registry5 = Registry.createIncome(
+                new UserID(userId),
+                new RegistryID("7c4de261-a6f1-4ce7-acc3-7c05e3f9d035"),
+                new Category("home"),
+                new Name("internet"),
+                new Cost(100),
+                new Currency("EUR"),
+                new Date(Timestamp.valueOf(LocalDateTime
+                        .of(
+                                2021,
+                                12,
+                                28,
+                                15,
+                                1)).getTime()));
+
+        List<Registry> expectedIncomes = new ArrayList<>();
+        expectedIncomes.add(registry);
+        expectedIncomes.add(registry2);
+        expectedIncomes.add(registry3);
+        expectedIncomes.add(registry4);
+        expectedIncomes.add(registry5);
+
+        Long intialDate = Timestamp.valueOf(LocalDateTime.of(
+                2021,
+                6,
+                8,
+                15,
+                1)).getTime();
+        Long endDate = Timestamp.valueOf(LocalDateTime.of(
+                2021,
+                6,
+                30,
+                15,
+                1)).getTime();
+
+
+        Mockito.when(registryRepository.searchIncomes(userId, intialDate, endDate)).thenReturn(List.of(registry, registry2, registry3));
+
+        List<Registry> actualIncomes = registrySearcher.findIncomes(userId, intialDate, endDate);
+
+        assertEquals(3, actualIncomes.size());
+        assertEquals(expectedIncomes.get(0), actualIncomes.get(0));
+        assertEquals(expectedIncomes.get(1), actualIncomes.get(1));
+        assertEquals(expectedIncomes.get(2), actualIncomes.get(2));
+    }
+
 
     @Test
     void return_empty_list_when_no_expenses_between_dates() {

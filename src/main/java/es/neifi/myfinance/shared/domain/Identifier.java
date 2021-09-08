@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @EqualsAndHashCode
 @Getter
-public class Identifier {
+public class Identifier extends BaseValueObject{
     private UUID value;
 
     public void Identifier(){
@@ -15,6 +15,7 @@ public class Identifier {
     }
 
     public Identifier(String value) {
+        super(value);
         isValidUUIDOrThrow(value);
         this.value = UUID.fromString(value);
     }
