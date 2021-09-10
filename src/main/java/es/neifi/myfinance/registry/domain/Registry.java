@@ -7,6 +7,7 @@ import es.neifi.myfinance.registry.domain.vo.Date;
 import es.neifi.myfinance.registry.domain.vo.Name;
 import es.neifi.myfinance.registry.domain.vo.RegistryID;
 import es.neifi.myfinance.shared.domain.AggregateRoot;
+import es.neifi.myfinance.shared.domain.bus.event.AggregateID;
 import es.neifi.myfinance.users.domain.UserID;
 
 import java.util.Objects;
@@ -46,7 +47,7 @@ public class Registry extends AggregateRoot {
     private static RegistryCreatedDomainEvent createdDomainEvent(UserID userID, RegistryID id, Category category, Name name, Cost cost, Currency currency, Date date, boolean b) {
         return new RegistryCreatedDomainEvent(
                 userID.value(),
-                id.value(),
+                new AggregateID(id.value()),
                 category.value(),
                 name.value(),
                 cost.value(),

@@ -6,8 +6,11 @@ import es.neifi.myfinance.registry.domain.RegistryCreatedDomainEvent;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
 import es.neifi.myfinance.registry.domain.vo.*;
 import es.neifi.myfinance.shared.domain.UserService;
+import es.neifi.myfinance.shared.domain.bus.event.AggregateID;
 import es.neifi.myfinance.shared.domain.bus.event.DomainEvent;
 import es.neifi.myfinance.shared.domain.bus.event.EventBus;
+import es.neifi.myfinance.shared.domain.bus.event.EventID;
+import es.neifi.myfinance.shared.domain.bus.event.OccuredOn;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserID;
 import es.neifi.myfinance.users.domain.UserRepository;
@@ -17,7 +20,6 @@ import org.mockito.Mockito;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -89,7 +91,7 @@ class RegistrySaverShould {
     @Test
     public void publish_event_when_expense_is_saved() throws ParseException {
         String userID = "1c9dee02-7d09-419d-ab22-70fbb8825ba2";
-        String id = "70c0b2ff-d376-48aa-b43f-57a827f79316";
+        AggregateID id = new AggregateID("70c0b2ff-d376-48aa-b43f-57a827f79316");
         String category = "some-category";
         String currency = "EUR";
         Long date = Timestamp.from(Instant.now()).getTime();
@@ -98,7 +100,7 @@ class RegistrySaverShould {
         boolean isExpense = true;
         SaveRegistryCommand request = SaveRegistryCommand.builder()
                 .userId(userID)
-                .registryId(id)
+                .registryId(id.value())
                 .category(category)
                 .currency(currency)
                 .date(date)
@@ -107,7 +109,8 @@ class RegistrySaverShould {
                 .build();
 
         List<DomainEvent<?>> events = new ArrayList<>();
-        events.add(new RegistryCreatedDomainEvent(
+        events.add(
+                new RegistryCreatedDomainEvent(
                 userID,
                 id,
                 category,
@@ -129,7 +132,7 @@ class RegistrySaverShould {
     @Test
     public void publish_event_when_income_is_saved() throws ParseException {
         String userID = "1c9dee02-7d09-419d-ab22-70fbb8825ba2";
-        String agregateId = "70c0b2ff-d376-48aa-b43f-57a827f79316";
+        AggregateID agregateId = new AggregateID("70c0b2ff-d376-48aa-b43f-57a827f79316");
         String category = "some-category";
         String currency = "EUR";
         long date = Timestamp.from(Instant.now()).getTime();
@@ -139,7 +142,7 @@ class RegistrySaverShould {
 
         SaveRegistryCommand request = SaveRegistryCommand.builder()
                 .userId(userID)
-                .registryId(agregateId)
+                .registryId(agregateId.value())
                 .category(category)
                 .currency(currency)
                 .date(date)
@@ -148,8 +151,8 @@ class RegistrySaverShould {
                 .build();
 
         List<DomainEvent<?>> events = new ArrayList<>();
-        String eventId = "8df3b9bf-a6e7-4f05-b8aa-64e59dd93f19";
-        Long occurredOn = Timestamp.from(Instant.now()).getTime();
+        EventID eventId = new EventID("8df3b9bf-a6e7-4f05-b8aa-64e59dd93f19");
+        OccuredOn occurredOn = new OccuredOn(Timestamp.from(Instant.now()).getTime());
         events.add(new RegistryCreatedDomainEvent(
 
                 userID,

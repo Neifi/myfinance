@@ -1,27 +1,26 @@
 package es.neifi.myfinance.shared.domain.bus.event;
 
-import lombok.EqualsAndHashCode;
-
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
-@EqualsAndHashCode
+
 public abstract class DomainEvent<T extends DomainEvent<?>> {
 
-    private String aggregateId;
-    private String eventId;
-    private Long occurredOn;
+    private AggregateID aggregateId;
+    private EventID eventId;
+    private OccuredOn occurredOn;
 
-    public DomainEvent(String aggregateId) {
+    public DomainEvent(AggregateID aggregateId) {
         this.aggregateId = aggregateId;
-        this.eventId     = UUID.randomUUID().toString();
-        this.occurredOn  = Timestamp.from(Instant.now()).getTime();
+        this.eventId     = new EventID(UUID.randomUUID().toString());
+        this.occurredOn  = new OccuredOn(Timestamp.from(Instant.now()).getTime());
     }
 
-    public DomainEvent(String aggregateId, String eventId, Long occurredOn) {
+    public DomainEvent(AggregateID aggregateId, EventID eventId, OccuredOn occurredOn) {
         this.aggregateId = aggregateId;
         this.eventId = eventId;
         this.occurredOn = occurredOn;
@@ -32,21 +31,33 @@ public abstract class DomainEvent<T extends DomainEvent<?>> {
     protected abstract HashMap<String, Serializable> toPrimitives();
 
     protected abstract T fromPrimitives(
-            String aggregateId,
+            AggregateID aggregateId,
             HashMap<String, Serializable> body,
-            String eventId,
-            Long occurredOn
+            EventID eventId,
+            OccuredOn occurredOn
     );
 
-    public String aggregateId() {
+    public AggregateID aggregateId() {
         return aggregateId;
     }
 
-    public String eventId() {
+    public EventID eventId() {
         return eventId;
     }
 
-    public Long occurredOn() {
+    public OccuredOn occurredOn() {
         return occurredOn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        DomainEvent<?> that = (DomainEvent<?>) o;
+        return eventId.value().equalsIgnoreCase(that.eventId.value());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(eventId.value());
     }
 }

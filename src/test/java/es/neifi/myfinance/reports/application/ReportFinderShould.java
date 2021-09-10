@@ -115,7 +115,7 @@ class ReportFinderShould {
 
     @Test
     void throw_report_not_found_exception_when_report_is_not_found() {
-        String reportId = "d26b3d48-beeb-46ca-82cc-5d5b23285447";
+        String reportId = UUID.randomUUID().toString();
         String userId = "b26b3d48-beeb-46ca-82cc-5d5b23285448";
         when(reportRepository.findById(reportId)).thenReturn(Optional.empty());
         Exception exception = assertThrows(NoReportFoundException.class, () -> {
@@ -128,9 +128,9 @@ class ReportFinderShould {
 
     @Test
     void throw_reports_not_found_exception_when_report_is_not_found() {
-        String id = "d26b3d48-beeb-46ca-82cc-5d5b23285447";
+        String reportId = UUID.randomUUID().toString();
         String userId = "b26b3d48-beeb-46ca-82cc-5d5b23285448";
-        when(reportRepository.findById(id)).thenReturn(Optional.empty());
+        when(reportRepository.findById(reportId)).thenReturn(Optional.empty());
         Exception exception = assertThrows(NoReportFoundException.class, () -> {
             reportFinder.findAll(userId);
         });

@@ -8,6 +8,7 @@ import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.shared.Infrastructure.utils.ResponseMapper;
 import es.neifi.myfinance.users.application.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,54 +33,67 @@ public class GetIncomeController {
     public ResponseEntity<RegistryResponse> getincome(@PathVariable String userID, @PathVariable String id) {
 
 
-            Optional<Registry> optionalRegistry = registrySearcher.findRegistry(id);
+        Optional<Registry> optionalRegistry = registrySearcher.findRegistry(id);
 
-            if (optionalRegistry.isPresent()) {
-                Registry registry = optionalRegistry.get();
-                RegistryResponse registryResponse = RegistryResponse.builder()
-                        .userId(registry.userId().value())
-                        .id(registry.id().value())
-                        .category(registry.category().value())
-                        .name(registry.name().value())
-                        .cost(registry.cost().value())
-                        .currency(registry.currency().value())
-                        .date(registry.date().value())
-                        .isExpense(registry.isExpense())
-                        .build();
-                return ResponseEntity.ok(registryResponse);
-            }
+        if (optionalRegistry.isPresent()) {
+            Registry registry = optionalRegistry.get();
+            RegistryResponse registryResponse = RegistryResponse.builder()
+                    .userId(registry.userId().value())
+                    .id(registry.id().value())
+                    .category(registry.category().value())
+                    .name(registry.name().value())
+                    .cost(registry.cost().value())
+                    .currency(registry.currency().value())
+                    .date(registry.date().value())
+                    .isExpense(registry.isExpense())
+                    .build();
+            return ResponseEntity.ok(registryResponse);
+        }
 
 
         return ResponseEntity.notFound().build();
     }
 
     @GetMapping("user/{userID}/income/")
-    public ResponseEntity<RegistryListResponse> getIncomes(
+    public ResponseEntity<?> searchIncomes(
             @PathVariable String userID,
             @Nullable @RequestParam Long initialDate,
             @Nullable @RequestParam Long endDate) {
 
+        List<RegistryResponse> registryData = new ArrayList<>();
+        List<Registry> incomes;
         try {
-            List<RegistryResponse> registryData = new ArrayList<>();
-            List<Registry> incomes;
 
-            if (initialDate == null || endDate == null) {
-                incomes = ResponseMapper.mapToRegistryResponse(
-                        registryData,
-                        registrySearcher.findIncomes(userID));
-            } else {
-                incomes = ResponseMapper.mapToRegistryResponse(
-                        registryData,
-                        registrySearcher.findIncomes(userID, initialDate, endDate));
+            incomes = searchIncomes(userID, initialDate, endDate, registryData);
+
+            if (!incomes.isEmpty()) {
+
+                RegistryListResponse response = mapToIncomeListResponse(initialDate, endDate, registryData, incomes);
+
+                return ResponseEntity.ok(response);
             }
 
-            RegistryListResponse response = mapToIncomeListResponse(initialDate, endDate, registryData, incomes);
-
-            return ResponseEntity.ok(response);
-        }catch (UserNotFoundException exception){
-
+        } catch (UserNotFoundException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new UserNotFoundException(userID));
         }
         return ResponseEntity.notFound().build();
+    }
+
+    private List<Registry> searchIncomes(String userID, Long initialDate, Long endDate, List<RegistryResponse> registryData) {
+
+        if (initialDate == null || endDate == null) {
+            return searchIncomes(registryData, registrySearcher.findIncomes(userID));
+        } else {
+            return searchIncomes(registryData, registrySearcher.findIncomes(userID, initialDate, endDate));
+        }
+
+    }
+
+    private List<Registry> searchIncomes(List<RegistryResponse> registryData, List<Registry> incomes2) {
+        return ResponseMapper.mapToRegistryResponse(
+                registryData,
+                incomes2);
+
     }
 
     private RegistryListResponse mapToIncomeListResponse(Long initialDate, Long endDate, List<RegistryResponse> registryData, List<Registry> incomes) {

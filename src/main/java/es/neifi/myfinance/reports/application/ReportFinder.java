@@ -25,7 +25,7 @@ public class ReportFinder {
         return reports;
     }
 
-    public Optional<Report> findById(String userId,String reportId)  {
+    public Optional<Report> findById(String userId, String reportId)  {
         userService.find(userId);
         Optional<Report> report = reportRepository.findById(reportId);
         if (report.isEmpty()) throw new NoReportFoundException(reportId);

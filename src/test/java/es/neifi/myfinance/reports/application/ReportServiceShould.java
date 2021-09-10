@@ -34,7 +34,7 @@ class ReportServiceShould {
         Report report = Report.create(
                 new ReportID(reportId),
                 new UserID(UUID.randomUUID().toString()),
-                new TotalExpenses(100),
+                new TotalExpenses(100D),
                 new TotalIncomes(1000),
                 new TotalSavings(900),
                 new IsExpense(true),

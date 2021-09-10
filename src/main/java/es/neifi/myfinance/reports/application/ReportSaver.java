@@ -49,7 +49,7 @@ public class ReportSaver {
     private Registry createIncome(RegistryCreatedDomainEvent event) {
         return Registry.createIncome(
                 new UserID(event.userId()),
-                new RegistryID(event.aggregateId()),
+                new RegistryID(event.aggregateId().value()),
                 new Category(event.category()),
                 new Name(event.name()),
                 new Cost(event.cost()),
@@ -61,7 +61,7 @@ public class ReportSaver {
     private Registry createExpense(RegistryCreatedDomainEvent event) {
         return Registry.createExpense(
                 new UserID(event.userId()),
-                new RegistryID(event.aggregateId()),
+                new RegistryID(event.aggregateId().value()),
                 new Category(event.category()),
                 new Name(event.name()),
                 new Cost(event.cost()),

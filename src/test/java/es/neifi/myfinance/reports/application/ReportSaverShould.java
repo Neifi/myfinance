@@ -10,6 +10,7 @@ import es.neifi.myfinance.reports.domain.TotalExpenses;
 import es.neifi.myfinance.reports.domain.TotalIncomes;
 import es.neifi.myfinance.reports.domain.TotalSavings;
 import es.neifi.myfinance.shared.domain.UserService;
+import es.neifi.myfinance.shared.domain.bus.event.AggregateID;
 import es.neifi.myfinance.users.domain.UserID;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,6 +18,7 @@ import org.mockito.Mockito;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -32,7 +34,7 @@ class ReportSaverShould {
 
     @Test
     void save_expense_report_on_receive_registry_created_event() {
-        String id = "8c5f74c4-41b8-47b5-82ff-ec5f784add04";
+        AggregateID id = new AggregateID("8c5f74c4-41b8-47b5-82ff-ec5f784add04");
         String userID = "1c9dee02-7d09-419d-ab22-70fbb8825ba2";
         String category = "some-cat";
         String name = "some-name";
@@ -46,7 +48,7 @@ class ReportSaverShould {
                 1)).getTime();
 
         Report report = Report.create(
-                new ReportID(id),
+                new ReportID(id.value()),
                 new UserID(userID),
                 new TotalExpenses(cost),
                 new TotalIncomes(0.0),
@@ -67,7 +69,7 @@ class ReportSaverShould {
     @Test
     void save_expense_report_one_time_although_the_event_is_duplicated() {
 
-        String id = "8c5f74c4-41b8-47b5-82ff-ec5f784add04";
+        String reportId = UUID.randomUUID().toString();
         String userID = "1c9dee02-7d09-419d-ab22-70fbb8825ba2";
         long date = Timestamp.valueOf(LocalDateTime.of(
                 2021,
@@ -77,7 +79,7 @@ class ReportSaverShould {
                 1)).getTime();
 
         Report report = Report.create(
-                new ReportID(id),
+                new ReportID(reportId),
                 new UserID(userID),
                 new TotalExpenses(100.0),
                 new TotalIncomes(0.0),
@@ -92,11 +94,11 @@ class ReportSaverShould {
 
 
         RegistryCreatedDomainEvent registryCreatedDomainEvent = new RegistryCreatedDomainEvent(
-                userID, id, category, name, cost, currency, date, true
+                userID, new AggregateID(reportId), category, name, cost, currency, date, true
         );
 
         reportSaver.on(registryCreatedDomainEvent);
-        when(reportService.findReport(id)).thenReturn(Optional.of(report));
+        when(reportService.findReport(reportId)).thenReturn(Optional.of(report));
         reportSaver.on(registryCreatedDomainEvent);
 
         verify(reportRepository, Mockito.times(1)).saveReport(report);

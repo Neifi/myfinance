@@ -10,6 +10,7 @@ import es.neifi.myfinance.reports.domain.TotalExpenses;
 import es.neifi.myfinance.reports.domain.TotalIncomes;
 import es.neifi.myfinance.reports.domain.TotalSavings;
 import es.neifi.myfinance.shared.Infrastructure.IntegrationTestBase;
+import es.neifi.myfinance.shared.domain.bus.event.AggregateID;
 import es.neifi.myfinance.shared.utils.DateUtils;
 import es.neifi.myfinance.users.domain.UserID;
 import org.junit.jupiter.api.Test;

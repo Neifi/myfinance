@@ -3,6 +3,7 @@ package es.neifi.myfinance.reports.infrastructure;
 import es.neifi.myfinance.reports.domain.Report;
 import es.neifi.myfinance.reports.domain.ReportRepository;
 import es.neifi.myfinance.shared.Infrastructure.utils.ResponseMapper;
+import es.neifi.myfinance.shared.domain.bus.event.AggregateID;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
