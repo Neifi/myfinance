@@ -39,13 +39,13 @@ public class GetIncomeController {
             if (optionalRegistry.isPresent()) {
                 Registry registry = optionalRegistry.get();
                 RegistryResponse registryResponse = RegistryResponse.builder()
-                        .userId(registry.getUserId().value())
-                        .id(registry.getId().value())
-                        .category(registry.getCategory().value())
-                        .name(registry.getName().value())
-                        .cost(registry.cost())
-                        .currency(registry.getCurrency().getValue())
-                        .date(registry.getDate().value())
+                        .userId(registry.userId().value())
+                        .id(registry.id().value())
+                        .category(registry.category().value())
+                        .name(registry.name().value())
+                        .cost(registry.cost().value())
+                        .currency(registry.currency().value())
+                        .date(registry.date().value())
                         .isExpense(registry.isExpense())
                         .build();
                 return ResponseEntity.ok(registryResponse);

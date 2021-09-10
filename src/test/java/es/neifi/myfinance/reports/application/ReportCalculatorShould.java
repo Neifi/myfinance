@@ -29,11 +29,11 @@ import static org.mockito.Mockito.times;
 
 class ReportCalculatorShould {
 
-    private ReportRepository reportRepository = Mockito.mock(ReportRepository.class);
-    private ReportCalculator reportCalculator = new ReportCalculator(reportRepository);
+    private final ReportRepository reportRepository = Mockito.mock(ReportRepository.class);
+    private final ReportCalculator reportCalculator = new ReportCalculator(reportRepository);
 
     @Test
-    void calculate_data_correctly_for_expense_report_when_registry_is_created_with_existent_last_report() throws ParseException {
+    void calculate_data_correctly_for_expense_report_when_registry_is_created_with_existent_last_report() {
         String id = "24985754-13bc-4bee-a972-d37e81fcb9ff";
         String userId = UUID.randomUUID().toString();
 
@@ -85,11 +85,8 @@ class ReportCalculatorShould {
         Report actual = reportCalculator.calculate(expenseRegistry);
 
         Mockito.verify(reportRepository, times(1)).findLast(userId);
-        assertEquals(expectedExpenseReport.getReportId(), actual.getReportId());
-        assertEquals(expectedExpenseReport.getIsExpense(), actual.getIsExpense());
-        assertEquals(expectedExpenseReport.getTotalIncomes(), actual.getTotalIncomes());
-        assertEquals(expectedExpenseReport.getTotalExpenses(), actual.getTotalExpenses());
-        assertEquals(expectedExpenseReport.getTotalSavings(), actual.getTotalSavings());
+        assertEquals(expectedExpenseReport, actual);
+
 
     }
 
@@ -146,11 +143,8 @@ class ReportCalculatorShould {
 
         Mockito.verify(reportRepository, times(1)).findLast(userId);
 
-        assertEquals(expectedExpenseReport.getReportId(), actual.getReportId());
-        assertEquals(expectedExpenseReport.getIsExpense(), actual.getIsExpense());
-        assertEquals(expectedExpenseReport.getTotalIncomes(), actual.getTotalIncomes());
-        assertEquals(expectedExpenseReport.getTotalExpenses(), actual.getTotalExpenses());
-        assertEquals(expectedExpenseReport.getTotalSavings(), actual.getTotalSavings());
+        assertEquals(expectedExpenseReport, actual);
+;
 
     }
 
@@ -193,11 +187,8 @@ class ReportCalculatorShould {
         Report actual = reportCalculator.calculate(incomeRegistry);
 
         Mockito.verify(reportRepository, times(1)).findLast(userId);
-        assertEquals(expectedIncomeReport.getReportId(), actual.getReportId());
-        assertEquals(expectedIncomeReport.getIsExpense(), actual.getIsExpense());
-        assertEquals(expectedIncomeReport.getTotalIncomes(), actual.getTotalIncomes());
-        assertEquals(expectedIncomeReport.getTotalExpenses(), actual.getTotalExpenses());
-        assertEquals(expectedIncomeReport.getTotalSavings(), actual.getTotalSavings());
+        assertEquals(expectedIncomeReport,actual);
+
     }
 
     @Test
@@ -239,11 +230,8 @@ class ReportCalculatorShould {
         Report actual = reportCalculator.calculate(expenseRegistry);
 
         Mockito.verify(reportRepository, times(1)).findLast(userId);
-        assertEquals(expectedExpenseReport.getReportId(), actual.getReportId());
-        assertEquals(expectedExpenseReport.getIsExpense(), actual.getIsExpense());
-        assertEquals(expectedExpenseReport.getTotalIncomes(), actual.getTotalIncomes());
-        assertEquals(expectedExpenseReport.getTotalExpenses(), actual.getTotalExpenses());
-        assertEquals(expectedExpenseReport.getTotalSavings(), actual.getTotalSavings());
+        assertEquals(expectedExpenseReport, actual);
+
 
     }
 

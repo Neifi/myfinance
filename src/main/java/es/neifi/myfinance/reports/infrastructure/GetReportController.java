@@ -25,18 +25,18 @@ public class GetReportController {
         this.reportFinder = reportFinder;
     }
 
-    @GetMapping("/user/{userId}/report/{reportId}")
-    public ResponseEntity<?> getReport(@PathVariable("userId") String userId, @PathVariable("reportId") String reportId, @Nullable @RequestParam String initialDate, @Nullable @RequestParam String endDate) {
+    @GetMapping("/user/{userId}/report/")
+    public ResponseEntity<?> getReport(@PathVariable("userId") String userId, @Nullable @RequestParam String initialDate, @Nullable @RequestParam String endDate) {
         try {
-            Optional<Report> report = this.reportFinder.findById(userId, reportId);
+            Optional<Report> report = this.reportFinder.findLast(userId);
             if (report.isPresent()) {
 
                 return ok(new ReportResponse(
-                        report.get().getTotalExpenses().value(),
-                        report.get().getTotalIncomes().value(),
-                        report.get().getTotalSavings().value(),
-                        report.get().getIsExpense().isTrue(),
-                        report.get().getDate().value()));
+                        report.get().totalExpenses().value(),
+                        report.get().totalIncomes().value(),
+                        report.get().totalSavings().value(),
+                        report.get().isExpense().value(),
+                        report.get().date().value()));
             }
         }catch (UserNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new UserNotFoundException(userId));

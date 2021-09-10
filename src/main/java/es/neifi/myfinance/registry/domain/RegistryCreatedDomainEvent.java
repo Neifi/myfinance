@@ -1,12 +1,10 @@
 package es.neifi.myfinance.registry.domain;
 
 import es.neifi.myfinance.shared.domain.bus.event.DomainEvent;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
-@EqualsAndHashCode
 public class RegistryCreatedDomainEvent extends DomainEvent<RegistryCreatedDomainEvent> {
 
     private String userId;
@@ -48,7 +46,7 @@ public class RegistryCreatedDomainEvent extends DomainEvent<RegistryCreatedDomai
     public HashMap<String, Serializable> toPrimitives() {
         return new HashMap<String, Serializable>() {{
             put("userId", userId);
-            put("registryId", RegistryCreatedDomainEvent.super.getAggregateId());
+            put("registryId", RegistryCreatedDomainEvent.super.aggregateId());
             put("name", name);
             put("category", category);
             put("cost", cost);

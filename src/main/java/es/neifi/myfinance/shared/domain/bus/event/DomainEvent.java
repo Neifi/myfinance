@@ -1,17 +1,14 @@
 package es.neifi.myfinance.shared.domain.bus.event;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.UUID;
 
 @EqualsAndHashCode
-@Getter
 public abstract class DomainEvent<T extends DomainEvent<?>> {
 
     private String aggregateId;
@@ -40,4 +37,16 @@ public abstract class DomainEvent<T extends DomainEvent<?>> {
             String eventId,
             Long occurredOn
     );
+
+    public String aggregateId() {
+        return aggregateId;
+    }
+
+    public String eventId() {
+        return eventId;
+    }
+
+    public Long occurredOn() {
+        return occurredOn;
+    }
 }

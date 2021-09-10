@@ -42,11 +42,11 @@ class GetReportControllerShould {
     private UserService userService;
 
     @Test
-    void response_with_http_status_200_with_expense_report_as_body() throws Exception {
+    void response_with_http_status_200_with_last_report_as_body() throws Exception {
         String reportId = UUID.randomUUID().toString();
         String userId = UUID.randomUUID().toString();
         Long date = timestampOf(2021, 6, 22, 11, 33, 18);
-        when(reportFinder.findById(userId, reportId)).thenReturn(
+        when(reportFinder.findLast(userId)).thenReturn(
                 Optional.of(
                         Report.create(
                                 new ReportID(reportId),
@@ -58,7 +58,7 @@ class GetReportControllerShould {
                                 new Date(date)
                         )
                 ));
-        mockMvc.perform(get("/user/" + userId + "/report/" + reportId))
+        mockMvc.perform(get("/user/" + userId + "/report/"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"totalExpenses\":100,\"totalExpenses\":100,\"totalIncomes\":1100,\"totalSavings\":1000,\"expense\":true,\"date\":" + date + "}"));
     }
@@ -67,11 +67,20 @@ class GetReportControllerShould {
     void response_with_404_not_found_when_associated_user_is_not_found() throws Exception {
         String reportId = UUID.randomUUID().toString();
         String userId = "061bddf7-dac7-4a2d-b7ab-e040bbcfd339";
-        when(reportFinder.findById(userId,reportId)).thenThrow(new UserNotFoundException(userId));
-        mockMvc.perform(get("/user/" + userId + "/report/" + reportId))
+        when(reportFinder.findLast(userId)).thenThrow(new UserNotFoundException(userId));
+        mockMvc.perform(get("/user/" + userId + "/report/"))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json("{\"localizedMessage\": \"User not found with ID: 061bddf7-dac7-4a2d-b7ab-e040bbcfd339\"}"));
 
+    }
+
+    @Test
+    void response_with_404_not_found_when_no_reports_found() throws Exception {
+        String reportId = UUID.randomUUID().toString();
+        String userId = "061bddf7-dac7-4a2d-b7ab-e040bbcfd339";
+        when(reportFinder.findLast(userId)).thenReturn(Optional.empty());
+        mockMvc.perform(get("/user/" + userId + "/report/"))
+                .andExpect(status().isNotFound());
     }
 }
 

@@ -1,21 +1,14 @@
 package es.neifi.myfinance.registry.domain.vo;
 
 import es.neifi.myfinance.registry.domain.exceptions.NegativeValueException;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import es.neifi.myfinance.shared.domain.DoubleValueObject;
 
-@EqualsAndHashCode
-@Getter
-public class Cost {
 
-    private double value;
+public class Cost extends DoubleValueObject {
 
     public Cost(double value) {
-        if(value < 0) throw new NegativeValueException("Value cannot be less than zero");
-        this.value = value;
+        super(value);
+        if (value < 0) throw new NegativeValueException("Value cannot be less than zero");
     }
 
-    public double value(){
-        return this.value;
-    }
 }

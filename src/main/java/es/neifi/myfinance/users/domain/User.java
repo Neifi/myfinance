@@ -1,12 +1,11 @@
 package es.neifi.myfinance.users.domain;
 
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
+
+import java.util.Objects;
 
 @Getter
-@EqualsAndHashCode
 @Builder
 public class User {
 
@@ -20,4 +19,15 @@ public class User {
         this.email = email;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id.value().equalsIgnoreCase(user.id.value());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

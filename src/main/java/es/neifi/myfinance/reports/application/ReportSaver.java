@@ -49,7 +49,7 @@ public class ReportSaver {
     private Registry createIncome(RegistryCreatedDomainEvent event) {
         return Registry.createIncome(
                 new UserID(event.userId()),
-                new RegistryID(event.getAggregateId()),
+                new RegistryID(event.aggregateId()),
                 new Category(event.category()),
                 new Name(event.name()),
                 new Cost(event.cost()),
@@ -61,7 +61,7 @@ public class ReportSaver {
     private Registry createExpense(RegistryCreatedDomainEvent event) {
         return Registry.createExpense(
                 new UserID(event.userId()),
-                new RegistryID(event.getAggregateId()),
+                new RegistryID(event.aggregateId()),
                 new Category(event.category()),
                 new Name(event.name()),
                 new Cost(event.cost()),
@@ -96,8 +96,8 @@ public class ReportSaver {
     }*/
 
     public void saveReport(Report report) {
-        String searchedReport = report.getReportId().value();
-        String userId = report.getUserId().value();
+        String searchedReport = report.reportId().value();
+        String userId = report.userId().value();
         userService.find(userId);
         if (reportService.findReport(searchedReport).isEmpty()) {
             reportRepository.saveReport(report);

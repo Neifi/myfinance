@@ -2,12 +2,9 @@ package es.neifi.myfinance.reports.domain;
 
 import es.neifi.myfinance.registry.domain.vo.Date;
 import es.neifi.myfinance.users.domain.UserID;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 
-@Getter
-@EqualsAndHashCode
+import java.util.Objects;
+
 public class Report {
     private ReportID reportId;
     private UserID userId;
@@ -29,5 +26,45 @@ public class Report {
 
     public static Report create(ReportID reportID, UserID userId,TotalExpenses totalExpenses, TotalIncomes totalIncomes, TotalSavings totalSavings, IsExpense isExpense, Date date) {
         return new Report(reportID,userId,totalExpenses,totalIncomes,totalSavings,isExpense,date);
+    }
+
+    public ReportID reportId() {
+        return reportId;
+    }
+
+    public UserID userId() {
+        return userId;
+    }
+
+    public TotalExpenses totalExpenses() {
+        return totalExpenses;
+    }
+
+    public TotalIncomes totalIncomes() {
+        return totalIncomes;
+    }
+
+    public TotalSavings totalSavings() {
+        return totalSavings;
+    }
+
+    public IsExpense isExpense() {
+        return isExpense;
+    }
+
+    public Date date() {
+        return date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Report report = (Report) o;
+        return reportId.value().equalsIgnoreCase(report.reportId.value());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(reportId);
     }
 }

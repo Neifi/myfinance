@@ -37,7 +37,8 @@ public class PostIncomeController {
                     registryRequest.getName(),
                     registryRequest.getCost(),
                     registryRequest.getCurrency(),
-                    registryRequest.getDate());
+                    registryRequest.getDate()
+            );
 
             registrySaver.saveIncome(saveRegistryCommand);
             return ResponseEntity.status(HttpStatus.CREATED).build();

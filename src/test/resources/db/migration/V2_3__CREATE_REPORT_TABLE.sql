@@ -5,5 +5,5 @@ CREATE TABLE report(
     totalIncomes numeric(10,2) NOT NULL,
     totalSavings numeric(10,2) NOT NULL,
     isExpense boolean NOT NULL,
-    date timestamp NOT NULL
+    date timestamptz NOT NULL
 );

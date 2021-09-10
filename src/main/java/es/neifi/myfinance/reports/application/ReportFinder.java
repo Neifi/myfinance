@@ -32,4 +32,10 @@ public class ReportFinder {
         return report;
     }
 
+    public Optional<Report> findLast(String userId) {
+        userService.find(userId);
+        Optional<Report> report = reportRepository.findLast(userId);
+        if (report.isEmpty()) throw new NoReportFoundException(userId);
+        return report;
+    }
 }

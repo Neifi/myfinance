@@ -12,8 +12,6 @@ import es.neifi.myfinance.reports.domain.TotalIncomes;
 import es.neifi.myfinance.reports.domain.TotalSavings;
 import es.neifi.myfinance.users.domain.UserID;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.Optional;
 
 public class ReportCalculator {
@@ -33,11 +31,11 @@ public class ReportCalculator {
 
         Report report;
 
-        last = reportRepository.findLast(registry.getUserId().value());
+        last = reportRepository.findLast(registry.userId().value());
         last.ifPresent(value -> {
-            totalIncomes = value.getTotalIncomes();
-            totalSavings = value.getTotalSavings();
-            totalExpenses = value.getTotalExpenses();
+            totalIncomes = value.totalIncomes();
+            totalSavings = value.totalSavings();
+            totalExpenses = value.totalExpenses();
         });
 
         if (registry.isExpense()) {
@@ -53,33 +51,33 @@ public class ReportCalculator {
     private Report calculateIncome(Registry registry) {
 
 
-        TotalIncomes newTotalIncomes = new TotalIncomes(totalIncomes.value() + registry.getCost().value());
-        TotalSavings newTotalSavings = new TotalSavings(totalSavings.value() + registry.getCost().value());
+        TotalIncomes newTotalIncomes = new TotalIncomes(totalIncomes.value() + registry.cost().value());
+        TotalSavings newTotalSavings = new TotalSavings(totalSavings.value() + registry.cost().value());
 
         return Report.create(
-                new ReportID(registry.getId().value()),
-                new UserID(registry.getUserId().value()),
+                new ReportID(registry.id().value()),
+                new UserID(registry.userId().value()),
                 totalExpenses,
                 newTotalIncomes,
                 newTotalSavings,
                 new IsExpense(false),
-                new Date(registry.getDate().value())
+                new Date(registry.date().value())
         );
     }
 
     private Report calculateExpense(Registry registry){
 
-        TotalExpenses newTotalExpenses = new TotalExpenses(totalExpenses.value() + registry.getCost().value());
-        TotalSavings newTotalSavings = new TotalSavings(totalSavings.value() - registry.getCost().value());
+        TotalExpenses newTotalExpenses = new TotalExpenses(totalExpenses.value() + registry.cost().value());
+        TotalSavings newTotalSavings = new TotalSavings(totalSavings.value() - registry.cost().value());
 
         return Report.create(
-                new ReportID(registry.getId().value()),
-                new UserID(registry.getUserId().value()),
+                new ReportID(registry.id().value()),
+                new UserID(registry.userId().value()),
                 newTotalExpenses,
                 totalIncomes,
                 newTotalSavings,
                 new IsExpense(true),
-                new Date(registry.getDate().value())
+                new Date(registry.date().value())
         );
 
 

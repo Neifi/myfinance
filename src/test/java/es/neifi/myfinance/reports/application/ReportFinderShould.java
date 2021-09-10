@@ -78,10 +78,11 @@ class ReportFinderShould {
     }
 
     @Test
-    void find_report_by_id() {
+    void find_last_report() {
         String id = "d26b3d48-beeb-46ca-82cc-5d5b23285447";
-        String userId = UUID.randomUUID().toString();
-        Report report = Report.create(
+        String userId = "47080dd8-587b-441f-9754-9013cc6f64f6";
+
+        Report lastReport = Report.create(
                 new ReportID(id),
                 new UserID(userId),
                 new TotalExpenses(100),
@@ -95,11 +96,11 @@ class ReportFinderShould {
                         15,
                         1)).getTime()));
 
-        when(reportRepository.findById(id)).thenReturn(Optional.of(report));
+        when(reportRepository.findLast(userId)).thenReturn(Optional.of(lastReport));
 
-        reportFinder.findById(userId, id);
+        reportFinder.findLast(userId);
 
-        verify(reportRepository, times(1)).findById(id);
+        verify(reportRepository, times(1)).findLast(userId);
     }
 
     @Test

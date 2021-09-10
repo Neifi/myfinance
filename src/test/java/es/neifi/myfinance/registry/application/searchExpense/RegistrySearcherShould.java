@@ -50,7 +50,7 @@ class RegistrySearcherShould {
 
         assertTrue(expense.isPresent());
         assertTrue(expense.get().isExpense());
-        assertEquals(id, expense.get().getId().value());
+        assertEquals(id, expense.get().id().value());
     }
 
     @Test
@@ -94,7 +94,7 @@ class RegistrySearcherShould {
 
         assertTrue(expense.isPresent());
         assertTrue(expense.get().isExpense());
-        assertEquals(id, expense.get().getId().value());
+        assertEquals(id, expense.get().id().value());
     }
 
     @Test

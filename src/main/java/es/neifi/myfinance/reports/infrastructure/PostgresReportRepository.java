@@ -39,13 +39,13 @@ public class PostgresReportRepository implements ReportRepository {
                 ")";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("reportId", report.getReportId().value());
-        parameters.addValue("userId", report.getUserId().value());
-        parameters.addValue("totalExpenses", report.getTotalExpenses().value());
-        parameters.addValue("totalIncomes", report.getTotalIncomes().value());
-        parameters.addValue("totalSavings", report.getTotalSavings().value());
-        parameters.addValue("isExpense", report.getIsExpense().isTrue());
-        parameters.addValue("date", new Timestamp(report.getDate().value()));
+        parameters.addValue("reportId", report.reportId().value());
+        parameters.addValue("userId", report.userId().value());
+        parameters.addValue("totalExpenses", report.totalExpenses().value());
+        parameters.addValue("totalIncomes", report.totalIncomes().value());
+        parameters.addValue("totalSavings", report.totalSavings().value());
+        parameters.addValue("isExpense", report.isExpense().value());
+        parameters.addValue("date", new Timestamp(report.date().value()));
 
         jdbcTemplate.update(query, parameters);
     }
