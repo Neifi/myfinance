@@ -3,16 +3,19 @@ package es.neifi.myfinance.registry.application.searchRegistry;
 import es.neifi.myfinance.registry.application.exceptions.RegistryNotFoundException;
 import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
+import es.neifi.myfinance.shared.domain.UserService;
 
 import java.util.List;
 import java.util.Optional;
 
 public class RegistrySearcher {
 
-    private RegistryRepository registryRepository;
+    private final RegistryRepository registryRepository;
+    private final UserService userService;
 
-    public RegistrySearcher(RegistryRepository registryRepository) {
+    public RegistrySearcher(RegistryRepository registryRepository, UserService userService) {
         this.registryRepository = registryRepository;
+        this.userService = userService;
     }
 
     public Optional<Registry> findRegistry(String registryId) {

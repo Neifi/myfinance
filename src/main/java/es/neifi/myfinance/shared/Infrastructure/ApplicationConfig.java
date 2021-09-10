@@ -70,8 +70,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public RegistrySearcher registrySearcher(RegistryRepository registryRepository) {
-        return new RegistrySearcher(registryRepository);
+    public RegistrySearcher registrySearcher(RegistryRepository registryRepository,UserService userService) {
+        return new RegistrySearcher(registryRepository,userService);
     }
 
     @Bean

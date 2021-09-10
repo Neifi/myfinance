@@ -1,6 +1,6 @@
 package es.neifi.myfinance.reports.domain;
 
-import es.neifi.myfinance.shared.domain.BooleanValueObject;
+import es.neifi.myfinance.shared.domain.baseValueObject.BooleanValueObject;
 
 public class IsExpense extends BooleanValueObject {
     public IsExpense(boolean value) {

@@ -1,4 +1,4 @@
-package es.neifi.myfinance.shared.domain;
+package es.neifi.myfinance.shared.domain.baseValueObject;
 
 import java.util.UUID;
 

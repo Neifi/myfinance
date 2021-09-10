@@ -1,4 +1,4 @@
-package es.neifi.myfinance.shared.domain;
+package es.neifi.myfinance.shared.domain.baseValueObject;
 
 public class BooleanValueObject extends BaseValueObject<Boolean> {
 

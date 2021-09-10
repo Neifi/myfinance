@@ -6,7 +6,7 @@ import es.neifi.myfinance.registry.application.searchRegistry.RegistryResponse;
 import es.neifi.myfinance.registry.application.searchRegistry.RegistrySearcher;
 import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.shared.Infrastructure.utils.ResponseMapper;
-import es.neifi.myfinance.shared.domain.UserService;
+import es.neifi.myfinance.users.application.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -22,18 +22,16 @@ import java.util.Optional;
 @RestController
 public class GetIncomeController {
     private RegistrySearcher registrySearcher;
-    private UserService userService;
 
     @Autowired
-    public GetIncomeController(RegistrySearcher registrySearcher, UserService userService) {
+    public GetIncomeController(RegistrySearcher registrySearcher) {
         this.registrySearcher = registrySearcher;
-        this.userService = userService;
     }
 
     @GetMapping("user/{userID}/income/{id}")
     public ResponseEntity<RegistryResponse> getincome(@PathVariable String userID, @PathVariable String id) {
 
-        if (isUserPresent(userID)) {
+
             Optional<Registry> optionalRegistry = registrySearcher.findRegistry(id);
 
             if (optionalRegistry.isPresent()) {
@@ -50,7 +48,7 @@ public class GetIncomeController {
                         .build();
                 return ResponseEntity.ok(registryResponse);
             }
-        }
+
 
         return ResponseEntity.notFound().build();
     }
@@ -61,7 +59,7 @@ public class GetIncomeController {
             @Nullable @RequestParam Long initialDate,
             @Nullable @RequestParam Long endDate) {
 
-        if (isUserPresent(userID)) {
+        try {
             List<RegistryResponse> registryData = new ArrayList<>();
             List<Registry> incomes;
 
@@ -78,6 +76,8 @@ public class GetIncomeController {
             RegistryListResponse response = mapToIncomeListResponse(initialDate, endDate, registryData, incomes);
 
             return ResponseEntity.ok(response);
+        }catch (UserNotFoundException exception){
+
         }
         return ResponseEntity.notFound().build();
     }
@@ -90,7 +90,4 @@ public class GetIncomeController {
                 .build();
     }
 
-    private boolean isUserPresent(String userID) {
-        return userService.find(userID).isPresent();
-    }
 }

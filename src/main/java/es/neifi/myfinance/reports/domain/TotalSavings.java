@@ -1,6 +1,5 @@
 package es.neifi.myfinance.reports.domain;
 
-import es.neifi.myfinance.shared.domain.DoubleValueObject;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode

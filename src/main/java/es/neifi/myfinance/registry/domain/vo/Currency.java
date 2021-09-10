@@ -1,6 +1,6 @@
 package es.neifi.myfinance.registry.domain.vo;
 
-import es.neifi.myfinance.shared.domain.StringValueObject;
+import es.neifi.myfinance.shared.domain.baseValueObject.StringValueObject;
 
 public class Currency extends StringValueObject {
 
