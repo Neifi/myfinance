@@ -2,7 +2,7 @@ package es.neifi.myfinance.accountBalance.infrastucture;
 
 import es.neifi.myfinance.accountBalance.application.AccountBalanceFinder;
 import es.neifi.myfinance.accountBalance.domain.AccountBalance;
-import es.neifi.myfinance.accountBalance.domain.TotalBalance;
+import es.neifi.myfinance.accountBalance.domain.Amount;
 import es.neifi.myfinance.registry.domain.vo.Currency;
 import es.neifi.myfinance.users.application.UserNotFoundException;
 import es.neifi.myfinance.users.domain.UserID;
@@ -40,7 +40,7 @@ class GetAccountBalanceControllerShould {
         String userId = "2be27975-4d87-413b-991c-ceff0bb960db";
         AccountBalance expectedAccountBalance = new AccountBalance(
                 new UserID(userId),
-                new TotalBalance(100.00),
+                new Amount(100.00),
                 new Currency("EUR"),
                 new Date(timestampOf(2021,12,1,1,1,0)));
 

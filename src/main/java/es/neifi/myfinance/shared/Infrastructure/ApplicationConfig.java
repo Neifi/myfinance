@@ -1,6 +1,7 @@
 package es.neifi.myfinance.shared.Infrastructure;
 
 import es.neifi.myfinance.accountBalance.application.AccountBalanceFinder;
+import es.neifi.myfinance.accountBalance.application.AccountBalanceUpdater;
 import es.neifi.myfinance.accountBalance.domain.AccountBalanceRepository;
 import es.neifi.myfinance.accountBalance.infrastucture.repository.PostgresAccountBalanceRepository;
 import es.neifi.myfinance.registry.application.saveRegistry.RegistrySaver;
@@ -31,6 +32,11 @@ public class ApplicationConfig {
     @Bean
     public AccountBalanceRepository accountBalanceRepository(){
         return new PostgresAccountBalanceRepository();
+    }
+
+    @Bean
+    public AccountBalanceUpdater accountBalanceUpdater (AccountBalanceRepository accountBalanceRepository, UserService userService){
+        return new AccountBalanceUpdater(accountBalanceRepository,userService);
     }
 
     @Bean

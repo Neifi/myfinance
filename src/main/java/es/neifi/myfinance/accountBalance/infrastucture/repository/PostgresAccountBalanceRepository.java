@@ -13,7 +13,7 @@ public class PostgresAccountBalanceRepository implements AccountBalanceRepositor
     }
 
     @Override
-    public void updateAccountBalance(String userId) {
+    public void updateAccountBalance(String userId, Double value) {
 
     }
 }

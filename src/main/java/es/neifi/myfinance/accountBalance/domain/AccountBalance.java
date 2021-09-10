@@ -8,14 +8,14 @@ import java.util.Date;
 public class AccountBalance {
 
     private final UserID userID;
-    private final TotalBalance totalBalance;
+    private final Amount amount;
     private final Currency currency;
     private final Date date;
 
-    public AccountBalance(UserID userID, TotalBalance totalBalance, Currency currency, Date date) {
+    public AccountBalance(UserID userID, Amount amount, Currency currency, Date date) {
 
         this.userID = userID;
-        this.totalBalance = totalBalance;
+        this.amount = amount;
         this.currency = currency;
         this.date = date;
     }
@@ -24,8 +24,8 @@ public class AccountBalance {
         return userID;
     }
 
-    public TotalBalance totalBalance() {
-        return totalBalance;
+    public Amount totalBalance() {
+        return amount;
     }
 
     public Currency currency() {

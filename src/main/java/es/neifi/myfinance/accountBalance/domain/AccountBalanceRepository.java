@@ -6,6 +6,6 @@ public interface AccountBalanceRepository {
 
     Optional<AccountBalance> searchAccountBalance(String userId);
 
-    void updateAccountBalance(String userId);
+    void updateAccountBalance(String userId,Double value);
 
 }
