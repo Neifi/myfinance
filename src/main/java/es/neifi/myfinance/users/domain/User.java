@@ -1,22 +1,29 @@
 package es.neifi.myfinance.users.domain;
 
-import lombok.Builder;
-import lombok.Getter;
+import es.neifi.myfinance.shared.domain.AggregateRoot;
 
 import java.util.Objects;
 
-@Getter
-@Builder
-public class User {
+
+public class User extends AggregateRoot {
 
     private UserID id;
     private UserName username;
     private Email email;
 
-    public User(UserID id, UserName username, Email email) {
+    private User(UserID id, UserName username, Email email) {
         this.id = id;
         this.username = username;
         this.email = email;
+
+
+    }
+
+    public static User createUser(UserID id, UserName username, Email email){
+        User user = new User(id, username, email);
+        UserRegisteredDomainEvent userRegisteredDomainEvent = new UserRegisteredDomainEvent(id);
+        user.record(userRegisteredDomainEvent);
+        return user;
     }
 
     @Override
@@ -28,6 +35,18 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id.value());
+    }
+
+    public UserID id() {
+        return id;
+    }
+
+    public UserName username() {
+        return username;
+    }
+
+    public Email email() {
+        return email;
     }
 }

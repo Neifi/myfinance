@@ -60,11 +60,10 @@ class GetIncomeControllerShould {
                 new Date(date)
         );
 
-        Optional<User> user = Optional.of(User.builder()
-                .id(new UserID("2be27975-4d87-413b-991c-ceff0bb960db"))
-                .username(new UserName("some-name"))
-                .email(new Email("some-email@mail.com"))
-                .build());
+        Optional<User> user = Optional.of(User.createUser(
+                new UserID("2be27975-4d87-413b-991c-ceff0bb960db"),
+                new UserName("some-name"),
+                new Email("some-email@mail.com")));
 
         when(userService.find("2be27975-4d87-413b-991c-ceff0bb960db")).thenReturn(user);
         when(registrySearcher.findRegistry("787f28f2-003a-4445-8659-d60683107845")).thenReturn(Optional.of(registry));
@@ -77,11 +76,10 @@ class GetIncomeControllerShould {
 
     @Test
     void return_http_status_404_with_existent_user_but_not_income() throws Exception {
-        Optional<User> user = Optional.of(User.builder()
-                .id(new UserID("2be27975-4d87-413b-991c-ceff0bb960db"))
-                .username(new UserName("some-name"))
-                .email(new Email("some-email@mail.com"))
-                .build());
+        Optional<User> user = Optional.of(User.createUser(
+                new UserID("2be27975-4d87-413b-991c-ceff0bb960db"),
+                new UserName("some-name"),
+                new Email("some-email@mail.com")));
         when(userService.find("2be27975-4d87-413b-991c-ceff0bb960db")).thenReturn(user);
 
         mockMvc.perform(get("/user/2be27975-4d87-413b-991c-ceff0bb960db/incomes/787f28f2-003a-4445-8659-d60683107845"))
@@ -98,11 +96,10 @@ class GetIncomeControllerShould {
     void return_http_status_200_with_list_of_incomes() throws Exception {
         String userId = "2be27975-4d87-413b-991c-ceff0bb960db";
         long date = Timestamp.from(Instant.now()).getTime();
-        Optional<User> user = Optional.of(User.builder()
-                .id(new UserID(userId))
-                .username(new UserName("some-name"))
-                .email(new Email("some-email@mail.com"))
-                .build());
+        Optional<User> user = Optional.of(User.createUser(
+                new UserID(userId),
+                new UserName("some-name"),
+                new Email("some-email@mail.com")));
 
         Registry registry = Registry.createIncome(
                 new UserID(userId),
@@ -134,11 +131,10 @@ class GetIncomeControllerShould {
 
     @Test
     void return_http_status_200_with_list_of_incomes_in_time_period() throws Exception {
-        Optional<User> user = Optional.of(User.builder()
-                .id(new UserID("2be27975-4d87-413b-991c-ceff0bb960db"))
-                .username(new UserName("some-name"))
-                .email(new Email("some-email@mail.com"))
-                .build());
+        Optional<User> user = Optional.of(User.createUser(
+                new UserID("2be27975-4d87-413b-991c-ceff0bb960db"),
+                new UserName("some-name"),
+                new Email("some-email@mail.com")));
 
         String userId = "787f28f2-003a-4445-8659-d60683107845";
         long date = Timestamp.valueOf(LocalDateTime.of(

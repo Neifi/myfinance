@@ -25,7 +25,7 @@ class PostgresUserRepositoryShould extends IntegrationTestBase {
     @Test
     void save_user_in_db() {
         String userId = UUID.randomUUID().toString();
-        User user = new User(
+        User user = User.createUser(
                 new UserID(userId),
                 new UserName("username"),
                 new Email("email@mail.com")
@@ -40,7 +40,7 @@ class PostgresUserRepositoryShould extends IntegrationTestBase {
     @Test
     void get_existent_user_from_db() {
         String userId = UUID.randomUUID().toString();
-        Optional<User> user = Optional.of(new User(
+        Optional<User> user = Optional.of(User.createUser(
                         new UserID(userId),
                         new UserName("username"),
                         new Email("email@mail.com")

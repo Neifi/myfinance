@@ -1,8 +1,8 @@
-package es.neifi.myfinance.accountBalance.infrastucture;
+package es.neifi.myfinance.accountBalance.infrastructure;
 
 import es.neifi.myfinance.accountBalance.application.AccountBalanceFinder;
 import es.neifi.myfinance.accountBalance.domain.AccountBalance;
-import es.neifi.myfinance.users.application.UserNotFoundException;
+import es.neifi.myfinance.users.application.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,9 @@ public class GetAccountBalanceController {
 
         try {
             Optional<AccountBalance> accountBalance = accountBalanceFinder.findBalance(userId);
-            AccountBalanceResponse accountBalanceResponse = new AccountBalanceResponse(accountBalance.get().totalBalance().value());
+            Double balance = accountBalance.get().totalBalance().value();
+            String currency = accountBalance.get().currency().value();
+            AccountBalanceResponse accountBalanceResponse = new AccountBalanceResponse(balance, currency);
             return ResponseEntity.ok(accountBalanceResponse);
         }catch (UserNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new UserNotFoundException(userId));
@@ -35,13 +37,18 @@ public class GetAccountBalanceController {
 
     private static class AccountBalanceResponse {
         private final double balance;
-
-        public AccountBalanceResponse(double balance) {
+        private final String currency;
+        public AccountBalanceResponse(double balance,String currency) {
             this.balance = balance;
+            this.currency = currency;
         }
 
         public double getBalance() {
             return balance;
+        }
+
+        public String getCurrency() {
+            return currency;
         }
     }
 }

@@ -105,6 +105,6 @@ public class Registry extends AggregateRoot {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id.value());
     }
 }

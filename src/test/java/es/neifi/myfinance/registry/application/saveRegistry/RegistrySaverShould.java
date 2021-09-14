@@ -11,8 +11,10 @@ import es.neifi.myfinance.shared.domain.bus.event.DomainEvent;
 import es.neifi.myfinance.shared.domain.bus.event.EventBus;
 import es.neifi.myfinance.shared.domain.bus.event.EventID;
 import es.neifi.myfinance.shared.domain.bus.event.OccuredOn;
+import es.neifi.myfinance.users.domain.Email;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserID;
+import es.neifi.myfinance.users.domain.UserName;
 import es.neifi.myfinance.users.domain.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -54,7 +56,10 @@ class RegistrySaverShould {
                 new Currency(request.currency()),
                 new Date(request.date()));
         Mockito.when(userRepository.searchById("a46ea122-f590-471e-95b8-4bc8fd46836a"))
-                .thenReturn(Optional.of(User.builder().build()));
+                .thenReturn(Optional.of(User.createUser(
+                        new UserID(request.userId()),
+                        new UserName("username"),
+                        new Email("test@mail.com"))));
         registrySaver.saveIncome(request);
 
         Mockito.verify(registryRepository, Mockito.times(1)).save(income);
@@ -82,7 +87,8 @@ class RegistrySaverShould {
                 new Date(request.date()));
 
         Mockito.when(userRepository.searchById("a46ea122-f590-471e-95b8-4bc8fd46836a"))
-                .thenReturn(Optional.of(User.builder().build()));
+                .thenReturn(Optional.of(User.createUser(new UserID(request.userId()),new UserName("username"),new Email("test@mail.com"))));
+
         registrySaver.saveExpense(request);
 
         Mockito.verify(registryRepository, Mockito.times(1)).save(expense);
@@ -121,7 +127,8 @@ class RegistrySaverShould {
                 isExpense));
 
         Mockito.when(userRepository.searchById("1c9dee02-7d09-419d-ab22-70fbb8825ba2"))
-                .thenReturn(Optional.of(User.builder().build()));
+                .thenReturn(Optional.of(User.createUser(new UserID(request.userId()),new UserName("username"),new Email("test@mail.com"))));
+
         registrySaver.saveExpense(request);
 
         Mockito.verify(eventBus, Mockito.times(1)).publish(events);
@@ -167,7 +174,8 @@ class RegistrySaverShould {
                 isExpense));
 
         Mockito.when(userRepository.searchById("1c9dee02-7d09-419d-ab22-70fbb8825ba2"))
-                .thenReturn(Optional.of(User.builder().build()));
+                .thenReturn(Optional.of(User.createUser(new UserID(request.userId()),new UserName("username"),new Email("test@mail.com"))));
+
         registrySaver.saveIncome(request);
 
         Mockito.verify(eventBus, Mockito.times(1)).publish(events);

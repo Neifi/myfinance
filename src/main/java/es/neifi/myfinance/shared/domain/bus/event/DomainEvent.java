@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 
-public abstract class DomainEvent<T extends DomainEvent<?>> {
+public abstract class DomainEvent<T extends DomainEvent<?>>{
 
     private AggregateID aggregateId;
     private EventID eventId;

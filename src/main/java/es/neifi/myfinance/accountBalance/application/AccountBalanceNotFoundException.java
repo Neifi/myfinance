@@ -1,6 +1,8 @@
 package es.neifi.myfinance.accountBalance.application;
 
-public class AccountBalanceNotFoundException extends RuntimeException{
+import es.neifi.myfinance.shared.application.exception.ApplicationException;
+
+public class AccountBalanceNotFoundException extends ApplicationException {
     public AccountBalanceNotFoundException() {
         super("Account balance not found");
     }

@@ -1,6 +1,6 @@
 package es.neifi.myfinance.users.application.find;
 
-import es.neifi.myfinance.users.application.UserNotFoundException;
+import es.neifi.myfinance.users.application.exceptions.UserNotFoundException;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserRepository;
 

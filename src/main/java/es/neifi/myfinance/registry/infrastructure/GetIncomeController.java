@@ -6,7 +6,7 @@ import es.neifi.myfinance.registry.application.searchRegistry.RegistryResponse;
 import es.neifi.myfinance.registry.application.searchRegistry.RegistrySearcher;
 import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.shared.Infrastructure.utils.ResponseMapper;
-import es.neifi.myfinance.users.application.UserNotFoundException;
+import es.neifi.myfinance.users.application.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

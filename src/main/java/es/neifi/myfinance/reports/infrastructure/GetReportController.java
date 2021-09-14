@@ -3,20 +3,19 @@ package es.neifi.myfinance.reports.infrastructure;
 import es.neifi.myfinance.reports.application.ReportFinder;
 import es.neifi.myfinance.reports.application.ReportResponse;
 import es.neifi.myfinance.reports.domain.Report;
-import es.neifi.myfinance.users.application.UserNotFoundException;
+import es.neifi.myfinance.users.application.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-@RestController
+
 public class GetReportController {
 
     private ReportFinder reportFinder;

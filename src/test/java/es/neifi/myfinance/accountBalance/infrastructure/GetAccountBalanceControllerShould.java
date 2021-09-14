@@ -1,10 +1,11 @@
-package es.neifi.myfinance.accountBalance.infrastucture;
+package es.neifi.myfinance.accountBalance.infrastructure;
 
 import es.neifi.myfinance.accountBalance.application.AccountBalanceFinder;
 import es.neifi.myfinance.accountBalance.domain.AccountBalance;
 import es.neifi.myfinance.accountBalance.domain.Amount;
 import es.neifi.myfinance.registry.domain.vo.Currency;
-import es.neifi.myfinance.users.application.UserNotFoundException;
+import es.neifi.myfinance.registry.domain.vo.Date;
+import es.neifi.myfinance.users.application.exceptions.UserNotFoundException;
 import es.neifi.myfinance.users.domain.UserID;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
-import java.util.Date;
 import java.util.Optional;
 
 import static es.neifi.myfinance.shared.utils.DateUtils.timestampOf;
@@ -46,7 +46,7 @@ class GetAccountBalanceControllerShould {
 
         when(accountBalanceFinder.findBalance(userId)).thenReturn(Optional.of(expectedAccountBalance));
 
-        ResultMatcher resultMatcher = content().json("{\"balance\":100.0}");
+        ResultMatcher resultMatcher = content().json("{\"balance\":100.0,\"currency\":\"EUR\"}");
         mockMvc.perform(get("/user/" + userId + "/account-balance/"))
                 .andExpect(status().isOk())
                 .andExpect(resultMatcher);

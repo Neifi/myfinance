@@ -1,6 +1,6 @@
 package es.neifi.myfinance.registry.domain.vo;
 
-import es.neifi.myfinance.registry.domain.exceptions.NegativeValueException;
+import es.neifi.myfinance.shared.domain.exception.NegativeValueException;
 import es.neifi.myfinance.shared.domain.baseValueObject.DoubleValueObject;
 
 

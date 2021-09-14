@@ -4,8 +4,9 @@ import es.neifi.myfinance.accountBalance.domain.AccountBalance;
 import es.neifi.myfinance.accountBalance.domain.AccountBalanceRepository;
 import es.neifi.myfinance.accountBalance.domain.Amount;
 import es.neifi.myfinance.registry.domain.vo.Currency;
+import es.neifi.myfinance.registry.domain.vo.Date;
 import es.neifi.myfinance.shared.domain.UserService;
-import es.neifi.myfinance.users.application.UserNotFoundException;
+import es.neifi.myfinance.users.application.exceptions.UserNotFoundException;
 import es.neifi.myfinance.users.domain.Email;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserID;
@@ -14,7 +15,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -63,7 +63,7 @@ class AccountBalanceUpdaterShould {
     void throw_exception_when_account_balance_dont_exist() {
         String userId = UUID.randomUUID().toString();
 
-        Mockito.when(userService.find(userId)).thenReturn(Optional.of(new User(new UserID(userId),new UserName("test"),new Email("email@test.com"))));
+        Mockito.when(userService.find(userId)).thenReturn(Optional.of(User.createUser(new UserID(userId),new UserName("test"),new Email("email@test.com"))));
 
         Mockito.when(accountBalanceRepository.searchAccountBalance(userId)).thenReturn(Optional.empty());
         Exception userNotFoundException = assertThrows(AccountBalanceNotFoundException.class, () -> accountBalanceUpdater.updateAccountBalance(new UserID(userId),new Amount(10D)));

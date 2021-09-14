@@ -1,9 +1,10 @@
 package es.neifi.myfinance.shared.Infrastructure;
 
+import es.neifi.myfinance.accountBalance.application.AccountBalanceCreator;
 import es.neifi.myfinance.accountBalance.application.AccountBalanceFinder;
 import es.neifi.myfinance.accountBalance.application.AccountBalanceUpdater;
 import es.neifi.myfinance.accountBalance.domain.AccountBalanceRepository;
-import es.neifi.myfinance.accountBalance.infrastucture.repository.PostgresAccountBalanceRepository;
+import es.neifi.myfinance.accountBalance.infrastructure.repository.PostgresAccountBalanceRepository;
 import es.neifi.myfinance.registry.application.saveRegistry.RegistrySaver;
 import es.neifi.myfinance.registry.application.searchRegistry.RegistrySearcher;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
@@ -30,8 +31,13 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class ApplicationConfig {
 
     @Bean
-    public AccountBalanceRepository accountBalanceRepository(){
-        return new PostgresAccountBalanceRepository();
+    public AccountBalanceCreator accountBalanceCreator(AccountBalanceRepository accountBalanceRepository,UserService userService){
+        return new AccountBalanceCreator(accountBalanceRepository,userService);
+    }
+
+    @Bean
+    public AccountBalanceRepository accountBalanceRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate){
+        return new PostgresAccountBalanceRepository(namedParameterJdbcTemplate);
     }
 
     @Bean
@@ -91,8 +97,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public UserRegistrator userRegistrator(UserRepository userRepository) {
-        return new UserRegistrator(userRepository);
+    public UserRegistrator userRegistrator(UserRepository userRepository,EventBus eventBus) {
+        return new UserRegistrator(userRepository,eventBus);
     }
 
     @Bean

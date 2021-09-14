@@ -1,7 +1,7 @@
 package es.neifi.myfinance.users.infrastructure;
 
 import es.neifi.myfinance.shared.Infrastructure.apiException.ApiUserNotFoundError;
-import es.neifi.myfinance.users.application.UserNotFoundException;
+import es.neifi.myfinance.users.application.exceptions.UserNotFoundException;
 import es.neifi.myfinance.users.application.find.UserFinder;
 import es.neifi.myfinance.users.domain.User;
 import org.springframework.http.HttpStatus;
@@ -27,9 +27,9 @@ public class GetUserController {
             Optional<User> userById = this.userFinder.findById(userId);
 
             Response response = new Response(
-                    userById.get().getId().value(),
-                    userById.get().getUsername().value(),
-                    userById.get().getEmail().value()
+                    userById.get().id().value(),
+                    userById.get().username().value(),
+                    userById.get().email().value()
             );
 
             return ResponseEntity.ok(response);

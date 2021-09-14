@@ -26,9 +26,9 @@ public class PostgresUserRepository implements UserRepository {
                 ")";
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("userId",user.getId().value());
-        mapSqlParameterSource.addValue("username",user.getUsername().value());
-        mapSqlParameterSource.addValue("email",user.getEmail().value());
+        mapSqlParameterSource.addValue("userId",user.id().value());
+        mapSqlParameterSource.addValue("username",user.username().value());
+        mapSqlParameterSource.addValue("email",user.email().value());
 
         jdbcTemplate.update(query,mapSqlParameterSource);
     }

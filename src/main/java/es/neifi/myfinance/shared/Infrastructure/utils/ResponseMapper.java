@@ -1,5 +1,7 @@
 package es.neifi.myfinance.shared.Infrastructure.utils;
 
+import es.neifi.myfinance.accountBalance.domain.AccountBalance;
+import es.neifi.myfinance.accountBalance.domain.Amount;
 import es.neifi.myfinance.registry.application.searchRegistry.RegistryResponse;
 import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.registry.domain.vo.Category;
@@ -87,6 +89,19 @@ public class ResponseMapper {
         }
     }
 
+    public static final class AccountBalanceRowMapper implements RowMapper<AccountBalance> {
+
+        @Override
+        public AccountBalance mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new AccountBalance(
+                    new UserID(rs.getString("userId")),
+                    new Amount(rs.getDouble("total_balance")),
+                    new Currency(rs.getString("currency")),
+                    new Date(rs.getTimestamp("date").getTime())
+            );
+        }
+    }
+
     public static class ReportRowMapper implements RowMapper<Report> {
         @Override
         public Report mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -130,7 +145,7 @@ public class ResponseMapper {
     public static class UserRowMapper implements RowMapper<User>{
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new User(
+            return  User.createUser(
                     new UserID(rs.getString("userId")),
                     new UserName(rs.getString("username")),
                     new Email(rs.getString("email"))

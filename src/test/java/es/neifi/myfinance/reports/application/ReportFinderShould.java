@@ -10,7 +10,7 @@ import es.neifi.myfinance.reports.domain.TotalExpenses;
 import es.neifi.myfinance.reports.domain.TotalIncomes;
 import es.neifi.myfinance.reports.domain.TotalSavings;
 import es.neifi.myfinance.shared.domain.UserService;
-import es.neifi.myfinance.users.application.UserNotFoundException;
+import es.neifi.myfinance.users.application.exceptions.UserNotFoundException;
 import es.neifi.myfinance.users.domain.UserID;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

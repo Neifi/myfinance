@@ -8,6 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         "es.neifi.myfinance.registry.application",
         "es.neifi.myfinance.registry.application.searchRegistry",
         "es.neifi.myfinance.registry.infrastructure",
+        "es.neifi.myfinance.accountBalance.infrastructure",
+        "es.neifi.myfinance.accountBalance.domain",
+        "es.neifi.myfinance.accountBalance.application",
         "es.neifi.myfinance.users.domain",
         "es.neifi.myfinance.shared.Infrastructure"
 })
