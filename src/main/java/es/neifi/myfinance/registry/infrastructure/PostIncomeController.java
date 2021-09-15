@@ -4,7 +4,7 @@ import es.neifi.myfinance.registry.application.saveRegistry.RegistrySaver;
 import es.neifi.myfinance.registry.application.saveRegistry.SaveRegistryCommand;
 import es.neifi.myfinance.shared.Infrastructure.apiException.ApiUserNotFoundError;
 import es.neifi.myfinance.shared.domain.UserService;
-import es.neifi.myfinance.users.application.UserNotFoundException;
+import es.neifi.myfinance.users.application.exceptions.UserNotFoundException;
 import es.neifi.myfinance.users.domain.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +37,8 @@ public class PostIncomeController {
                     registryRequest.getName(),
                     registryRequest.getCost(),
                     registryRequest.getCurrency(),
-                    registryRequest.getDate());
+                    registryRequest.getDate()
+            );
 
             registrySaver.saveIncome(saveRegistryCommand);
             return ResponseEntity.status(HttpStatus.CREATED).build();

@@ -1,5 +1,7 @@
 package es.neifi.myfinance.shared.Infrastructure.utils;
 
+import es.neifi.myfinance.accountBalance.domain.AccountBalance;
+import es.neifi.myfinance.accountBalance.domain.Amount;
 import es.neifi.myfinance.registry.application.searchRegistry.RegistryResponse;
 import es.neifi.myfinance.registry.domain.Registry;
 import es.neifi.myfinance.registry.domain.vo.Category;
@@ -8,12 +10,7 @@ import es.neifi.myfinance.registry.domain.vo.Currency;
 import es.neifi.myfinance.registry.domain.vo.Date;
 import es.neifi.myfinance.registry.domain.vo.Name;
 import es.neifi.myfinance.registry.domain.vo.RegistryID;
-import es.neifi.myfinance.reports.domain.IsExpense;
-import es.neifi.myfinance.reports.domain.Report;
-import es.neifi.myfinance.reports.domain.ReportID;
-import es.neifi.myfinance.reports.domain.TotalExpenses;
-import es.neifi.myfinance.reports.domain.TotalIncomes;
-import es.neifi.myfinance.reports.domain.TotalSavings;
+
 import es.neifi.myfinance.users.domain.Email;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserID;
@@ -34,13 +31,13 @@ public class ResponseMapper {
 
         for (Registry registry : expens) {
             registryData.add(RegistryResponse.builder()
-                    .userId(registry.getUserId().value())
-                    .id(registry.getId().value())
-                    .category(registry.getCategory().value())
-                    .name(registry.getName().value())
-                    .cost(registry.cost())
-                    .currency(registry.getCurrency().getValue())
-                    .date(registry.getDate().value())
+                    .userId(registry.userId().value())
+                    .id(registry.id().value())
+                    .category(registry.category().value())
+                    .name(registry.name().value())
+                    .cost(registry.cost().value())
+                    .currency(registry.currency().value())
+                    .date(registry.date().value())
                     .isExpense(registry.isExpense())
                     .build());
         }
@@ -87,50 +84,23 @@ public class ResponseMapper {
         }
     }
 
-    public static class ReportRowMapper implements RowMapper<Report> {
+    public static final class AccountBalanceRowMapper implements RowMapper<AccountBalance> {
+
         @Override
-        public Report mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return  Report.create(
-                    new ReportID(rs.getString("reportId")),
+        public AccountBalance mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new AccountBalance(
                     new UserID(rs.getString("userId")),
-                    new TotalExpenses(rs.getDouble("totalExpenses")),
-                    new TotalIncomes(rs.getDouble("totalIncomes")),
-                    new TotalSavings(rs.getDouble("totalSavings")),
-                    new IsExpense(rs.getBoolean("isExpense")),
+                    new Amount(rs.getDouble("total_balance")),
+                    new Currency(rs.getString("currency")),
                     new Date(rs.getTimestamp("date").getTime())
-                    );
-        }
-    }
-
-    public static List<Report> reportListRowMapper(List<Map<String, Object>> reportList) {
-
-        ArrayList<Report> reports = new ArrayList<>();
-
-        for (Map<String, Object> stringObjectMap : reportList) {
-            Timestamp date = (Timestamp) stringObjectMap.get("date");
-            BigDecimal totalExpenses = (BigDecimal) stringObjectMap.get("totalExpenses");
-            BigDecimal totalIncomes = (BigDecimal) stringObjectMap.get("totalIncomes");
-            BigDecimal totalSavings = (BigDecimal) stringObjectMap.get("totalSavings");
-
-            Report report = Report.create(
-                    new ReportID((String) stringObjectMap.get("reportId")),
-                    new UserID((String) stringObjectMap.get("userId")),
-                    new TotalExpenses(totalExpenses.doubleValue()),
-                    new TotalIncomes(totalIncomes.doubleValue()),
-                    new TotalSavings(totalSavings.doubleValue()),
-                    new IsExpense((Boolean) stringObjectMap.get("isExpense")),
-                    new Date(date.getTime())
             );
-            reports.add(report);
         }
-
-        return reports;
     }
 
-    public static class UserRowMapper implements RowMapper<User>{
+    public static class UserRowMapper implements RowMapper<User> {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new User(
+            return User.createUser(
                     new UserID(rs.getString("userId")),
                     new UserName(rs.getString("username")),
                     new Email(rs.getString("email"))

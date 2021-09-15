@@ -59,11 +59,10 @@ class GetExpenseControllerShould {
                 new Currency("EUR"),
                 new Date(date)
         );
-        Optional<User> user = Optional.of(User.builder()
-                .id(new UserID("2be27975-4d87-413b-991c-ceff0bb960db"))
-                .username(new UserName("some-name"))
-                .email(new Email("some-email@mail.com"))
-                .build());
+        Optional<User> user = Optional.of(User.createUser(
+                new UserID("2be27975-4d87-413b-991c-ceff0bb960db"),
+                new UserName("some-name"),
+                new Email("some-email@mail.com")));
 
         when(userService.find("2be27975-4d87-413b-991c-ceff0bb960db")).thenReturn(user);
         when(registrySearcher.findRegistry("787f28f2-003a-4445-8659-d60683107845")).thenReturn(java.util.Optional.of(registry));
@@ -76,11 +75,10 @@ class GetExpenseControllerShould {
 
     @Test
     void return_http_status_404_with_existent_user_but_not_expense() throws Exception {
-        Optional<User> user = Optional.of(User.builder()
-                .id(new UserID("2be27975-4d87-413b-991c-ceff0bb960db"))
-                .username(new UserName("some-name"))
-                .email(new Email("some-email@mail.com"))
-                .build());
+        Optional<User> user = Optional.of(User.createUser(
+                new UserID("2be27975-4d87-413b-991c-ceff0bb960db"),
+                new UserName("some-name"),
+                new Email("some-email@mail.com")));
         when(userService.find("2be27975-4d87-413b-991c-ceff0bb960db")).thenReturn(user);
 
         mockMvc.perform(get("/user/2be27975-4d87-413b-991c-ceff0bb960db/expenses/787f28f2-003a-4445-8659-d60683107845"))
@@ -97,11 +95,10 @@ class GetExpenseControllerShould {
     void return_http_status_200_with_list_of_expenses() throws Exception {
         String userId = "2be27975-4d87-413b-991c-ceff0bb960db";
         long date = Timestamp.from(Instant.now()).getTime();
-        Optional<User> user = Optional.of(User.builder()
-                .id(new UserID(userId))
-                .username(new UserName("some-name"))
-                .email(new Email("some-email@mail.com"))
-                .build());
+        Optional<User> user = Optional.of(User.createUser(
+                new UserID(userId),
+                new UserName("some-name"),
+                new Email("some-email@mail.com")));
 
         Registry registry = Registry.createExpense(
                 new UserID(userId),
@@ -135,11 +132,10 @@ class GetExpenseControllerShould {
 
     @Test
     void return_http_status_200_with_list_of_expenses_in_time_period() throws Exception {
-        Optional<User> user = Optional.of(User.builder()
-                .id(new UserID("2be27975-4d87-413b-991c-ceff0bb960db"))
-                .username(new UserName("some-name"))
-                .email(new Email("some-email@mail.com"))
-                .build());
+        Optional<User> user = Optional.of(User.createUser(
+                new UserID("2be27975-4d87-413b-991c-ceff0bb960db"),
+                new UserName("some-name"),
+                new Email("some-email@mail.com")));
 
         String userId = "787f28f2-003a-4445-8659-d60683107845";
         long date = Timestamp.valueOf(LocalDateTime.of(
@@ -218,11 +214,10 @@ class GetExpenseControllerShould {
     @Test
     void return_http_status_code_404_when_expense_not_found() throws Exception {
         String userId = "2be27975-4d87-413b-991c-ceff0bb960db";
-        Optional<User> user = Optional.of(User.builder()
-                .id(new UserID(userId))
-                .username(new UserName("some-name"))
-                .email(new Email("some-email@mail.com"))
-                .build());
+        Optional<User> user = Optional.of(User.createUser(
+                new UserID("2be27975-4d87-413b-991c-ceff0bb960db"),
+                new UserName("some-name"),
+                new Email("some-email@mail.com")));
         when(userService.find(userId)).thenReturn(user);
         String date = valueOf(Timestamp.valueOf(LocalDateTime.of(
                 2021,

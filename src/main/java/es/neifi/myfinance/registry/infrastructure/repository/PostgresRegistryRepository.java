@@ -27,6 +27,7 @@ public class PostgresRegistryRepository implements RegistryRepository {
 
     @Override
     public void save(Registry registry) {
+
         String query = "INSERT INTO registry " +
                 "(" + registryFields + ")" +
                 "VALUES(" +
@@ -41,13 +42,13 @@ public class PostgresRegistryRepository implements RegistryRepository {
                 ")".trim();
 
         MapSqlParameterSource namedParams = new MapSqlParameterSource();
-        namedParams.addValue("registryId", registry.getId().value());
-        namedParams.addValue("userId", registry.getUserId().value());
-        namedParams.addValue("category", registry.getCategory().value());
-        namedParams.addValue("name", registry.getName().value());
-        namedParams.addValue("cost", registry.getCost().value());
-        namedParams.addValue("currency", registry.getCurrency().value());
-        namedParams.addValue("date", new Timestamp(registry.getDate().value()));
+        namedParams.addValue("registryId", registry.id().value());
+        namedParams.addValue("userId", registry.userId().value());
+        namedParams.addValue("category", registry.category().value());
+        namedParams.addValue("name", registry.name().value());
+        namedParams.addValue("cost", registry.cost().value());
+        namedParams.addValue("currency", registry.currency().value());
+        namedParams.addValue("date", new Timestamp(registry.date().value()));
         namedParams.addValue("isExpense", registry.isExpense());
 
         jdbcTemplate.update(query, namedParams);

@@ -1,6 +1,6 @@
 package es.neifi.myfinance.users.application.find;
 
-import es.neifi.myfinance.users.application.UserNotFoundException;
+import es.neifi.myfinance.users.application.exceptions.UserNotFoundException;
 import es.neifi.myfinance.users.domain.Email;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserID;
@@ -35,7 +35,7 @@ class UserFinderShould {
     @Test
     void find_user_by_id() {
         String userId = "3aa80613-0a27-46d8-8367-d91c237967a4";
-        Optional user = Optional.of(new User(
+        Optional user = Optional.of(User.createUser(
                         new UserID(userId),
                         new UserName("username"),
                         new Email("email@mail.com")
