@@ -10,12 +10,7 @@ import es.neifi.myfinance.registry.domain.vo.Currency;
 import es.neifi.myfinance.registry.domain.vo.Date;
 import es.neifi.myfinance.registry.domain.vo.Name;
 import es.neifi.myfinance.registry.domain.vo.RegistryID;
-import es.neifi.myfinance.reports.domain.IsExpense;
-import es.neifi.myfinance.reports.domain.Report;
-import es.neifi.myfinance.reports.domain.ReportID;
-import es.neifi.myfinance.reports.domain.TotalExpenses;
-import es.neifi.myfinance.reports.domain.TotalIncomes;
-import es.neifi.myfinance.reports.domain.TotalSavings;
+
 import es.neifi.myfinance.users.domain.Email;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserID;
@@ -102,50 +97,10 @@ public class ResponseMapper {
         }
     }
 
-    public static class ReportRowMapper implements RowMapper<Report> {
-        @Override
-        public Report mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return  Report.create(
-                    new ReportID(rs.getString("reportId")),
-                    new UserID(rs.getString("userId")),
-                    new TotalExpenses(rs.getDouble("totalExpenses")),
-                    new TotalIncomes(rs.getDouble("totalIncomes")),
-                    new TotalSavings(rs.getDouble("totalSavings")),
-                    new IsExpense(rs.getBoolean("isExpense")),
-                    new Date(rs.getTimestamp("date").getTime())
-                    );
-        }
-    }
-
-    public static List<Report> reportListRowMapper(List<Map<String, Object>> reportList) {
-
-        ArrayList<Report> reports = new ArrayList<>();
-
-        for (Map<String, Object> stringObjectMap : reportList) {
-            Timestamp date = (Timestamp) stringObjectMap.get("date");
-            BigDecimal totalExpenses = (BigDecimal) stringObjectMap.get("totalExpenses");
-            BigDecimal totalIncomes = (BigDecimal) stringObjectMap.get("totalIncomes");
-            BigDecimal totalSavings = (BigDecimal) stringObjectMap.get("totalSavings");
-
-            Report report = Report.create(
-                    new ReportID((String) stringObjectMap.get("reportId")),
-                    new UserID((String) stringObjectMap.get("userId")),
-                    new TotalExpenses(totalExpenses.doubleValue()),
-                    new TotalIncomes(totalIncomes.doubleValue()),
-                    new TotalSavings(totalSavings.doubleValue()),
-                    new IsExpense((Boolean) stringObjectMap.get("isExpense")),
-                    new Date(date.getTime())
-            );
-            reports.add(report);
-        }
-
-        return reports;
-    }
-
-    public static class UserRowMapper implements RowMapper<User>{
+    public static class UserRowMapper implements RowMapper<User> {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return  User.createUser(
+            return User.createUser(
                     new UserID(rs.getString("userId")),
                     new UserName(rs.getString("username")),
                     new Email(rs.getString("email"))

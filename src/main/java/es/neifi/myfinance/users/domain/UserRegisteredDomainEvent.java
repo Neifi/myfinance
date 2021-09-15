@@ -4,12 +4,10 @@ import es.neifi.myfinance.shared.domain.bus.event.AggregateID;
 import es.neifi.myfinance.shared.domain.bus.event.DomainEvent;
 import es.neifi.myfinance.shared.domain.bus.event.EventID;
 import es.neifi.myfinance.shared.domain.bus.event.OccuredOn;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
-@EqualsAndHashCode
 public class UserRegisteredDomainEvent extends DomainEvent<UserRegisteredDomainEvent> {
     private UserID userID;
 
@@ -41,4 +39,6 @@ public class UserRegisteredDomainEvent extends DomainEvent<UserRegisteredDomainE
     public UserID userID() {
         return userID;
     }
+
+
 }

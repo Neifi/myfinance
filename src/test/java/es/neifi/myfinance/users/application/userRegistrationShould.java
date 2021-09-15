@@ -14,6 +14,8 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+
 class userRegistrationShould {
 
 
@@ -29,7 +31,7 @@ class userRegistrationShould {
 
         Mockito.verify(userRepository,Mockito.times(1)).save(user);
         List<DomainEvent<?>> events = user.pullEvents();
-        Mockito.verify(eventBus,Mockito.times(1)).publish(events);
+        Mockito.verify(eventBus,Mockito.times(1)).publish(any());
 
     }
 
