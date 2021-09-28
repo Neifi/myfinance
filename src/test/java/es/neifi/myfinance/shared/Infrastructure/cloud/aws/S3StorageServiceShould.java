@@ -17,7 +17,7 @@ class S3StorageServiceShould {
     @Autowired
     private CloudStorageService storageService;
 
-    @Test
+
     void upload_file_to_s3() {
         UploadContent content = new UploadContent("src/test/java/es/neifi/myfinance/shared/Infrastructure/cloud/aws/testFile.txt");
         content.withId(UUID.randomUUID().toString()).withName("test").withUploadedOn(Timestamp.from(Instant.now()).toString());
