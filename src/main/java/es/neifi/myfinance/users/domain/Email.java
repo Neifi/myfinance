@@ -8,6 +8,7 @@ public class Email extends StringValueObject {
         super(value);
         EmailValidator emailValidator = new EmailValidator();
         if (!emailValidator.isValid(value)) {
+            
             throw new InvalidEmailException(value);
         }
     }

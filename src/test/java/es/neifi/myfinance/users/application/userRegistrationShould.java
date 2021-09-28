@@ -12,6 +12,7 @@ import es.neifi.myfinance.users.domain.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.io.File;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -25,9 +26,10 @@ class userRegistrationShould {
     @Test
     public void should_register_user_successfully_and_emit_user_registered_event(){
         String userId = "4c78e316-2ccd-4f12-a8b7-aa2a87c9adcf";
-        userRegistrator.register(new RegisterUserCommand(userId,"some-name","some-email@email.com"));
+        userRegistrator.register(new RegisterUserCommand(userId,"some-name","some-email@email.com", new File("")));
 
         User user = User.createUser(new UserID(userId),new UserName("some-name"),new Email("some-email@email.com"));
+
 
         Mockito.verify(userRepository,Mockito.times(1)).save(user);
         List<DomainEvent<?>> events = user.pullEvents();

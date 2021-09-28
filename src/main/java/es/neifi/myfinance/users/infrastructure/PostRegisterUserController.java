@@ -21,7 +21,7 @@ public class PostRegisterUserController  {
 
     @PostMapping("/user/{id}")
     public ResponseEntity<HttpStatus> registerUser(@PathVariable String id, @RequestBody RegisterUserCommand request){
-        userRegistrator.register(new RegisterUserCommand(id,request.name(),request.email()));
+        userRegistrator.register(new RegisterUserCommand(id,request.name(),request.email(),request.avatar()));
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

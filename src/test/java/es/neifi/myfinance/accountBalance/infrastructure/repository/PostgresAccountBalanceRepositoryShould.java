@@ -5,24 +5,21 @@ import es.neifi.myfinance.accountBalance.domain.AccountBalanceRepository;
 import es.neifi.myfinance.accountBalance.domain.Amount;
 import es.neifi.myfinance.registry.domain.vo.Currency;
 import es.neifi.myfinance.registry.domain.vo.Date;
+import es.neifi.myfinance.shared.Infrastructure.IntegrationTestBase;
 import es.neifi.myfinance.users.domain.UserID;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 import java.util.UUID;
 
 import static es.neifi.myfinance.shared.utils.DateUtils.timestampOf;
 
-@SpringBootTest
-class PostgresAccountBalanceRepositoryShould {
+class PostgresAccountBalanceRepositoryShould extends IntegrationTestBase {
 
     @Autowired
     private AccountBalanceRepository accountBalanceRepository;
-
-
 
     @Test
     void search_account_balance_in_db() {
