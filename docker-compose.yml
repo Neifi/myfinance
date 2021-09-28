@@ -22,7 +22,7 @@
     zookeeper:
       image: wurstmeister/zookeeper:3.4.6
       ports:
-        - "2181"
+        - "2181:2181"
 
     postgresql:
       image: postgres:12.4

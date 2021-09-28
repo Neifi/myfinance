@@ -11,6 +11,8 @@ import es.neifi.myfinance.registry.domain.RegistryRepository;
 import es.neifi.myfinance.registry.infrastructure.repository.PostgresRegistryRepository;
 
 import es.neifi.myfinance.shared.Infrastructure.bus.event.SpringEventBus;
+import es.neifi.myfinance.shared.Infrastructure.cloud.CloudStorageService;
+import es.neifi.myfinance.shared.Infrastructure.cloud.aws.S3StorageService;
 import es.neifi.myfinance.shared.domain.UserService;
 import es.neifi.myfinance.shared.domain.bus.event.EventBus;
 import es.neifi.myfinance.users.application.find.UserFinder;
@@ -24,6 +26,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 @Configuration
 public class ApplicationConfig {
+
+    @Bean
+    public CloudStorageService cloudStorageService(){
+        return new S3StorageService();
+    }
 
     @Bean
     public AccountBalanceCreator accountBalanceCreator(AccountBalanceRepository accountBalanceRepository, UserService userService) {

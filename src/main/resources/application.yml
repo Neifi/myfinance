@@ -14,3 +14,7 @@ spring:
 
   flyway:
     enabled: true
+
+aws:
+  s3:
+    bucket-name: myfinance-data
