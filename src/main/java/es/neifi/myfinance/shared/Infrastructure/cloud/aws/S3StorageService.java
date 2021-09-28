@@ -1,6 +1,7 @@
 package es.neifi.myfinance.shared.Infrastructure.cloud.aws;
 
 import com.amazonaws.SdkClientException;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -14,8 +15,9 @@ public class S3StorageService implements CloudStorageService {
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
 
-    private final AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-
+    private final AmazonS3 s3Client = AmazonS3ClientBuilder
+            .standard()
+            .withRegion(Regions.EU_WEST_3)
             .build();
 
     @Override
