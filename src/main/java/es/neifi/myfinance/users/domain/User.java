@@ -22,7 +22,7 @@ public class User extends AggregateRoot {
     public static User createUser(UserID id, UserName username, Email email){
         User user = new User(id, username, email);
         UserRegisteredDomainEvent userRegisteredDomainEvent = new UserRegisteredDomainEvent(id);
-        user.record(userRegisteredDomainEvent);
+        user.capture(userRegisteredDomainEvent);
         return user;
     }
 

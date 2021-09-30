@@ -38,7 +38,7 @@ public class Registry extends AggregateRoot {
 
         Registry registry = new Registry(userID, id, category, name, cost, currency, date, true);
 
-        registry.record(createdDomainEvent(userID, id, category, name, cost, currency, date, true));
+        registry.capture(createdDomainEvent(userID, id, category, name, cost, currency, date, true));
 
         return registry;
 
@@ -59,7 +59,7 @@ public class Registry extends AggregateRoot {
     public static Registry createIncome(UserID userID, RegistryID registryID, Category category, Name name, Cost cost, Currency currency, Date date) {
         Registry registry = new Registry(userID, registryID, category, name, cost, currency, date, false);
 
-        registry.record(createdDomainEvent(userID, registryID, category, name, cost, currency, date, false));
+        registry.capture(createdDomainEvent(userID, registryID, category, name, cost, currency, date, false));
 
         return registry;
     }

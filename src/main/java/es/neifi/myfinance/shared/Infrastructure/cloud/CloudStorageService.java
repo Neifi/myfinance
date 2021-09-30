@@ -5,5 +5,4 @@ import es.neifi.myfinance.shared.domain.UploadContent;
 public interface CloudStorageService {
 
     void store(UploadContent uploadContent);
-
 }
