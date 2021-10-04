@@ -29,7 +29,8 @@ public class GetUserController {
             Response response = new Response(
                     userById.get().id().value(),
                     userById.get().username().value(),
-                    userById.get().email().value()
+                    userById.get().email().value(),
+                    userById.get().avatar().value()
             );
 
             return ResponseEntity.ok(response);
@@ -43,11 +44,13 @@ public class GetUserController {
         private String userId;
         private String userName;
         private String email;
+        private String avatar;
 
-        public Response(String userId, String userName, String email) {
+        public Response(String userId, String userName, String email, String avatar) {
             this.userId = userId;
             this.userName = userName;
             this.email = email;
+            this.avatar = avatar;
         }
 
         public String getUserId() {
@@ -60,6 +63,10 @@ public class GetUserController {
 
         public String getEmail() {
             return email;
+        }
+
+        public String getAvatar(){
+            return avatar;
         }
     }
 

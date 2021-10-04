@@ -1,6 +1,7 @@
 package es.neifi.myfinance.users.application.find;
 
 import es.neifi.myfinance.users.application.exceptions.UserNotFoundException;
+import es.neifi.myfinance.users.domain.Avatar;
 import es.neifi.myfinance.users.domain.Email;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserID;
@@ -38,7 +39,8 @@ class UserFinderShould {
         Optional user = Optional.of(User.createUser(
                         new UserID(userId),
                         new UserName("username"),
-                        new Email("email@mail.com")
+                        new Email("email@mail.com"),
+                        new Avatar("https://google.com")
                 )
         );
         when(userRepository.searchById(userId)).thenReturn(user);

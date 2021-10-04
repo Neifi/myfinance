@@ -9,6 +9,7 @@ import es.neifi.myfinance.registry.domain.vo.Date;
 import es.neifi.myfinance.shared.domain.UserService;
 import es.neifi.myfinance.shared.domain.bus.event.AggregateID;
 import es.neifi.myfinance.users.application.exceptions.UserNotFoundException;
+import es.neifi.myfinance.users.domain.Avatar;
 import es.neifi.myfinance.users.domain.Email;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserID;
@@ -40,7 +41,7 @@ class AccountBalanceUpdaterShould {
         double actualAmount = 1800.00;
         double amountToAdd = 1000D;
         double expectedAmount = actualAmount + amountToAdd;
-        RegistryCreatedDomainEvent incomeRegistryCreatedDomainEvent = createRegistryCreatedDomainEvent(userId,amountToAdd,INCOME);
+        RegistryCreatedDomainEvent incomeRegistryCreatedDomainEvent = createRegistryCreatedDomainEvent(userId, amountToAdd, INCOME);
 
         AccountBalance expectedAccountBalance = new AccountBalance(
                 new UserID(userId),
@@ -62,7 +63,7 @@ class AccountBalanceUpdaterShould {
         double actualAmount = 1800.00;
         double amountToSubtract = 1000D;
         double expectedAmount = actualAmount - amountToSubtract;
-        RegistryCreatedDomainEvent expenseRegistryCreatedDomainEvent = createRegistryCreatedDomainEvent(userId,amountToSubtract,EXPENSE);
+        RegistryCreatedDomainEvent expenseRegistryCreatedDomainEvent = createRegistryCreatedDomainEvent(userId, amountToSubtract, EXPENSE);
 
         AccountBalance expectedAccountBalance = new AccountBalance(
                 new UserID(userId),
@@ -78,7 +79,7 @@ class AccountBalanceUpdaterShould {
 
     }
 
-    private RegistryCreatedDomainEvent createRegistryCreatedDomainEvent(String userId,double amount, boolean isExpense) {
+    private RegistryCreatedDomainEvent createRegistryCreatedDomainEvent(String userId, double amount, boolean isExpense) {
         AggregateID id = new AggregateID("8c5f74c4-41b8-47b5-82ff-ec5f784add04");
 
         String category = "some-cat";
@@ -100,7 +101,7 @@ class AccountBalanceUpdaterShould {
         String userId = UUID.randomUUID().toString();
 
         Mockito.when(userService.find(userId)).thenThrow(new UserNotFoundException(userId));
-        Exception userNotFoundException = assertThrows(UserNotFoundException.class, () -> accountBalanceUpdater.addAmountToAccountBalance(new UserID(userId),new Amount(10D)));
+        Exception userNotFoundException = assertThrows(UserNotFoundException.class, () -> accountBalanceUpdater.addAmountToAccountBalance(new UserID(userId), new Amount(10D)));
 
         Assertions.assertThat(userNotFoundException.getMessage()).isEqualTo("User not found with ID: " + userId);
     }
@@ -109,10 +110,15 @@ class AccountBalanceUpdaterShould {
     void throw_exception_when_account_balance_dont_exist() {
         String userId = UUID.randomUUID().toString();
 
-        Mockito.when(userService.find(userId)).thenReturn(Optional.of(User.createUser(new UserID(userId),new UserName("test"),new Email("email@test.com"))));
+        Mockito.when(userService.find(userId)).thenReturn(Optional.of(User.createUser(
+                new UserID(userId),
+                new UserName("test"),
+                new Email("email@test.com"),
+                new Avatar("https://google.com")
+        )));
 
         Mockito.when(accountBalanceRepository.searchAccountBalance(userId)).thenReturn(Optional.empty());
-        Exception userNotFoundException = assertThrows(AccountBalanceNotFoundException.class, () -> accountBalanceUpdater.addAmountToAccountBalance(new UserID(userId),new Amount(10D)));
+        Exception userNotFoundException = assertThrows(AccountBalanceNotFoundException.class, () -> accountBalanceUpdater.addAmountToAccountBalance(new UserID(userId), new Amount(10D)));
 
         Assertions.assertThat(userNotFoundException.getMessage()).isEqualTo("Account balance not found");
     }

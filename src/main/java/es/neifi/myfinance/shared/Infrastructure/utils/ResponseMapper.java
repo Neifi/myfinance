@@ -11,6 +11,7 @@ import es.neifi.myfinance.registry.domain.vo.Date;
 import es.neifi.myfinance.registry.domain.vo.Name;
 import es.neifi.myfinance.registry.domain.vo.RegistryID;
 
+import es.neifi.myfinance.users.domain.Avatar;
 import es.neifi.myfinance.users.domain.Email;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserID;
@@ -103,7 +104,9 @@ public class ResponseMapper {
             return User.createUser(
                     new UserID(rs.getString("userId")),
                     new UserName(rs.getString("username")),
-                    new Email(rs.getString("email"))
+                    new Email(rs.getString("email")),
+                    new Avatar(rs.getString("avatar")
+                    )
             );
         }
     }

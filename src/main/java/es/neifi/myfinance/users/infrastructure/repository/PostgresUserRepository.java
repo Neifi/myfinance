@@ -19,16 +19,18 @@ public class PostgresUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        String query = "INSERT INTO users (userId,username,email) VALUES (" +
+        String query = "INSERT INTO users (userId,username,email,avatar) VALUES (" +
                 ":userId, " +
                 ":username, " +
-                ":email" +
+                ":email," +
+                ":avatar"+
                 ")";
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("userId",user.id().value());
         mapSqlParameterSource.addValue("username",user.username().value());
         mapSqlParameterSource.addValue("email",user.email().value());
+        mapSqlParameterSource.addValue("avatar",user.avatar().value());
 
         jdbcTemplate.update(query,mapSqlParameterSource);
     }
@@ -36,7 +38,7 @@ public class PostgresUserRepository implements UserRepository {
     @Override
     public Optional<User> searchById(String userId) {
 
-        String query = "SELECT userId,username,email " +
+        String query = "SELECT userId,username,email,avatar " +
                 "FROM users " +
                 "WHERE userId = :userId";
 

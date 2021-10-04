@@ -6,14 +6,23 @@ import es.neifi.myfinance.shared.domain.bus.event.EventID;
 import es.neifi.myfinance.shared.domain.bus.event.OccuredOn;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.HashMap;
+import java.util.Objects;
+import java.util.UUID;
 
 public class UserRegisteredDomainEvent extends DomainEvent<UserRegisteredDomainEvent> {
-    private UserID userID;
+    private final UserID userID;
 
-    public UserRegisteredDomainEvent(UserID id) {
-        super(new AggregateID(id.value()));
-        this.userID = id;
+    public UserRegisteredDomainEvent(UserID userID) {
+
+        super(
+                new AggregateID(userID.value()),
+                new EventID(UUID.randomUUID().toString()),
+                new OccuredOn(Timestamp.from(Instant.now()).getTime())
+        );
+        this.userID = userID;
     }
 
     @Override
@@ -23,10 +32,9 @@ public class UserRegisteredDomainEvent extends DomainEvent<UserRegisteredDomainE
 
     @Override
     public HashMap<String, Serializable> toPrimitives() {
-        return new HashMap<String, Serializable>() {{
-            put("userId", UserRegisteredDomainEvent.super.aggregateId().value());
-
-        }};
+        HashMap<String, Serializable> hashmap = new HashMap<>();
+        hashmap.put("userId", UserRegisteredDomainEvent.super.aggregateId().value());
+        return hashmap;
     }
 
     @Override
@@ -40,5 +48,17 @@ public class UserRegisteredDomainEvent extends DomainEvent<UserRegisteredDomainE
         return userID;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DomainEvent)) return false;
+        DomainEvent<?> that = (DomainEvent<?>) o;
+        return super.eventId().value().equalsIgnoreCase(that.eventId().value());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(eventId().value());
+    }
 
 }

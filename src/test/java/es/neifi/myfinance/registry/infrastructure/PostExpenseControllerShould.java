@@ -3,6 +3,7 @@ package es.neifi.myfinance.registry.infrastructure;
 import es.neifi.myfinance.registry.application.saveRegistry.RegistrySaver;
 import es.neifi.myfinance.shared.domain.UserService;
 import es.neifi.myfinance.users.application.exceptions.UserNotFoundException;
+import es.neifi.myfinance.users.domain.Avatar;
 import es.neifi.myfinance.users.domain.Email;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserID;
@@ -48,7 +49,9 @@ class PostExpenseControllerShould {
         when(userService.find(any())).thenReturn(Optional.of(User.createUser(
                 new UserID(UUID.randomUUID().toString()),
                 new UserName("username"),
-                new Email("test@mail.com"))));
+                new Email("test@mail.com"),
+                new Avatar("https://google.com")
+        )));
 
         Request request = new Request("home", "some-name", 100.00, "EUR", Timestamp.from(Instant.now()).getTime());
 

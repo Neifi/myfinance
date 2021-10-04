@@ -11,6 +11,7 @@ import es.neifi.myfinance.shared.domain.bus.event.DomainEvent;
 import es.neifi.myfinance.shared.domain.bus.event.EventBus;
 import es.neifi.myfinance.shared.domain.bus.event.EventID;
 import es.neifi.myfinance.shared.domain.bus.event.OccuredOn;
+import es.neifi.myfinance.users.domain.Avatar;
 import es.neifi.myfinance.users.domain.Email;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserID;
@@ -33,7 +34,7 @@ class RegistrySaverShould {
     private EventBus eventBus = Mockito.mock(EventBus.class);
     private UserService userService = new UserService(userRepository);
 
-    private RegistrySaver registrySaver = new RegistrySaver(registryRepository, eventBus,userService);
+    private RegistrySaver registrySaver = new RegistrySaver(registryRepository, eventBus, userService);
 
 
     @Test
@@ -59,7 +60,9 @@ class RegistrySaverShould {
                 .thenReturn(Optional.of(User.createUser(
                         new UserID(request.userId()),
                         new UserName("username"),
-                        new Email("test@mail.com"))));
+                        new Email("test@mail.com"),
+                        new Avatar("https://google.com")
+                )));
         registrySaver.saveIncome(request);
 
         Mockito.verify(registryRepository, Mockito.times(1)).save(income);
@@ -87,7 +90,12 @@ class RegistrySaverShould {
                 new Date(request.date()));
 
         Mockito.when(userRepository.searchById("a46ea122-f590-471e-95b8-4bc8fd46836a"))
-                .thenReturn(Optional.of(User.createUser(new UserID(request.userId()),new UserName("username"),new Email("test@mail.com"))));
+                .thenReturn(Optional.of(User.createUser(
+                        new UserID(request.userId()),
+                        new UserName("username"),
+                        new Email("test@mail.com"),
+                        new Avatar("https://google.com")
+                )));
 
         registrySaver.saveExpense(request);
 
@@ -117,17 +125,22 @@ class RegistrySaverShould {
         List<DomainEvent<?>> events = new ArrayList<>();
         events.add(
                 new RegistryCreatedDomainEvent(
-                userID,
-                id,
-                category,
-                name,
-                cost,
-                currency,
-                date,
-                isExpense));
+                        userID,
+                        id,
+                        category,
+                        name,
+                        cost,
+                        currency,
+                        date,
+                        isExpense));
 
         Mockito.when(userRepository.searchById("1c9dee02-7d09-419d-ab22-70fbb8825ba2"))
-                .thenReturn(Optional.of(User.createUser(new UserID(request.userId()),new UserName("username"),new Email("test@mail.com"))));
+                .thenReturn(Optional.of(User.createUser(
+                        new UserID(request.userId()),
+                        new UserName("username"),
+                        new Email("test@mail.com"),
+                        new Avatar("https://google.com")
+                )));
 
         registrySaver.saveExpense(request);
 
@@ -174,7 +187,12 @@ class RegistrySaverShould {
                 isExpense));
 
         Mockito.when(userRepository.searchById("1c9dee02-7d09-419d-ab22-70fbb8825ba2"))
-                .thenReturn(Optional.of(User.createUser(new UserID(request.userId()),new UserName("username"),new Email("test@mail.com"))));
+                .thenReturn(Optional.of(User.createUser(
+                        new UserID(request.userId()),
+                        new UserName("username"),
+                        new Email("test@mail.com"),
+                        new Avatar("https://google.com")
+                )));
 
         registrySaver.saveIncome(request);
 

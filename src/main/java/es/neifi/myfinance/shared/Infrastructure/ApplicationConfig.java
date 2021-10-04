@@ -10,6 +10,7 @@ import es.neifi.myfinance.registry.application.searchRegistry.RegistrySearcher;
 import es.neifi.myfinance.registry.domain.RegistryRepository;
 import es.neifi.myfinance.registry.infrastructure.repository.PostgresRegistryRepository;
 import es.neifi.myfinance.shared.Infrastructure.bus.event.SpringEventBus;
+import es.neifi.myfinance.shared.Infrastructure.cloud.CloudStorageService;
 import es.neifi.myfinance.shared.Infrastructure.cloud.aws.CloudFrontCDN;
 import es.neifi.myfinance.shared.Infrastructure.cloud.aws.S3StorageService;
 import es.neifi.myfinance.shared.domain.UserService;
@@ -87,8 +88,8 @@ public class ApplicationConfig {
 
 
     @Bean
-    public UserRegistrator userRegistrator(UserRepository userRepository, EventBus eventBus) {
-        return new UserRegistrator(userRepository, eventBus);
+    public UserRegistrator userRegistrator(UserRepository userRepository, EventBus eventBus, CloudStorageService cloudStorageService) {
+        return new UserRegistrator(userRepository, eventBus,cloudStorageService);
     }
 
     @Bean

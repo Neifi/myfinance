@@ -19,6 +19,7 @@ public class UploadContent extends File {
         super(pathname);
     }
 
+
     public void putMetadata(String key, Object value) {
         this.metadata.put(key, value);
     }
