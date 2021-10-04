@@ -12,7 +12,7 @@ public class UserRepositoryForTest {
     private NamedParameterJdbcTemplate jdbcTemplate;
 
     public User select(String userId) {
-        String query = "SELECT userId,username,email " +
+        String query = "SELECT userId,username,email,avatar " +
                 "FROM users " +
                 "WHERE userId = :userId";
 
