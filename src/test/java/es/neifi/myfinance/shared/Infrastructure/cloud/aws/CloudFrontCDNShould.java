@@ -1,13 +1,14 @@
 package es.neifi.myfinance.shared.Infrastructure.cloud.aws;
 
 import com.amazonaws.SdkClientException;
+import es.neifi.myfinance.shared.Infrastructure.IntegrationTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CloudFrontCDNShould {
+class CloudFrontCDNShould extends IntegrationTestBase {
 
     @Autowired
     private S3StorageService cloudFrontCDN;
