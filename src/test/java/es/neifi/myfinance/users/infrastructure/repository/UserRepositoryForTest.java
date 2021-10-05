@@ -22,5 +22,4 @@ public class UserRepositoryForTest {
         return jdbcTemplate
                 .queryForObject(query, parameters, new ResponseMapper.UserRowMapper());
     }
-
 }

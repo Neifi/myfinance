@@ -6,7 +6,7 @@ import static java.lang.String.valueOf;
 
 public class MyPostgresContainer extends PostgreSQLContainer<MyPostgresContainer> {
     public static final String IMAGE_VERSION = "postgres:12.4";
-    public static final String DATABASE_NAME = "test";
+    public static final String DATABASE_NAME = "myfinancedb";
     public static PostgreSQLContainer container;
 
     public MyPostgresContainer() {
