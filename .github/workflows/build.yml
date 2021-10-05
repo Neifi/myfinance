@@ -35,4 +35,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mkdir temp/avatar && ./gradlew build sonarqube --info
+        run: mkdir temp && mkdir temp/avatar && ./gradlew build sonarqube --info
