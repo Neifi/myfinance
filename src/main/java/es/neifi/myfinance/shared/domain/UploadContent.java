@@ -14,9 +14,11 @@ public class UploadContent extends File {
 
     private final Map<String, Object> metadata = new HashMap<>();
 
+
     public UploadContent(String pathname) {
         super(pathname);
     }
+
 
     public void putMetadata(String key, Object value) {
         this.metadata.put(key, value);

@@ -15,8 +15,8 @@ import java.time.Instant;
 
 public class AccountBalanceCreator {
 
-    private AccountBalanceRepository accountBalanceRepository;
-    private UserService userService;
+    private final AccountBalanceRepository accountBalanceRepository;
+    private final UserService userService;
 
     public AccountBalanceCreator(AccountBalanceRepository accountBalanceRepository, UserService userService) {
         this.accountBalanceRepository = accountBalanceRepository;
@@ -39,6 +39,4 @@ public class AccountBalanceCreator {
         userService.find(userId);
         accountBalanceRepository.saveAccountBalance(accountBalance);
     }
-
-    ;
 }

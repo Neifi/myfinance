@@ -9,6 +9,7 @@ import es.neifi.myfinance.registry.domain.vo.Date;
 import es.neifi.myfinance.registry.domain.vo.Name;
 import es.neifi.myfinance.registry.domain.vo.RegistryID;
 import es.neifi.myfinance.shared.domain.UserService;
+import es.neifi.myfinance.users.domain.Avatar;
 import es.neifi.myfinance.users.domain.Email;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserID;
@@ -63,7 +64,9 @@ class GetIncomeControllerShould {
         Optional<User> user = Optional.of(User.createUser(
                 new UserID("2be27975-4d87-413b-991c-ceff0bb960db"),
                 new UserName("some-name"),
-                new Email("some-email@mail.com")));
+                new Email("some-email@mail.com"),
+                new Avatar("https://google.com")
+        ));
 
         when(userService.find("2be27975-4d87-413b-991c-ceff0bb960db")).thenReturn(user);
         when(registrySearcher.findRegistry("787f28f2-003a-4445-8659-d60683107845")).thenReturn(Optional.of(registry));
@@ -79,7 +82,9 @@ class GetIncomeControllerShould {
         Optional<User> user = Optional.of(User.createUser(
                 new UserID("2be27975-4d87-413b-991c-ceff0bb960db"),
                 new UserName("some-name"),
-                new Email("some-email@mail.com")));
+                new Email("some-email@mail.com"),
+                new Avatar("https://google.com")
+        ));
         when(userService.find("2be27975-4d87-413b-991c-ceff0bb960db")).thenReturn(user);
 
         mockMvc.perform(get("/user/2be27975-4d87-413b-991c-ceff0bb960db/incomes/787f28f2-003a-4445-8659-d60683107845"))
@@ -99,7 +104,9 @@ class GetIncomeControllerShould {
         Optional<User> user = Optional.of(User.createUser(
                 new UserID(userId),
                 new UserName("some-name"),
-                new Email("some-email@mail.com")));
+                new Email("some-email@mail.com"),
+                new Avatar("https://google.com")
+        ));
 
         Registry registry = Registry.createIncome(
                 new UserID(userId),
@@ -134,7 +141,9 @@ class GetIncomeControllerShould {
         Optional<User> user = Optional.of(User.createUser(
                 new UserID("2be27975-4d87-413b-991c-ceff0bb960db"),
                 new UserName("some-name"),
-                new Email("some-email@mail.com")));
+                new Email("some-email@mail.com"),
+                new Avatar("https://google.com")
+        ));
 
         String userId = "787f28f2-003a-4445-8659-d60683107845";
         long date = Timestamp.valueOf(LocalDateTime.of(

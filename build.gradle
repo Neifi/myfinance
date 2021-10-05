@@ -41,6 +41,7 @@ dependencies {
 
 	//AWS
 	implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.74'
+	implementation group: 'com.amazonaws', name: 'aws-java-sdk-cloudfront', version: '1.12.76'
 
 	implementation 'junit:junit:4.13.2'
 

@@ -1,4 +1,5 @@
 package es.neifi.myfinance.shared.Infrastructure.configuration;
+
 import es.neifi.myfinance.registry.infrastructure.RegistryRepositoryForTest;
 import es.neifi.myfinance.users.infrastructure.repository.UserRepositoryForTest;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +15,9 @@ public class TestConfiguration {
 
 
     @Bean
-    public UserRepositoryForTest userRepositoryForTest(){
+    public UserRepositoryForTest userRepositoryForTest() {
         return new UserRepositoryForTest();
     }
+
 
 }

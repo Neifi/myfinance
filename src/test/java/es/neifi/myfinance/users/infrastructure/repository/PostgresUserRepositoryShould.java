@@ -1,6 +1,7 @@
 package es.neifi.myfinance.users.infrastructure.repository;
 
 import es.neifi.myfinance.shared.Infrastructure.IntegrationTestBase;
+import es.neifi.myfinance.users.domain.Avatar;
 import es.neifi.myfinance.users.domain.Email;
 import es.neifi.myfinance.users.domain.User;
 import es.neifi.myfinance.users.domain.UserID;
@@ -28,7 +29,9 @@ class PostgresUserRepositoryShould extends IntegrationTestBase {
         User user = User.createUser(
                 new UserID(userId),
                 new UserName("username"),
-                new Email("email@mail.com")
+                new Email("email@mail.com"),
+                new Avatar("https://google.com")
+
         );
 
         userRepository.save(user);
@@ -43,7 +46,8 @@ class PostgresUserRepositoryShould extends IntegrationTestBase {
         Optional<User> user = Optional.of(User.createUser(
                         new UserID(userId),
                         new UserName("username"),
-                        new Email("email@mail.com")
+                        new Email("email@mail.com"),
+                        new Avatar("https://google.com")
                 )
         );
         userRepository.save(user.get());

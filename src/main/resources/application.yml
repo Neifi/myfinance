@@ -16,5 +16,7 @@ spring:
     enabled: true
 
 aws:
+  cloudfront:
+    distribution-id: 'E3BLJUPW5Z17RL'
   s3:
     bucket-name: myfinance-data

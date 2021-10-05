@@ -10,12 +10,12 @@ import es.neifi.myfinance.shared.Infrastructure.cloud.CloudStorageService;
 import es.neifi.myfinance.shared.domain.UploadContent;
 import org.springframework.beans.factory.annotation.Value;
 
-public class S3StorageService implements CloudStorageService {
+public abstract class S3StorageService implements CloudStorageService {
 
     @Value("${aws.s3.bucket-name}")
-    private String bucketName;
+    protected String bucketName;
 
-    private final AmazonS3 s3Client = AmazonS3ClientBuilder
+    protected final AmazonS3 s3Client = AmazonS3ClientBuilder
             .standard()
             .withRegion(Regions.EU_WEST_3)
             .build();
@@ -45,5 +45,7 @@ public class S3StorageService implements CloudStorageService {
 
         request.setMetadata(objectMetadata);
     }
+
+    public abstract Object retrieve(String id);
 
 }

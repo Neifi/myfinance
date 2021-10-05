@@ -10,19 +10,20 @@ public class User extends AggregateRoot {
     private UserID id;
     private UserName username;
     private Email email;
+    private Avatar avatar;
 
-    private User(UserID id, UserName username, Email email) {
+    private User(UserID id, UserName username, Email email, Avatar avatar) {
         this.id = id;
         this.username = username;
         this.email = email;
-
+        this.avatar = avatar;
 
     }
 
-    public static User createUser(UserID id, UserName username, Email email){
-        User user = new User(id, username, email);
+    public static User createUser(UserID id, UserName username, Email email, Avatar avatar) {
+        User user = new User(id, username, email, avatar);
         UserRegisteredDomainEvent userRegisteredDomainEvent = new UserRegisteredDomainEvent(id);
-        user.record(userRegisteredDomainEvent);
+        user.capture(userRegisteredDomainEvent);
         return user;
     }
 
@@ -48,5 +49,9 @@ public class User extends AggregateRoot {
 
     public Email email() {
         return email;
+    }
+
+    public Avatar avatar() {
+        return avatar;
     }
 }

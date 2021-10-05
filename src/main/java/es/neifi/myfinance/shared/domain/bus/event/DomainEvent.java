@@ -10,19 +10,19 @@ import java.util.UUID;
 
 public abstract class DomainEvent<T extends DomainEvent<?>>{
 
-    private AggregateID aggregateId;
     private EventID eventId;
+    private AggregateID aggregateId;
     private OccuredOn occurredOn;
 
     public DomainEvent(AggregateID aggregateId) {
-        this.aggregateId = aggregateId;
         this.eventId     = new EventID(UUID.randomUUID().toString());
+        this.aggregateId = aggregateId;
         this.occurredOn  = new OccuredOn(Timestamp.from(Instant.now()).getTime());
     }
 
     public DomainEvent(AggregateID aggregateId, EventID eventId, OccuredOn occurredOn) {
-        this.aggregateId = aggregateId;
         this.eventId = eventId;
+        this.aggregateId = aggregateId;
         this.occurredOn = occurredOn;
     }
 
@@ -51,7 +51,8 @@ public abstract class DomainEvent<T extends DomainEvent<?>>{
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) return true;
+        if (!(o instanceof DomainEvent)) return false;
         DomainEvent<?> that = (DomainEvent<?>) o;
         return eventId.value().equalsIgnoreCase(that.eventId.value());
     }

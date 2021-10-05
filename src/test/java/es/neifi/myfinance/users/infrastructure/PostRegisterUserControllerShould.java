@@ -29,7 +29,7 @@ final class PostRegisterUserControllerShould {
     public void should_return_201_created_when_user_is_registered() throws Exception {
         mockMvc.perform(post("/user/6657B41E-FBA8-486C-9F4C-474B351514D1")
                 .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"id\": \"some-id\",\"name\": \"some-name\", \"email\": \"some-email\"}"))
+        .content("{\"id\": \"some-id\",\"name\": \"some-name\", \"email\": \"some-email\",\"avatar\": \"https://avatarxyz.com/1\"}"))
         .andExpect(status().isCreated());
     }
 
