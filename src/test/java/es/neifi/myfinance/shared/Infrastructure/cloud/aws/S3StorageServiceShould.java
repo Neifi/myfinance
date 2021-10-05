@@ -1,6 +1,7 @@
 package es.neifi.myfinance.shared.Infrastructure.cloud.aws;
 
 
+import es.neifi.myfinance.shared.Infrastructure.IntegrationTestBase;
 import es.neifi.myfinance.shared.domain.UploadContent;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @SpringBootTest
-class S3StorageServiceShould {
+class S3StorageServiceShould extends IntegrationTestBase {
 
     @Autowired
     private S3StorageService cloudFrontCDN;

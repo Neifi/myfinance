@@ -5,7 +5,6 @@ import org.flywaydb.core.Flyway;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 public class RepostitoryTest extends ContainersEnvironment {
     @Autowired
     private Flyway flyway;
