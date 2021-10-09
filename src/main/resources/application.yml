@@ -4,7 +4,13 @@ spring:
     username: "${spring.database.username}"
     password: "${spring.database.password}"
     driver-class-name: "org.postgresql.Driver"
-
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: "${github-client-id}"
+            clientSecret: "${github-client-secret}"
   database:
     host: "localhost"
     port: 5432
